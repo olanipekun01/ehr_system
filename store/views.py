@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from .models import *
 from .forms import *
@@ -37,7 +37,8 @@ def index(request):
         "total_items": total_items,
         "out_of_stock": out_of_stock,
         "suppliers": suppliers,
-        "issued": issued
+        "issued": issued,
+        "dept": dept
     }
     items = items.values()
     if request.method == "POST":
@@ -61,75 +62,111 @@ def index(request):
 
 
 @login_required
-def dept(request):
-    if request.method == "POST":
+def dept(request, pk):
+    if request.method == "POST": 
         op_type = request.POST["op_type"]
         if op_type == "add":
             input_name = request.POST['input_name']
             input_voucher = request.POST['input_voucher']
             input_supplier_name = request.POST['input_supp_name']
             input_amount = request.POST['input_amount']
-            input_unit_issue = request.POST["input_unit_issue"]
+            # input_unit_issue = request.POST["input_unit_issue"]
             input_unit_rate = request.POST["input_unit_rate"]
-            if validate(input_amount) == True:
-                item = Items.objects.all().filter(item_name=input_name)[0]
-                amnt = int(input_amount)
-                item.amount += amnt
-                item.unit_issue = input_unit_issue
-                item.unit_rate = input_unit_rate
-                item.save()
-                history = History.objects.create(item_name=item.item_name,
-                                                 voucher_no=input_voucher,
-                                                 description=input_supplier_name,
-                                                 action="received",
-                                                 amount=str(amnt),
-                                                 bal=str(item.amount),
-                                                 unit_issue=input_unit_issue,
-                                                 unit_rate=input_unit_rate,
-                                                 slug=item.slug)
-                history.save()
-                return redirect('/dept')
+            
+            if input_supplier_name == "":
+                messages.info(request, 'Select a Supplier!')
+                return redirect('/store/' + pk)
+            
+            if validateRate(input_unit_rate) == False:
+                messages.info(request, 'Input right Unit Rate!')
+                return redirect('/store/' + pk)
+            
+            if Items.objects.filter(item_name=input_name).exists():
+                if validate(input_amount) == True:
+                    item = Items.objects.all().filter(item_name=input_name)[0]
+                    amnt = int(input_amount)
+                    item.amount += amnt
+                    # item.unit_issue = input_unit_issue
+                    item.unit_rate = input_unit_rate
+                    item.save()
+                    history = History.objects.create(item_name=item.item_name,
+                                                    voucher_no=input_voucher,
+                                                    description=input_supplier_name,
+                                                    action="received",
+                                                    amount=str(amnt),
+                                                    bal=str(item.amount),
+                                                    unit_issue=item.unit_issue,
+                                                    unit_rate=input_unit_rate,
+                                                    slug=item.slug)
+                    history.save()
+                    return redirect('/store/' + pk)
+                else:
+                    messages.info(request, 'Enter a valid Quantity!')
+                    return redirect('/store/' + pk)
             else:
-                messages.info(request, 'enter a valid amount')
-                return redirect('/dept')
+                messages.info(request, 'Item does not exist!')
+                return redirect('/store/' + pk)
         elif op_type == "subtract":
             input_name = request.POST['input_name']
             input_voucher = request.POST['input_voucher']
             input_dept_name = request.POST['input_dept_name']
             input_amount = request.POST['input_amount']
-            input_unit_issue = request.POST["input_unit_issue"]
-            input_unit_rate = request.POST["input_unit_rate"]
-            if validate(input_amount) == True:
-                item = Items.objects.all().filter(item_name=input_name)[0]
-                if item.amount >= int(input_amount):
-                    amnt = int(input_amount)
-                    item.amount -= amnt
-                    item.save()
-                    history = History.objects.create(item_name=item.item_name,
-                                                     voucher_no=input_voucher,
-                                                     description=input_dept_name,
-                                                     action="issued",
-                                                     amount=str(amnt),
-                                                     bal=str(item.amount),
-                                                     unit_issue=input_unit_issue,
-                                                     unit_rate=input_unit_rate,
-                                                     slug=item.slug)
-                    history.save()
-                    return redirect('/dept')
+            # input_unit_issue = request.POST["input_unit_issue"]
+            # input_unit_rate = request.POST["input_unit_rate"]
+            
+            if input_dept_name == "":
+                messages.info(request, 'Select a Department!')
+                return redirect('/store/' + pk)
+            
+            # if validateRate(input_unit_rate) == False:
+            #     messages.info(request, 'Input right Unit Rate!')
+            #     return redirect('/store')
+            
+            if Items.objects.filter(item_name=input_name).exists():
+                if validate(input_amount) == True:
+                    item = Items.objects.all().filter(item_name=input_name)[0]
+                    if item.amount >= int(input_amount):
+                        amnt = int(input_amount)
+                        item.amount -= amnt
+                        item.save()
+                        history = History.objects.create(item_name=item.item_name,
+                                                        voucher_no=input_voucher,
+                                                        description=input_dept_name,
+                                                        action="issued",
+                                                        amount=str(amnt),
+                                                        bal=str(item.amount),
+                                                        unit_issue=item.unit_issue,
+                                                        unit_rate=item.unit_rate,
+                                                        slug=item.slug)
+                        history.save()
+                        return redirect('/store/' + pk)
+                    else:
+                        messages.info(request, 'Not enough in stock!')
+                        return redirect('/store/' + pk)
                 else:
-                    messages.info(request, 'Not enough in stock')
-                    return redirect('/dept')
+                    messages.info(request, 'enter a valid amount!')
+                    return redirect('/store/' + pk)
             else:
-                messages.info(request, 'enter a valid amount')
-                return redirect('/dept')
+                messages.info(request, 'Item does not exist!')
+                return redirect('/store/' + pk)
 
     item_name_input = request.GET.get('item_name')
     min_amnt = request.GET.get('min_amnt')
     max_amnt = request.GET.get('max_amnt')
     issue_unit = request.GET.get('issue_unit')
 
-    dept = Department.objects.all()
-    items = Items.objects.all()
+    try:
+        department = Department.objects.get(dept_name=pk)
+    except:
+        return redirect('/')
+    # if is_in_department == False:
+        # 
+    # Check if the department is associated with the item
+    # is_in_department = Items.departments.filter(pk=department.pk).exists()
+    
+    department = Department.objects.get(dept_name=pk)
+    dep = Department.objects.all()
+    items = Items.objects.filter(dept__id=department.pk).order_by('-modified_at')
     supp = Supplier.objects.all()
 
     if is_valid(item_name_input):
@@ -144,7 +181,7 @@ def dept(request):
     if is_valid(issue_unit):
         items = items.filter(unit_issue__icontains=issue_unit)
 
-    return render(request, 'dept1.html', {'department': dept, 'items': items, 'supplier': supp})
+    return render(request, 'dept1.html', {'department': dep, 'items': items, 'supplier': supp, "pk": pk})
 
 
 @login_required
@@ -154,17 +191,25 @@ def newstock(request):
         item_amount = request.POST['item_amount']
         input_unit_issue = request.POST['input_unit_issue']
         input_unit_rate = request.POST['input_unit_rate']
-
+        item_name = item_name.strip()
+        input_unit_issue = input_unit_issue.strip()
+        
         if (item_name == "" or input_unit_issue == ""):
-            return redirect("/dept")
+            messages.info(request, 'Enter valid name and unit of issue!')
+            return redirect("/stock")
 
         if Items.objects.all().filter(item_name=item_name).exists():
-            return redirect("/dept")
+            messages.info(request, 'Item already exist!')
+            return redirect("/stock")
         else:
             test = uuid.uuid4()
-            items = Items.objects.create(item_id=test,
+            item = Items.objects.create(item_id=test,
                                          item_name=item_name, amount=item_amount, unit_issue=input_unit_issue, unit_rate=input_unit_rate)
-            items.save()
+            item.save()
+            departments_ids = request.POST.getlist('departments')  # Assuming departments are selected in a form
+            for department_id in departments_ids:
+                department = get_object_or_404(Department, pk=department_id)
+                item.dept.add(department)
             item = Items.objects.all().filter(item_name=item_name)[0]
             history = History.objects.create(item_id=str(item.item_id),
                                              item_name=item.item_name,
@@ -177,12 +222,33 @@ def newstock(request):
                                              unit_rate=input_unit_rate,
                                              slug=item.slug)
             history.save()
-            return redirect("/dept")
-    return render(request, 'index.html')
+            return redirect("/stock")
+    
+    item_name_input = request.GET.get('item_name')
+    min_amnt = request.GET.get('min_amnt')
+    max_amnt = request.GET.get('max_amnt')
+    issue_unit = request.GET.get('issue_unit')
+    
+    items = Items.objects.all().order_by('-modified_at')
+    dept = Department.objects.all()
+
+    if is_valid(item_name_input):
+        items = items.filter(item_name__contains=item_name_input)
+
+    if is_valid(min_amnt):
+        items = items.filter(amount__gte=min_amnt)
+
+    if is_valid(max_amnt):
+        items = items.filter(amount__lt=max_amnt)
+
+    if is_valid(issue_unit):
+        items = items.filter(unit_issue__icontains=issue_unit)
+
+    return render(request, "newstock.html", {"items": items, "department": dept})
 
 
 @login_required
-def history(request, item=""):
+def history(request, dept="general", item=""):
     history = History.objects.all()
 
     item_name_input = request.GET.get('item_name')
@@ -192,6 +258,9 @@ def history(request, item=""):
     min_date_string = request.GET.get('min_date')
     max_date_string = request.GET.get('max_date')
     action = request.GET.get('action')
+
+    if dept !=  "general":
+        history = history.filter(description=dept)
 
     if item != "":
         history = history.filter(slug=item)
@@ -275,7 +344,7 @@ def delete(request, id):
                                      slug=item.slug)
     history.save()
     items = Items.objects.filter(item_id=id).delete()
-    return redirect("/dept")
+    return redirect("/stock")
 
 
 def login(request):
@@ -309,9 +378,13 @@ def department(request):
 
     if request.method == "POST":
         dept_name = request.POST["dept_name"]
+        dept_name = dept_name.strip()
 
+        if dept_name == "":
+            messages.info(request, 'Enter a valid name!')
+            return redirect("/department")
         if dept.filter(dept_name=dept_name).exists():
-            messages.info(request, 'Department exist')
+            messages.info(request, 'Department already exist!')
             return redirect("/department")
 
         dept = dept.create(dept_name=dept_name)
@@ -341,12 +414,18 @@ def outOfStock(request):
 @login_required
 def suppliers(request):
     supp = Supplier.objects.all()
-
+    
     if request.method == "POST":
         supp_name = request.POST["supp_name"]
+        supp_name = supp_name.strip()
+    
+        
+        if supp_name == "":
+            messages.info(request, 'Enter a valid name!')
+            return redirect("/suppliers")
 
         if supp.filter(supp_name=supp_name).exists():
-            messages.info(request, 'Supplier exist')
+            messages.info(request, 'Supplier already exist!')
             return redirect("/suppliers")
 
         supp = supp.create(supp_name=supp_name)

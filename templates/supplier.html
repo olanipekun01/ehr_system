@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Federal Medical Centre</title>
+    <title>Federal Medical Centre Owo</title>
 
     <link href="{% static './css/supplier.css' %}" rel="stylesheet" />
   </head>
@@ -13,7 +13,7 @@
     <header>
       <a href="{% url 'store:index' %}" class="header_wrapper">
         <img src="{% static './assets/fmc_owo_logo.jpg' %}" alt="" />
-        <h1>FMC OWO STORE</h1>
+        <h1>Chem Pathology Store</h1>
       </a>
       {% if user.is_authenticated %}
       <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>

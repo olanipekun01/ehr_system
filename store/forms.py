@@ -3,3 +3,9 @@ def validate(amnt):
         return True
     else:
         return False
+    
+def validateRate(amnt):
+    if amnt != "" and float(amnt) > 0:
+        return True
+    else:
+        return False

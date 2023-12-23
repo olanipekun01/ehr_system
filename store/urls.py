@@ -5,11 +5,12 @@ app_name = "store"
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('dept/', views.dept, name='department'),
-    path('newstock/', views.newstock, name='newstock'),
+    path('store/<str:pk>/', views.dept, name='dept_store'),
+    path('stock/', views.newstock, name='newstock'),
     path('history/', views.history, name='dept_history'),
+    path('history/<str:dept>/<str:item>/', views.history, name='item_history'),
+    path('history/<str:dept>/', views.history, name='dept_item_history'),
     path('department/', views.department, name='department'),
-    path('history/<str:item>/', views.history, name='item_history'),
     path('outofstock/', views.outOfStock, name='outofstock'),
     path('suppliers/', views.suppliers, name='suppliers'),
     path('login/', views.login, name='login'),

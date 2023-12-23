@@ -109,6 +109,9 @@ section.hero {
 section.hero .dept_nav {
     border-bottom: 1px solid rgb(4, 134, 70);
     padding: 19px 0px 20px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 section.hero .dept_nav a span {
@@ -133,6 +136,12 @@ section.hero .dept_nav a span.active1 {
     border-top-left-radius: 35px;
     background-color: rgb(4, 134, 70);
     color: white;
+}
+
+section.hero .dept_nav a span.active2_reload {
+    background-color: rgb(4, 134, 70);
+    color: white;
+    border-top-right-radius: 35px;
 }
 
 section.hero .card_wrapper {
@@ -200,7 +209,7 @@ section.hero .card_wrapper .header_div button:hover {
     font-size: 14px;
     font-weight: 400;
     color: #545F7D;
-    min-width: 100%;
+    width: 100%;
     background-color: #ffff;
     /* // border-radius: 10px;
     // overflow: hidden; */
@@ -223,6 +232,37 @@ section.hero .card_wrapper .header_div button:hover {
     font-size: 12px;
 }
 
+.card_wrapper table thead tr th.date {
+    width: 190px;
+}
+
+.card_wrapper table thead tr th.item {
+    width: 300px;
+}
+
+.card_wrapper table thead tr th.qty {
+    width: 90px;
+}
+
+.card_wrapper table thead tr th.action {
+    padding-left: 50px;
+    width: 120px;
+}
+
+.card_wrapper table thead tr th.rate {
+    width: 150px;
+}
+
+.card_wrapper table thead tr th.issue,
+.card_wrapper table thead tr th.rate,
+.card_wrapper table thead tr th.bal {
+    width: 100px;
+}
+
+
+
+
+
 .card_wrapper table tbody {
     background-color: #F4F4F8;
 }
@@ -230,6 +270,13 @@ section.hero .card_wrapper .header_div button:hover {
 .card_wrapper table tbody tr {
     background-color: #F4F4F8;
     border-top: 2px solid #ffff;
+}
+
+.card_wrapper table tbody tr:hover {
+    cursor: pointer;
+    background-color: rgb(4, 134, 70);
+    transition: ease-in 0.5s;
+    color: #ffff;
 }
 
 .card_wrapper table tbody tr td {

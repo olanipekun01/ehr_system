@@ -9,7 +9,7 @@ from django.utils.text import slugify
 
 
 class Department(models.Model):
-    dept_name = models.CharField(max_length=500)
+    dept_name = models.CharField(max_length=70)
 
     def __str__(self):
         return self.dept_name
@@ -41,8 +41,8 @@ class History(models.Model):
     bal = models.CharField(max_length=500, null=True, blank=True)
     unit_issue = models.CharField(max_length=200, null=True, blank=True)
     unit_rate = models.CharField(max_length=200, null=True, blank=True)
-    # dept = models.ForeignKey(Department, related_name="micro_history_category",
-    #                          on_delete=models.SET_NULL, null=True, blank=True)
+    dept_id = models.ForeignKey(Department, related_name="micro_history_category",
+                             on_delete=models.SET_NULL, null=True, blank=True)
     slug = models.SlugField(max_length=2000, null=True, blank=True)
 
     def __str__(self):
@@ -55,12 +55,12 @@ class Items(models.Model):
         editable=False)
     item_name = models.CharField(max_length=500)
     amount = models.DecimalField(max_digits=15, decimal_places=1, default=0.0)
-    # dept = models.ForeignKey(Department, related_name="item_category",
-    #                          on_delete=models.SET_NULL, null=True, blank=True)
+    dept = models.ManyToManyField(Department, related_name='items')
     unit_issue = models.CharField(max_length=200, null=True, blank=True)
     unit_rate = models.DecimalField(
         max_digits=15, decimal_places=1, default=0.0)
     slug = models.SlugField(max_length=2000, null=True, blank=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.item_name

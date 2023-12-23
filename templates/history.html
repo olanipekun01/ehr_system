@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>History</title>
+    <title>Federal Medical Centre Owo</title>
 
     <link href="{% static './css/history.css' %}" rel="stylesheet" />
   </head>
@@ -13,7 +13,7 @@
     <header>
       <a href="{% url 'store:index' %}" class="header_wrapper">
         <img src="{% static './assets/fmc_owo_logo.jpg' %}" alt="" />
-        <h1>FMC OWO STORE</h1>
+        <h1>Chem Pathology Store</h1>
       </a>
       {% if user.is_authenticated %}
       <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>
@@ -37,6 +37,7 @@
 
         <div class="dept_nav">
           <a href="/"><span class="active1">Home</span></a>
+          <a href="/history/"><span class="active2_reload">Reload</span></a>
         </div>
 
         <div class="card_wrapper">
@@ -63,15 +64,15 @@
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Item</th>
+                  <th class="date">Date</th>
+                  <th class="item">Item</th>
                   <th>Voucher no</th>
-                  <th>Action</th>
-                  <th>Description</th>
-                  <th>Unit issue</th>
-                  <th>Unit Rate</th>
-                  <th>QTY</th>
-                  <th>Balance</th>
+                  <th class="action">Action</th>
+                  <th class="desc">Description</th>
+                  <th class="issue">Unit issue</th>
+                  <th class="rate">Unit Rate</th>
+                  <th class="qty">QTY</th>
+                  <th class="bal">Balance</th>
                 </tr>
               </thead>
 
@@ -79,11 +80,19 @@
                 {% for hist in page_obj.object_list %}
                 <tr>
                   <td>{{hist.dateCreated}}</td>
-                  <td>{{hist.item_name}}</td>
+                  <td>
+                    {% if hist.item_name|length >= 35 %}
+                    {{hist.item_name|safe|truncatechars:35}} {% else %}
+                    {{hist.item_name}} {% endif %}
+                  </td>
                   <td>{{hist.voucher_no}}</td>
                   <td>{{hist.action}}</td>
                   <td>{{hist.description}}</td>
-                  <td>{{hist.unit_issue}}</td>
+                  <td>
+                    {% if hist.unit_issue|length >= 14%}
+                    {{hist.unit_issue|safe|truncatechars:14}} {% else %}
+                    {{hist.unit_issue}} {% endif %}
+                  </td>
                   <td>{{hist.unit_rate}}</td>
                   <td>{{hist.amount}}</td>
                   <td>{{hist.bal}}</td>

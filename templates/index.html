@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Federal Medical Centre Owo</title>
 
     <link href="{% static './css/style.css' %}" rel="stylesheet" />
   </head>
@@ -13,7 +13,7 @@
     <header>
       <a href="{% url 'store:index' %}" class="header_wrapper">
         <img src="{% static './assets/fmc_owo_logo.jpg' %}" alt="" />
-        <h1>FMC OWO STORE</h1>
+        <h1>Chem Pathology Store</h1>
       </a>
       {% if user.is_authenticated %}
       <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>
@@ -33,15 +33,31 @@
         </section> -->
 
       <section class="hero">
-        <div class="dept_nav">
+        {% comment %} <div class="dept_nav">
           <a href="/"><span class="active1">Home</span></a>
           {% for dept in dept %}
-          <a href="/dept/{{dept.dept_name}}"><span>{{dept.dept_name}}</span></a>
+          <a href="/store/{{dept.dept_name}}"
+            ><span>{{dept.dept_name}}</span></a
+          >
           {% endfor %}
+        </div> {% endcomment %}
+        <div class="dept_nav">
+          <a href="/"><span class="active1">Home</span></a>
+
+          <div class="department_links">
+            {% comment %} <a href="/store/general/"><span>General</span></a> {% endcomment %}
+            {% for dept in dept %}
+            <a href="/store/{{dept.dept_name}}"
+              ><span>{{dept.dept_name}}</span></a>
+            {% endfor %}
+          </div>
+
+          <div></div>
+          {% comment %} <a href="#"><span class="active2_reload">re</span></a> {% endcomment %}
         </div>
 
         <div class="report_container">
-          <a href="/dept" class="card">
+          <a href="/stock" class="card">
             <span class="figure">{{total_items}}</span>
             <span class="report_name">Total Items</span>
             <img
@@ -85,12 +101,12 @@
         <hr />
 
         <div class="cta_container">
-          <a href="/dept" class="cta_card">
+          <a href="/stock/" class="cta_card">
             <img src="{% static 'assets/UP.png' %}" alt="" />
-            <span>Go to Inventory</span>
+            <span>+ Stocks</span>
           </a>
 
-          <a href="/history" class="cta_card">
+          <a href="/history/general" class="cta_card">
             <img src="{% static 'assets/UP.png' %}" alt="" />
             <span>Stock Report</span>
           </a>

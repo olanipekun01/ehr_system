@@ -38,7 +38,7 @@ header span {
 }
 
 header span.logout {
-    background-color: rgb(199,73,78);
+    background-color: rgb(199, 73, 78);
 }
 
 header span:hover {
@@ -116,6 +116,9 @@ section.hero .dept_nav {
     border-bottom: 1px solid rgb(4, 134, 70);
     padding: 19px 0px 20px 0px;
     background-color: #ffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 section.hero .dept_nav a span {
@@ -131,6 +134,12 @@ section.hero .dept_nav a {
     color: #AAAA;
 }
 
+section.hero .dept_nav a:hover span {
+    background-color: rgb(4, 134, 70);
+    color: white;
+    transition: ease-in 0.2s;
+}
+
 section.hero .dept_nav a span.active {
     background-color: rgb(4, 134, 70);
     color: white;
@@ -140,6 +149,12 @@ section.hero .dept_nav a span.active1 {
     border-top-left-radius: 35px;
     background-color: rgb(4, 134, 70);
     color: white;
+}
+
+section.hero .dept_nav .department_links a span.active5 {
+    background-color: rgb(4, 134, 70);
+    color: white;
+
 }
 
 
@@ -160,7 +175,7 @@ section.hero .report_container a.card {
     margin-bottom: 30px;
     padding: 10px 8px;
     background: #ffff;
-    cursor:pointer;
+    cursor: pointer;
     text-decoration: none;
     cursor: pointer;
 }
@@ -210,7 +225,7 @@ section.hero .cta_container form {
 }
 
 section.hero .cta_container form button {
-    width:0%;
+    width: 0%;
     height: 0%;
     border: none;
     background-color: rgb(204, 240, 221);
@@ -255,7 +270,7 @@ section.hero .cta_container .cta_card span {
     color: rgb(4, 134, 70);
 }
 
-section.hero .cta_container .cta_card  button {
+section.hero .cta_container .cta_card button {
     display: block;
     margin-top: 20px;
     color: rgb(4, 134, 70);
