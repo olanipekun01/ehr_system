@@ -248,8 +248,9 @@ def newstock(request):
 
 
 @login_required
-def history(request, dept="general", item=""):
+def history(request):
     history = History.objects.all()
+    dept = Department.objects.all()
 
     item_name_input = request.GET.get('item_name')
     description = request.GET.get('description')
@@ -259,41 +260,41 @@ def history(request, dept="general", item=""):
     max_date_string = request.GET.get('max_date')
     action = request.GET.get('action')
 
-    if dept !=  "general":
-        history = history.filter(description=dept)
+    # if dept !=  "general":
+    #     history = history.filter(description=dept)
 
-    if item != "":
-        history = history.filter(slug=item)
-    else:
-        if is_valid(item_name_input):
-            history = history.filter(item_name__icontains=item_name_input)
+    # if item != "":
+    #     history = history.filter(slug=item)
+    # else:
+    if is_valid(item_name_input):
+        history = history.filter(item_name__icontains=item_name_input)
 
-        if is_valid(description):
-            history = history.filter(description__icontains=description)
+    if is_valid(description):
+        history = history.filter(description__icontains=description)
 
-        if is_valid(action) and action != "Choose...":
-            history = history.filter(action__iexact=action)
+    if is_valid(action) and action != "Choose...":
+        history = history.filter(action__iexact=action)
 
-        if is_valid(issue_unit):
-            history = history.filter(unit_issue__iexact=issue_unit)
+    if is_valid(issue_unit):
+        history = history.filter(unit_issue__iexact=issue_unit)
 
-        # if is_valid(rate_unit):
-        #     print("rateping")
-        #     history = history.filter(unit_rate=rate_unit)
+    # if is_valid(rate_unit):
+    #     print("rateping")
+    #     history = history.filter(unit_rate=rate_unit)
 
-        if is_valid(min_date_string):
-            specific_date = datetime.strptime(
-                min_date_string, '%Y-%m-%d').date()
-            print("min date", min_date_string)
-            print("specific date", specific_date)
-            # formatted_date = specific_date.strftime('%B %d, %Y')
-            history = history.filter(dateCreated__gte=specific_date)
+    if is_valid(min_date_string):
+        specific_date = datetime.strptime(
+            min_date_string, '%Y-%m-%d').date()
+        # print("min date", min_date_string)
+        # print("specific date", specific_date)
+        # formatted_date = specific_date.strftime('%B %d, %Y')
+        history = history.filter(dateCreated__gte=specific_date)
 
-        if is_valid(max_date_string):
-            specific_date = datetime.strptime(
-                max_date_string, '%Y-%m-%d').date()
-            # formatted_date = specific_date.strftime('%B %d, %Y')
-            history = history.filter(dateCreated__lt=specific_date)
+    if is_valid(max_date_string):
+        specific_date = datetime.strptime(
+            max_date_string, '%Y-%m-%d').date()
+        # formatted_date = specific_date.strftime('%B %d, %Y')
+        history = history.filter(dateCreated__lt=specific_date)
 
     history = history.order_by('-date_created')
     history = history.values()
@@ -324,7 +325,7 @@ def history(request, dept="general", item=""):
         page_obj = p.page(p.num_pages)
     # print('obj', page_obj.object_list)
     acts = ["issued", "received", "removed", "added"]
-    context = {'page_obj': page_obj, "actions": acts}
+    context = {'page_obj': page_obj, "actions": acts, "department": dept}
 
     return render(request, 'history.html', context)
 
@@ -406,14 +407,16 @@ def removeDept(request, id):
 @login_required
 def outOfStock(request):
     items = Items.objects.all()
+    dept = Department.objects.all()
     items = items.filter(amount__lt=11)
     arr = [item.item_name for item in items]
-    return render(request, 'base.html', {"names": arr})
+    return render(request, 'outofstock.html', {"names": arr, "department": dept})
 
 
 @login_required
 def suppliers(request):
     supp = Supplier.objects.all()
+    dept = Department.objects.all()
     
     if request.method == "POST":
         supp_name = request.POST["supp_name"]
@@ -434,7 +437,7 @@ def suppliers(request):
 
         return redirect("/suppliers")
 
-    return render(request, 'supplier.html', {"supplier": supp})
+    return render(request, 'supplier.html', {"supplier": supp, "department": dept})
 
 
 @login_required

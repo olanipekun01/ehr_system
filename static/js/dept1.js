@@ -1,3 +1,6 @@
+let btn = document.querySelector('#btn');
+let sidebar = document.querySelector('.sidebar');
+let searchBtn = document.querySelector('.bx-search');
 
 function showIssueModal(name, rate, issue) {
     document.getElementById("modalIssueNameInput").value = name;
@@ -54,3 +57,28 @@ function closeFilterModal() {
 //     event.preventDefault();
 //     document.querySelector(".modal_container").style.display = "none";
 // })
+
+
+function handleDeletePopOut(link, name) {
+    document.querySelector(".deletePopOut").style.display = "block";
+    document.querySelector(".background_wrapper").style.display = "block";
+    document.querySelector(".popOutItemLink").href = link;
+    document.querySelector(".popOutItemName").innerHTML = name;
+}
+
+
+function closePopOut() {
+    event.preventDefault();
+    document.querySelector(".deletePopOut").style.display = "none";
+    document.querySelector(".background_wrapper").style.display = "none";
+}
+
+
+
+btn.onclick = function () {
+    sidebar.classList.toggle("active");
+}
+
+searchBtn.onclick = function () {
+    sidebar.classList.toggle("active");
+}

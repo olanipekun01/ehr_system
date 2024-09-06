@@ -47,6 +47,11 @@ class History(models.Model):
 
     def __str__(self):
         return self.item_name
+    
+    class Meta:
+        ordering = [
+            'dateCreated'
+        ]
 
 
 class Items(models.Model):
@@ -64,6 +69,10 @@ class Items(models.Model):
 
     def __str__(self):
         return self.item_name
+    class Meta:
+        ordering = [
+            'modified_at'
+        ]
 
 
 @receiver(pre_save, sender=Items)

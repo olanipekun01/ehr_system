@@ -10,7 +10,116 @@
   </head>
 
   <body>
-    <header>
+    <div class="sidebar">
+      <div class="logo_content">
+        <div class="logo">
+          <img class="logo_icon" src="{% static './assets/fmc_owo_logo.jpg' %}" alt=""/>
+          <div class="logo_name">Pathology</div>
+        </div>
+        <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
+      </div>
+      <ul class="nav_list">
+        <li>
+          <form method="get">
+            <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
+            <input disabled type="text" placeholder="Search...">
+            <span class="tooltip">Search</span>
+          </form>
+        </li>
+        <li>
+            <a href="/">
+                <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
+                <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li>
+        <li class="store_list">
+            <a href="#">
+                <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+                <span class="links_name">Store</span>
+                <img class="down_arrow" src="{% static './assets/bx-chevron-down.svg' %}" alt="">
+            </a>
+            <span class="tooltip">Store</span>
+            <div class="sub-menu">
+                <div class="card">
+                    <a class="a_sub_links" href="/store/chempathology">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Chempathology<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/haematology">
+                        <img src="{% static './assets/bx-donate-blood.svg' %}" alt=""> 
+                        <span class="sub_links_name">Haematology<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/histopathology">
+                        <img src="{% static './assets/bx-band-aid.svg' %}" alt=""> 
+                        <span class="sub_links_name">Histopathology<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/microbiology">
+                        <img src="{% static './assets/bxs-virus.svg' %}" alt=""> 
+                        <span class="sub_links_name">Microbiology<span>
+                    </a>
+                </div>
+            </div>
+        </li>
+        <li>
+            <a href="/stock/">
+                <img src="{% static './assets/bx-package.svg' %}" alt="">
+                <span class="links_name">+ Stock</span>
+            </a>
+            <span class="tooltip">+ Stock</span>
+        </li>
+        <li>
+            <a href="/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Stock Report</span>
+            </a>
+            <span class="tooltip">Report</span>
+        </li>
+        <li>
+            <a href="/department/">
+                <img src="{% static './assets/bx-collapse.svg' %}" alt="">
+                <span class="links_name">Department</span>
+            </a>
+            <span class="tooltip">Department</span>
+            
+        </li>
+        <li>
+            <a href="/suppliers/">
+                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
+                <span class="links_name">Supplier</span>
+            </a>
+            <span class="tooltip">Supplier</span>
+        </li>
+        {% comment %} <li>
+            <a href="#">
+                <img src="{% static './assets/bxs-report.svg' %}" alt="">
+                <span class="links_name">Quarterly Report</span>
+            </a>
+            <span class="tooltip">Quarterly Report</span>
+        </li> {% endcomment %}
+
+      </ul>
+      <div class="profile_content">
+        <div class="profile">
+          <div class="profile_details">
+            <img src="{% static './assets/AsianManAvatar(1).png' %}" alt="">
+            <div class="name_job">
+              <div class="name">Admin</div>
+              <div class="job">Store Manager</div>
+            </div>
+          </div>
+          <a href="/logout/"><img id="log_out" src="{% static './assets//bx-log-out.svg' %}" alt=""></a>
+        </div>
+
+      </div>
+    </div>
+    {% comment %} <header>
       <a href="{% url 'store:index' %}" class="header_wrapper">
         <img src="{% static './assets/fmc_owo_logo.jpg' %}" alt="" />
         <h1>Chem Pathology Store</h1>
@@ -20,7 +129,7 @@
       {% else %}
       <span class="login"><a href="{% url 'store:login' %}">login</a></span>
       {% endif %}
-    </header>
+    </header> {% endcomment %}
     <main>
       <!-- <section class="side_nav">
             <ul>
@@ -42,15 +151,15 @@
           {% endfor %}
         </div> {% endcomment %}
         <div class="dept_nav">
-          <a href="/"><span class="active1">Home</span></a>
+          <a href="#"><span class="active1">Store</span></a>
 
-          <div class="department_links">
-            {% comment %} <a href="/store/general/"><span>General</span></a> {% endcomment %}
+          {% comment %} <div class="department_links">
+            <a href="/store/general/"><span>General</span></a>
             {% for dept in dept %}
             <a href="/store/{{dept.dept_name}}"
               ><span>{{dept.dept_name}}</span></a>
             {% endfor %}
-          </div>
+          </div> {% endcomment %}
 
           <div></div>
           {% comment %} <a href="#"><span class="active2_reload">re</span></a> {% endcomment %}
@@ -137,5 +246,7 @@
     <footer>
       <span>Forklift &copy2023</span>
     </footer>
+
+    <script src="{% static './js/index.js' %}"></script>
   </body>
 </html>
