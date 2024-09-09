@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Federal Medical Centre Owo</title>
+    <title>Achievers University Owo</title>
 
     <link href="{% static './css/dept1.css' %}" rel="stylesheet" />
   </head>
@@ -13,8 +13,8 @@
     <div class="sidebar">
       <div class="logo_content">
         <div class="logo">
-          <img class="logo_icon" src="{% static './assets/fmc_owo_logo.jpg' %}" alt=""/>
-          <div class="logo_name">Pathology</div>
+          <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
+          <div class="logo_name">AU PHARM</div>
         </div>
         <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
       </div>
@@ -44,10 +44,10 @@
                 <div class="card">
                     <a class="a_sub_links" href="/store/chempathology">
                         <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
-                        <span class="sub_links_name">Chempathology<span>
+                        <span class="sub_links_name">Store<span>
                     </a>
                 </div>
-                <div class="card">
+                <!-- <div class="card">
                     <a class="a_sub_links" href="/store/haematology">
                         <img src="{% static './assets/bx-donate-blood.svg' %}" alt=""> 
                         <span class="sub_links_name">Haematology<span>
@@ -64,7 +64,7 @@
                         <img src="{% static './assets/bxs-virus.svg' %}" alt=""> 
                         <span class="sub_links_name">Microbiology<span>
                     </a>
-                </div>
+                </div> -->
             </div>
         </li>
         <li>
@@ -121,8 +121,8 @@
     </div>
     {% comment %} <header>
       <a href="{% url 'store:index' %}" class="header_wrapper">
-        <img src="{% static './assets/fmc_owo_logo.jpg' %}" alt="" />
-        <h1>Chem Pathology Store</h1>
+        <img src="{% static './assets/achieverslogo.png' %}" alt="" />
+        <h1>AU PAHRM STORE</h1>
       </a>
       {% if user.is_authenticated %}
       <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>

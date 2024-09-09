@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Federal Medical Centre Owo</title>
+    <title>Achievers University Owo</title>
 
     <link href="{% static './css/login.css' %}" rel="stylesheet" />
   </head>
@@ -12,8 +12,8 @@
   <body>
     <header>
       <a href="{% url 'store:index' %}" class="header_wrapper">
-        <img src="{% static './assets/fmc_owo_logo.jpg' %}" alt="" />
-        <h1>Pathology Store</h1>
+        <img src="{% static './assets/achieverslogo.png' %}" alt="" />
+        <h1>AU PHARM</h1>
       </a>
       {% if user.is_authenticated %}
       <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>
