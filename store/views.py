@@ -445,3 +445,22 @@ def removeSupp(request, id):
     supp = Supplier.objects.filter(supp_name=id).delete()
 
     return redirect("/suppliers")
+
+@login_required
+def report(request):
+    allItems = []
+    for item in Items.objects.all():
+        
+        monthly_avg = item.get_monthly_average_consumption()
+        weekly_avg = item.get_weekly_average_consumption()
+        
+        allItems.append({
+            'item': item,
+            'monthly_avg': monthly_avg,
+            'weekly_avg': weekly_avg,
+        })
+
+    context = allItems
+
+    print(allItems)
+    # return render(request, 'inventory/item_detail.html', context)
