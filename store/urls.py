@@ -13,10 +13,12 @@ urlpatterns = [
     path('department/', views.department, name='department'),
     path('outofstock/', views.outOfStock, name='outofstock'),
     path('suppliers/', views.suppliers, name='suppliers'),
+    path('units/', views.units, name='units'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
     path('delete/<str:id>/', views.delete, name='delete'),
     # path('removedepartment/<str:id>/', views.removeDept, name='removedepartment'),
     path('removesupplier/<str:id>/', views.removeSupp, name='removesupplier'),
-    path('report', views.report, name='report')
+    path('removeunit/<str:id>/', views.removeUnit, name='removeunit'),
+    # path('report', views.report, name='report')
 ]

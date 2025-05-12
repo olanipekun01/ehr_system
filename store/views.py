@@ -191,6 +191,7 @@ def newstock(request):
         item_amount = request.POST['item_amount']
         input_unit_issue = request.POST['input_unit_issue']
         input_unit_rate = request.POST['input_unit_rate']
+        input_pack_amount = request.POST['input_pack_amount']
         item_name = item_name.strip()
         input_unit_issue = input_unit_issue.strip()
         
@@ -204,7 +205,7 @@ def newstock(request):
         else:
             test = uuid.uuid4()
             item = Items.objects.create(item_id=test,
-                                         item_name=item_name, amount=item_amount, unit_issue=input_unit_issue, unit_rate=input_unit_rate)
+                                         item_name=item_name, amount=item_amount, pack_amount=input_pack_amount, unit_issue=input_unit_issue, unit_rate=input_unit_rate)
             item.save()
             departments_ids = request.POST.getlist('departments')  # Assuming departments are selected in a form
             for department_id in departments_ids:
@@ -231,6 +232,7 @@ def newstock(request):
     
     items = Items.objects.all().order_by('-modified_at')
     dept = Department.objects.all()
+    units = Units.objects.all()
 
     if is_valid(item_name_input):
         items = items.filter(item_name__contains=item_name_input)
@@ -244,7 +246,7 @@ def newstock(request):
     if is_valid(issue_unit):
         items = items.filter(unit_issue__icontains=issue_unit)
 
-    return render(request, "newstock.html", {"items": items, "department": dept})
+    return render(request, "newstock.html", {"items": items, "department": dept, "units": units})
 
 
 @login_required
@@ -446,21 +448,60 @@ def removeSupp(request, id):
 
     return redirect("/suppliers")
 
+
 @login_required
-def report(request):
-    allItems = []
-    for item in Items.objects.all():
+def units(request):
+    unit = Units.objects.all()
+    dept = Department.objects.all()
+    
+    if request.method == "POST":
+        unit_name = request.POST["unit_name"]
+        unit_code = request.POST["unit_code"]
+        unit_name = unit_name.strip()
+        unit_code = unit_code.strip()
+    
         
-        monthly_avg = item.get_monthly_average_consumption()
-        weekly_avg = item.get_weekly_average_consumption()
+        if unit_name == "" or unit_code == "":
+            messages.info(request, 'Enter a valid name!')
+            return redirect("/units")
+
+        if unit.filter(unit_name=unit_name).exists():
+            messages.info(request, 'Unit name already exist!')
+            return redirect("/units")
         
-        allItems.append({
-            'item': item,
-            'monthly_avg': monthly_avg,
-            'weekly_avg': weekly_avg,
-        })
+        if unit.filter(unit_code=unit_code).exists():
+            messages.info(request, 'Unit code already exist!')
+            return redirect("/units")
 
-    context = allItems
+        unit = unit.create(unit_name=unit_name, unit_code=unit_code)
 
-    print(allItems)
-    # return render(request, 'inventory/item_detail.html', context)
+        unit.save()
+
+        return redirect("/units")
+
+    return render(request, 'units.html', {"units": unit, "department": dept})
+
+@login_required
+def removeUnit(request, id):
+    unit = Units.objects.filter(unit_name=id).delete()
+
+    return redirect("/units")
+
+# @login_required
+# def report(request):
+#     allItems = []
+#     for item in Items.objects.all():
+        
+#         monthly_avg = item.get_monthly_average_consumption()
+#         weekly_avg = item.get_weekly_average_consumption()
+        
+#         allItems.append({
+#             'item': item,
+#             'monthly_avg': monthly_avg,
+#             'weekly_avg': weekly_avg,
+#         })
+
+#     context = allItems
+
+#     print(allItems)
+#     # return render(request, 'inventory/item_detail.html', context)

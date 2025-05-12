@@ -13,6 +13,13 @@ class Department(models.Model):
 
     def __str__(self):
         return self.dept_name
+    
+class Units(models.Model):
+    unit_name = models.CharField(max_length=500)
+    unit_code = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.unit_name
 
 
 class Supplier(models.Model):
@@ -60,6 +67,7 @@ class Items(models.Model):
         editable=False)
     item_name = models.CharField(max_length=500)
     amount = models.DecimalField(max_digits=15, decimal_places=1, default=0.0)
+    pack_amount = models.DecimalField(max_digits=15, decimal_places=1, default=0.0)
     dept = models.ManyToManyField(Department, related_name='items')
     unit_issue = models.CharField(max_length=200, null=True, blank=True)
     unit_rate = models.DecimalField(
@@ -67,37 +75,6 @@ class Items(models.Model):
     slug = models.SlugField(max_length=2000, null=True, blank=True)
     modified_at = models.DateTimeField(auto_now=True)
 
-
-    def get_average_consumption(self, period='monthly'):
-        if period == 'weekly':
-            days = 7
-            divisor = 1
-        elif period == 'monthly':
-            days = 30
-            divisor = 1
-        else:
-            raise ValueError("Period must be 'weekly' or 'monthly'")
-
-        end_date = timezone.now().date()
-        start_date = end_date - timedelta(days=days)
-
-        history_records = History.objects.filter(
-            item_id=str(self.item_id),
-            dateCreated__gte=start_date,
-            dateCreated__lte=end_date,
-            action='issue'
-        )
-
-        # Manually sum the amounts
-        total_consumption = Decimal('0.0')
-        for record in history_records:
-            try:
-                total_consumption += Decimal(record.amount)
-            except (ValueError, TypeError):
-                continue  # Skip invalid amounts
-
-        average = total_consumption / Decimal(str(divisor))
-        return average
 
     def __str__(self):
         return self.item_name

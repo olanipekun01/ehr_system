@@ -192,6 +192,7 @@
                   {% comment %} <th class="action">Action</th> {% endcomment %}
                   <th class="issue">Unit issue</th>
                   <th class="rate">Unit rate</th>
+                  <th class="pack_amount">Pack amount</th>
                   <th class="delete"></th>
                 </tr>
               </thead>
@@ -226,6 +227,7 @@
                     {{item.unit_issue}} {% endif %}
                   </td>
                   <td class="rate">{{item.unit_rate}}</td>
+                  <td class="pack_amount">{{item.pack_amount}}</td>
                   <td class="remove">
                     <!-- <a>edit</a> -->
                     <a onclick="handleDeletePopOut('/delete/{{ item.item_id }}', '{{item.item_name}}')" href="#"
@@ -352,17 +354,27 @@
           placeholder="Item name"
         />
         <input type="number" name="item_amount" placeholder="QTY" />
-        <input
+        
+        <select
           id="input_unit_issue"
-          type="text"
-          name="input_unit_issue"
-          placeholder="unit of isue"
-        />
+          name="input_unit_issue">
+          {% for unit in units %}
+            <option>{{unit.unit_code}}</option>
+          {% endfor %}
+
+        </select>
         <input
           id="input_unit_rate"
           type="number"
           name="input_unit_rate"
           placeholder="unit rate"
+        />
+
+        <input
+          id="input_pack_amount"
+          type="number"
+          name="input_pack_amount"
+          placeholder="pack amount"
         />
         {% comment %} <select name="dept" id="" multiple>
           <option value="">select department</option>

@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Achievers University Owo</title>
+
+    <link href="{% static './css/units.css' %}" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div class="logo_content">
+        <div class="logo">
+          <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
+          <div class="logo_name">AU PAHRM</div>
+        </div>
+        <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
+      </div>
+      <ul class="nav_list">
+        <li>
+          <form method="get">
+            <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
+            <input disabled type="text" placeholder="Search...">
+            <span class="tooltip">Search</span>
+          </form>
+        </li>
+        <li>
+            <a href="/">
+                <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
+                <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li>
+        <li class="store_list">
+            <a href="#">
+                <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+                <span class="links_name">Store</span>
+                <img class="down_arrow" src="{% static './assets/bx-chevron-down.svg' %}" alt="">
+            </a>
+            <span class="tooltip">Store</span>
+            <div class="sub-menu">
+                <div class="card">
+                    <a class="a_sub_links" href="/store/staff">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Staff<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/student">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Student<span>
+                    </a>
+                </div>
+                <!-- <div class="card">
+                    <a class="a_sub_links" href="/store/haematology">
+                        <img src="{% static './assets/bx-donate-blood.svg' %}" alt=""> 
+                        <span class="sub_links_name">Haematology<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/histopathology">
+                        <img src="{% static './assets/bx-band-aid.svg' %}" alt=""> 
+                        <span class="sub_links_name">Histopathology<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/microbiology">
+                        <img src="{% static './assets/bxs-virus.svg' %}" alt=""> 
+                        <span class="sub_links_name">Microbiology<span>
+                    </a>
+                </div> -->
+            </div>
+        </li>
+        <li>
+            <a href="/stock/">
+                <img src="{% static './assets/bx-package.svg' %}" alt="">
+                <span class="links_name">+ Stock</span>
+            </a>
+            <span class="tooltip">+ Stock</span>
+        </li>
+        <li>
+            <a href="/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Stock Report</span>
+            </a>
+            <span class="tooltip">Report</span>
+        </li>
+        <li>
+            <a href="/department/">
+                <img src="{% static './assets/bx-collapse.svg' %}" alt="">
+                <span class="links_name">Department</span>
+            </a>
+            <span class="tooltip">Department</span>
+            
+        </li>
+        <li>
+            <a href="/suppliers/">
+                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
+                <span class="links_name">Supplier</span>
+            </a>
+            <span class="tooltip">Supplier</span>
+        </li>
+        {% comment %} <li>
+            <a href="#">
+                <img src="{% static './assets/bxs-report.svg' %}" alt="">
+                <span class="links_name">Quarterly Report</span>
+            </a>
+            <span class="tooltip">Quarterly Report</span>
+        </li> {% endcomment %}
+
+      </ul>
+      <div class="profile_content">
+        <div class="profile">
+          <div class="profile_details">
+            <img src="{% static './assets/AsianManAvatar(1).png' %}" alt="">
+            <div class="name_job">
+              <div class="name">Admin</div>
+              <div class="job">Store Manager</div>
+            </div>
+          </div>
+          <a href="/logout/"><img id="log_out" src="{% static './assets//bx-log-out.svg' %}" alt=""></a>
+        </div>
+
+      </div>
+    </div>
+    {% comment %} <header>
+      <a href="{% url 'store:index' %}" class="header_wrapper">
+        <img src="{% static './assets/achieverslogo.png' %}" alt="" />
+        <h1>AU PHARM Store</h1>
+      </a>
+      {% if user.is_authenticated %}
+      <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>
+      {% else %}
+      <span class="login"><a href="{% url 'store:login' %}">login</a></span>
+      {% endif %}
+    </header> {% endcomment %}
+    <main>
+      <!-- <section class="side_nav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">dept 1</a></li>
+                <li><a href="#">dept 2</a></li>
+                <li><a href="#">dept 3</a></li>
+                <li><a href="#">dept 4</a></li>
+            </ul>
+        </section> -->
+
+      <section class="hero">
+        <div class="dept_nav">
+          <a href="#"><span class="active1">Store</span></a>
+          <!-- {% for dept in dept %}
+                <a href="/dept/{{dept.dept_name}}"><span>{{dept.dept_name}}</span></a>
+                {% endfor %} -->
+        </div>
+
+        <div class="card_wrapper">
+          {% for message in messages %}
+          <h5 style="color: red">{{message}}</h5>
+          {% endfor %}
+          <div class="header_div">
+            <h3>Unit of issue</h3>
+            <div class="wrapper">
+              <button onclick="handleNewUnit()">+ add unit</button>
+              <!-- <a href="/history"><img src="{% static './assets/Calendar.svg'%}" alt=""></a>
+                        <img onclick="showFilterModal()" src="{% static './assets/filterIcon.svg' %}""" alt=""> -->
+            </div>
+          </div>
+
+          <div class="items_wrapper">
+            {% for unit in units %}
+            <div class="card">
+              <span>{{unit.unit_name}} | {{unit.unit_code}}</span>
+              <a onclick="handleDeletePopOut('/removeunit/{{ unit.unit_name }}', '{{unit.unit_name}}')" href="#"
+                ><img src="{% static './assets/deleteIcon.svg' %}" alt=""
+              /></a>
+            </div>
+
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Forklift &copy2023</span>
+    </footer>
+
+    <div class="background_wrapper"></div>
+
+    <div class="new_unit_container">
+      <form method="post" action="/units/">
+        {% csrf_token %}
+        <input
+          id="modalUnitNameInput"
+          type="text"
+          name="unit_name"
+          placeholder="Unit Name"
+        />
+
+        <input
+          id="modalUnitCodeInput"
+          type="text"
+          name="unit_code"
+          placeholder="Unit Code"
+        />
+
+        <button>submit</button>
+      </form>
+      <button id="cancelBtn" class="cancel_btn" onclick="closeUnitModal()">
+        cancel
+      </button>
+    </div>
+
+    <div class="deletePopOut">
+      <p>Are you sure you want to delete <span class="popOutItemName"></span>?</p>
+      <div class="btn_wrapper">
+        <button class="danger">
+          <a class="popOutItemLink" href="#">Yes</a>
+        </button>
+        <button id="cancelPopOut" class="cancel_btnPopOut" onclick="closePopOut()">
+          No
+      </button>
+      </div>
+    </div>
+
+    <script src="{% static './js/unit.js' %}"></script>
+  </body>
+</html>
