@@ -487,6 +487,37 @@ def removeUnit(request, id):
 
     return redirect("/units")
 
+@login_required
+def updateUnit(request):
+    if request.method == "POST":
+        unit_id = request.POST["unit_id"]
+        unit_name = request.POST["unit_name"]
+        unit_code = request.POST["unit_code"]
+        unit_name = unit_name.strip()
+        unit_code = unit_code.strip()
+
+        print('unit_name', unit_name)
+        print('unit_code', unit_code)
+    
+        
+        if unit_name == "" or unit_code == "":
+            messages.info(request, 'Enter a valid name!')
+            return redirect("/units")
+
+        
+        
+        unit = get_object_or_404(Units, id=unit_id)
+        if unit:
+            unit.unit_name = unit_name
+            unit.unit_code = unit_code
+
+            messages.info(request, 'Unit success fully updated')
+            return redirect("/units")
+
+    
+
+    return redirect("/units")
+
 # @login_required
 # def report(request):
 #     allItems = []

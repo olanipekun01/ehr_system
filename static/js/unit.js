@@ -9,9 +9,26 @@ function handleNewUnit() {
 }
 
 
-function closeUnitModal() {
+function closeEditUnitModal() {
     event.preventDefault();
-    document.querySelector(".new_unit_container").style.display = "none";
+    document.querySelector(".new_edit_container").style.display = "none";
+    document.querySelector(".background_wrapper").style.display = "none";
+}
+
+function handleEditUnit(id, name, code) {
+    console.log('omo', document.getElementById("modalUnitNameInput").value);
+   
+    document.querySelector(".new_edit_container").style.display = "block";
+    document.querySelector(".background_wrapper").style.display = "block";
+    document.getElementById("modalUnitIdInput").value = id;
+    document.getElementById("modalUnitNameInput").value = name;
+    document.getElementById("modalUnitCodeInput").value = code;
+    
+}
+
+function closeEditModal() {
+    event.preventDefault();
+    document.querySelector(".new_edit_container").style.display = "none";
     document.querySelector(".background_wrapper").style.display = "none";
 }
 

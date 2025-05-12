@@ -20,5 +20,7 @@ urlpatterns = [
     # path('removedepartment/<str:id>/', views.removeDept, name='removedepartment'),
     path('removesupplier/<str:id>/', views.removeSupp, name='removesupplier'),
     path('removeunit/<str:id>/', views.removeUnit, name='removeunit'),
+
+    path('updateunit/', views.updateUnit, name='updateunit'),
     # path('report', views.report, name='report')
 ]

@@ -563,7 +563,7 @@ section.hero .card_wrapper .items_wrapper .card img {}
 
 
 
-.new_unit_container {
+.new_unit_container, .new_edit_container {
     background-color: #C3C4CE;
     padding: 20px 20px;
     width: 250px;
@@ -576,7 +576,7 @@ section.hero .card_wrapper .items_wrapper .card img {}
 
 
 
-.new_unit_container form input {
+.new_unit_container form input, .new_edit_container form input {
     width: 220px;
     height: 30px;
     border-radius: 25px;
@@ -589,7 +589,7 @@ section.hero .card_wrapper .items_wrapper .card img {}
 
 
 
-.new_unit_container form button {
+.new_unit_container form button, .new_edit_container form button {
     font-size: 18px;
     padding: 6px 0px;
     width: 100%;
@@ -601,12 +601,12 @@ section.hero .card_wrapper .items_wrapper .card img {}
 
 }
 
-.new_unit_container form button:hover {
+.new_unit_container form button:hover, .new_edit_container form button:hover {
     color: rgb(4, 134, 70);
     background: white;
 }
 
-.new_unit_container .cancel_btn {
+.new_unit_container .cancel_btn, .new_edit_container .cancel_btn {
     font-size: 18px;
     padding: 6px 0px;
     width: 100%;
@@ -615,7 +615,7 @@ section.hero .card_wrapper .items_wrapper .card img {}
     margin-bottom: 20px;
 }
 
-.new_unit_container .cancel_btn:hover {
+.new_unit_container .cancel_btn:hover, .new_edit_container .cancel_btn:hover {
     font-weight: 700;
     color: red;
 }

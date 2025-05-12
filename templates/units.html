@@ -172,6 +172,7 @@
             {% for unit in units %}
             <div class="card">
               <span>{{unit.unit_name}} | {{unit.unit_code}}</span>
+              <button onclick="handleEditUnit('{{unit.id}}', '{{unit.unit_name}}', '{{unit.unit_code}}')">update</button>
               <a onclick="handleDeletePopOut('/removeunit/{{ unit.unit_name }}', '{{unit.unit_name}}')" href="#"
                 ><img src="{% static './assets/deleteIcon.svg' %}" alt=""
               /></a>
@@ -224,6 +225,43 @@
       </button>
       </div>
     </div>
+
+
+     <div class="new_edit_container">
+      <form method="post" action="/updateunit/">
+        {% csrf_token %}
+        <input
+          id="modalUnitIdInput"
+          type="text"
+          name="unit_id"
+          placeholder="Unit id"
+          hidden
+          value="1"
+        />
+        <input
+          id="modalUnitNameInput"
+          type="text"
+          name="unit_name"
+          placeholder="Unit Name"
+          value="1"
+        />
+
+        <input
+          id="modalUnitCodeInput"
+          type="text"
+          name="unit_code"
+          placeholder="Unit Code"
+          value="1"
+        />
+
+        <button>update</button>
+      </form>
+      <button id="cancelBtn" class="cancel_btn" onclick="closeEditUnitModal()">
+        cancel
+      </button>
+    </div>
+
+  
 
     <script src="{% static './js/unit.js' %}"></script>
   </body>
