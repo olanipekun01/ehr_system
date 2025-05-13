@@ -16,14 +16,24 @@ function closeEditUnitModal() {
 }
 
 function handleEditUnit(id, name, code) {
-    console.log('omo', document.getElementById("modalUnitNameInput").value);
-   
+    console.log("Function triggered with:", id, name, code);
+
+    const nameInput = document.querySelector('.modalUnitNameInput');
+    const codeInput = document.querySelector('.modalUnitCodeInput');
+    const idInput = document.querySelector('#modalUnitIdInput');
+
+    if (!nameInput || !codeInput || !idInput) {
+        console.error("One or more input fields not found");
+        return;
+    }
+
     document.querySelector(".new_edit_container").style.display = "block";
     document.querySelector(".background_wrapper").style.display = "block";
-    document.getElementById("modalUnitIdInput").value = id;
-    document.getElementById("modalUnitNameInput").value = name;
-    document.getElementById("modalUnitCodeInput").value = code;
     
+    
+    nameInput.value = name;
+    codeInput.value = code;
+    idInput.value = id;
 }
 
 function closeEditModal() {

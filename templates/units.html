@@ -172,7 +172,7 @@
             {% for unit in units %}
             <div class="card">
               <span>{{unit.unit_name}} | {{unit.unit_code}}</span>
-              <button onclick="handleEditUnit('{{unit.id}}', '{{unit.unit_name}}', '{{unit.unit_code}}')">update</button>
+              <button type="button" onclick="handleEditUnit('{{unit.id}}', '{{unit.unit_name}}', '{{unit.unit_code}}')">update</button>
               <a onclick="handleDeletePopOut('/removeunit/{{ unit.unit_name }}', '{{unit.unit_name}}')" href="#"
                 ><img src="{% static './assets/deleteIcon.svg' %}" alt=""
               /></a>
@@ -230,8 +230,9 @@
      <div class="new_edit_container">
       <form method="post" action="/updateunit/">
         {% csrf_token %}
+        
         <input
-          id="modalUnitIdInput"
+          class="modalUnitIdInput"
           type="text"
           name="unit_id"
           placeholder="Unit id"
@@ -239,7 +240,7 @@
           value="1"
         />
         <input
-          id="modalUnitNameInput"
+          class="modalUnitNameInput"
           type="text"
           name="unit_name"
           placeholder="Unit Name"
@@ -247,7 +248,7 @@
         />
 
         <input
-          id="modalUnitCodeInput"
+          class="modalUnitCodeInput"
           type="text"
           name="unit_code"
           placeholder="Unit Code"
