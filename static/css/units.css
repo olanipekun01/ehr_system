@@ -537,7 +537,7 @@ section.hero .card_wrapper .items_wrapper {
 }
 
 section.hero .card_wrapper .items_wrapper .card {
-    width: 190px;
+    width: 230px;
     height: 20px;
     padding: 25px 15px;
     background-color: #AAAA;
@@ -549,6 +549,21 @@ section.hero .card_wrapper .items_wrapper .card {
     justify-content: space-between;
     align-items: center;
 
+}
+
+section.hero .card_wrapper .items_wrapper .card button {
+    padding: 8px 4px;
+    border-radius: 15px;
+    color: #ffffff;
+    background-color: #048646;
+    border: 1px solid #048646;
+
+}
+
+section.hero .card_wrapper .items_wrapper .card button:hover {
+    background-color: #ffffff;
+    border: 1px solid #048646;
+    color: #048646;
 }
 
 section.hero .card_wrapper .items_wrapper .card span {
