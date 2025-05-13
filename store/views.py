@@ -511,6 +511,8 @@ def updateUnit(request):
             unit.unit_name = unit_name
             unit.unit_code = unit_code
 
+            unit.save()
+
             messages.info(request, 'Unit success fully updated')
             return redirect("/units")
 
