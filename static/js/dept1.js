@@ -82,3 +82,30 @@ btn.onclick = function () {
 searchBtn.onclick = function () {
     sidebar.classList.toggle("active");
 }
+
+
+function closeNewStockEditModal() {
+    event.preventDefault();
+    document.querySelector(".new_stock_edit").style.display = "none";
+    document.querySelector(".background_wrapper").style.display = "none";
+}
+
+function handleNewStockEditUnit(id, name) {
+
+    const nameInput = document.querySelector('#modalEditNameInput');
+    // const packAmountInput = document.querySelector('#inputEditPackAmount');
+    // const unitIssueInput = document.querySelector('#inputEditUnitIssue');
+    const idInput = document.querySelector('#modalEditIdInput');
+
+    if (!nameInput || !idInput) {
+        console.error("One or more input fields not found");
+        return;
+    }
+
+    document.querySelector(".new_stock_edit").style.display = "block";
+    document.querySelector(".background_wrapper").style.display = "block";
+    
+    
+    nameInput.value = name;
+    idInput.value = id;
+}

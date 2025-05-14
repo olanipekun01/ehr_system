@@ -8,6 +8,11 @@ function handleNewUnit() {
     document.querySelector(".background_wrapper").style.display = "block";
 }
 
+function closeUnitModal() {
+    event.preventDefault();
+    document.querySelector(".new_unit_container").style.display = "none";
+    document.querySelector(".background_wrapper").style.display = "none";
+}
 
 function closeEditUnitModal() {
     event.preventDefault();

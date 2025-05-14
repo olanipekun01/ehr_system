@@ -193,7 +193,10 @@
                   <th class="issue">Unit issue</th>
                   <th class="rate">Unit rate</th>
                   <th class="pack_amount">Pack amount</th>
+                  <th class='update'><th>
                   <th class="delete"></th>
+                  
+                  
                 </tr>
               </thead>
 
@@ -208,19 +211,7 @@
                     </a>
                   </td>
                   <td class="qty">{{item.amount}}</td>
-                  {% comment %} <td class="action">
-                    <button
-                      onclick="showIssueModal('{{item.item_name}}', '{{item.unit_rate}}', '{{item.unit_issue}}')"
-                    >
-                      issue
-                    </button>
-                    |
-                    <button
-                      onclick="showSupplierModal('{{item.item_name}}', '{{item.unit_rate}}', '{{item.unit_issue}}')"
-                    >
-                      receive
-                    </button>
-                  </td> {% endcomment %}
+                  
                   <td class="issue">
                     {% if item.unit_issue|length >= 14%}
                     {{item.unit_issue|safe|truncatechars:14}} {% else %}
@@ -228,12 +219,22 @@
                   </td>
                   <td class="rate">{{item.unit_rate}}</td>
                   <td class="pack_amount">{{item.pack_amount}}</td>
+
+                  {% comment %} <td class="update">
+                    <button type="button" onclick="handleNewStockEditUnit('{{item.item_id}}', '{{item.item_name}}', '{{item.pack_amount}}', '{{item.unit_issue}}')">update</button>
+                  </td> {% endcomment %}
+
+                  <td class="update">
+                    <button type="button" onclick="handleNewStockEditUnit('{{item.item_id}}', '{{item.item_name}}')">update</button>
+                  </td>
                   <td class="remove">
                     <!-- <a>edit</a> -->
                     <a onclick="handleDeletePopOut('/delete/{{ item.item_id }}', '{{item.item_name}}')" href="#"
                       ><img src="{% static './assets/deleteIcon.svg' %}" alt=""
                     /></a>
                   </td>
+
+                  
                 </tr>
                 {% endfor %}
               </tbody>
@@ -249,100 +250,7 @@
 
     <div class="background_wrapper"></div>
 
-    {% comment %} <div class="modal_container issue_modal_container">
-      <form method="post" action="/store/{{pk}}/">
-        {% csrf_token %}
-        <input
-          id="modalIssueNameInput"
-          type="text"
-          name="input_name"
-          value="Paracetamol"
-        />
-        <input
-          id=""
-          type="text"
-          name="input_voucher"
-          placeholder="Voucher no"
-        />
-        <select name="input_dept_name" id="">
-          <option value="{{pk}}">{{pk}}</option>
-          {% for dept in department %}
-          <option value="{{dept.dept_name}}">{{dept.dept_name}}</option>
-          {% endfor %} 
-        </select>
-        <input type="number" name="input_amount" placeholder="QTY" />
-        <select name="op_type" id="">
-          <option value="subtract">subtract</option>
-        </select>
-        <input
-          type="text"
-          id="modalIssueUnitIssue"
-          name="input_unit_issue"
-          value="kg"
-          placeholder="unit issue"
-          disabled
-        />
-        <input
-          type="number"
-          id="modalIssueUnitRate"
-          name="input_unit_rate"
-          value="150"
-          placeholder="unit rate"
-          disabled
-        />
-        <button>submit</button>
-      </form>
-      <button id="cancelBtn" class="cancel_btn" onclick="closeIssueModal()">
-        cancel
-      </button>
-    </div>  {% endcomment %}
-
-    {% comment %} <div class="modal_container supplier_modal_container">
-      <form method="post" action="/store/{{pk}}/">
-        {% csrf_token %}
-        <input
-          id="modalSupplierNameInput"
-          type="text"
-          name="input_name"
-          value="Paracetamol"
-        />
-        <input
-          id=""
-          type="text"
-          name="input_voucher"
-          placeholder="Voucher no"
-        />
-        <select name="input_supp_name" id="">
-          <option value="">select supplier</option>
-          {% for supp in supplier %}
-          <option value="{{supp.supp_name}}">{{supp.supp_name}}</option>
-          {% endfor %}
-        </select>
-        <input type="number" name="input_amount" placeholder="QTY" />
-        <select name="op_type" id="">
-          <option value="add">add</option>
-        </select>
-        <input
-          type="text"
-          id="modalSupplierUnitIssue"
-          name="input_unit_issue"
-          value="kg"
-          placeholder="unit issue"
-          disabled
-        />
-        <input
-          type="number"
-          id="modalSupplierUnitRate"
-          name="input_unit_rate"
-          value="150"
-          placeholder="unit rate"
-        />
-        <button>submit</button>
-      </form>
-      <button id="cancelBtn" class="cancel_btn" onclick="closeSupplierModal()">
-        cancel
-      </button>
-    </div> {% endcomment %}
+    
 
     <div class="new_stock">
       <form method="post" action="/stock/">
@@ -376,28 +284,77 @@
           name="input_pack_amount"
           placeholder="pack amount"
         />
-        {% comment %} <select name="dept" id="" multiple>
-          <option value="">select department</option>
-          {% for dept in department %}
-          <option value="{{dept.id}}">{{dept.dept_name}}</option>
-          {% endfor %}
-        </select> {% endcomment %}
+        
 
         <label class="depts_checkbox">Departments:</label><br>
-        {% comment %} <div class='checkbox_wrapper'> {% endcomment %}
+        
           {% for dept in department %}
               <div class="checkbox_card">
                 <input type="checkbox" class="checkbx" id="department_{{ dept.id }}" name="departments" value="{{ dept.id }}">
                 <label class="checkbx_label" for="department_{{ dept.id }}">{{ dept.dept_name }}</label>
               </div>
           {% endfor %}
-        {% comment %} </div> {% endcomment %}
+        
         <button>submit</button>
       </form>
       <button
         id="cancelNewStock"
         class="cancel_btn"
         onclick="closeNewStockModal()"
+      >
+        cancel
+      </button>
+    </div>
+
+
+    <div class="new_stock_edit">
+      <form method="post" action="/updatestock/">
+        {% csrf_token %}
+        <input
+          id="modalEditIdInput"
+          class="modalEditIdInput"
+          type="text"
+          name="item_id"
+          value="1"
+          hidden
+        />
+        <input
+          id="modalEditNameInput"
+          class="modalEditNameInput"
+          type="text"
+          name="item_name"
+          placeholder="Item name"
+        />
+        
+        {% comment %} <select
+          id="inputEditUnitIssue"
+          class="inputEditUnitIssue"
+          name="input_unit_issue">
+          {% for unit in units %}
+            <option>{{unit.unit_code}}</option>
+          {% endfor %}
+
+        </select>
+  
+
+        <input
+          id="inputEditPackAmount"
+          class="inputEditPackAmount"
+          type="number"
+          name="input_edit_pack_amount"
+          placeholder="pack amount"
+          value="1"
+        /> {% endcomment %}
+        
+
+        
+        
+        <button>submit</button>
+      </form>
+      <button
+        id="cancelNewStock"
+        class="cancel_btn"
+        onclick="closeNewStockEditModal()"
       >
         cancel
       </button>

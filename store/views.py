@@ -520,6 +520,41 @@ def updateUnit(request):
 
     return redirect("/units")
 
+@login_required
+def updateStock(request):
+    if request.method == "POST":
+        item_id = request.POST["item_id"]
+        item_name = request.POST["item_name"]
+        # input_unit_issue = request.POST["input_unit_issue"]
+        # input_edit_pack_amount = request.POST["input_edit_pack_amount"]
+        item_name = item_name.strip()
+        item_id = item_id.strip()
+        # input_unit_issue = input_unit_issue.strip()
+        # input_edit_pack_amount = input_edit_pack_amount.strip()
+
+    
+        
+        if item_name == "" or item_id == "":
+            messages.info(request, 'Enter a valid name!')
+            return redirect("/stock")
+
+        
+        
+        item = get_object_or_404(Items, item_id=item_id)
+        if item:
+            item.item_name = item_name
+            # item.pack_amount = input_edit_pack_amount
+            # item.unit_issue = input_unit_issue
+
+            item.save()
+
+            messages.info(request, 'Item success fully updated')
+            return redirect("/stock")
+
+    
+
+    return redirect("/units")
+
 # @login_required
 # def report(request):
 #     allItems = []

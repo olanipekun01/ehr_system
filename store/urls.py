@@ -22,5 +22,7 @@ urlpatterns = [
     path('removeunit/<str:id>/', views.removeUnit, name='removeunit'),
 
     path('updateunit/', views.updateUnit, name='updateunit'),
+
+    path('updatestock/', views.updateStock, name='updatestock'),
     # path('report', views.report, name='report')
 ]

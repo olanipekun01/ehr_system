@@ -620,6 +620,17 @@ section.hero .card_wrapper .header_div button:hover {
     width: 100px;
 }
 
+.card_wrapper table thead tr th.update {
+    width: 200px;
+}
+
+.card_wrapper table thead tr th.update button:hover {
+    background: #ffffff;
+    color: #048646;
+    border: 1px solid #048646;
+}
+
+
 .card_wrapper table thead tr th.delete {
     float: right;
 }
@@ -803,7 +814,7 @@ section.hero .card_wrapper .header_div button:hover {
 
 }
 
-.new_stock {
+.new_stock, .new_stock_edit {
     background-color: #C3C4CE;
     padding: 20px 20px;
     width: 250px;
@@ -815,7 +826,11 @@ section.hero .card_wrapper .header_div button:hover {
     left: 520px;
 }
 
-.new_stock form input {
+.new_stock_edit {
+    height: 200px;
+}
+
+.new_stock form input, .new_stock_edit form input {
     width: 220px;
     height: 30px;
     border-radius: 25px;
@@ -826,7 +841,7 @@ section.hero .card_wrapper .header_div button:hover {
     margin-bottom: 20px;
 }
 
-.new_stock form select {
+.new_stock form select, .new_stock_edit form select {
     width: 220px;
     height: 30px;
     border-radius: 25px;
@@ -839,26 +854,26 @@ section.hero .card_wrapper .header_div button:hover {
 
 /* .new_stock form .checkbox_wrapper {} */
 
-.new_stock form .checkbox_card {
+.new_stock form .checkbox_card, .new_stock_edit form .checkbox_card {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 20px;
 }
 
-.new_stock form label {
+.new_stock form label, .new_stock_edit form label {
     color: #545F7D;
     /* padding: 12px 15px; */
     font-size: 16px;
     font-weight: 600;
 }
 
-.new_stock form label.depts_checkbox {
+.new_stock form label.depts_checkbox, .new_stock_edit form label.depts_checkbox {
     font-size: 23px;
     /* margin-bottom: 20px; */
 }
 
-.new_stock form input.checkbx {
+.new_stock form input.checkbx, .new_stock_edit form input.checkbx {
     width: 15px;
     height: 15px;
     border-radius: 25px;
@@ -866,11 +881,11 @@ section.hero .card_wrapper .header_div button:hover {
     margin: 0 0;
 }
 
-.new_stock form .checkbx_label {
+.new_stock form .checkbx_label, .new_stock_edit form .checkbx_label  {
     margin-left: 10px;
 }
 
-.new_stock form button {
+.new_stock form button, .new_stock_edit form button {
     font-size: 18px;
     padding: 6px 0px;
     width: 100%;
@@ -882,12 +897,12 @@ section.hero .card_wrapper .header_div button:hover {
 
 }
 
-.new_stock form button:hover {
+.new_stock form button:hover, .new_stock_edit form button:hover {
     color: rgb(4, 134, 70);
     background: white;
 }
 
-.new_stock .cancel_btn {
+.new_stock .cancel_btn, .new_stock_edit .cancel_btn {
     font-size: 18px;
     padding: 6px 0px;
     width: 100%;
@@ -896,7 +911,7 @@ section.hero .card_wrapper .header_div button:hover {
     margin-bottom: 20px;
 }
 
-.new_stock .cancel_btn:hover {
+.new_stock .cancel_btn:hover, .new_stock_edit .cancel_btn:hover {
     font-weight: 700;
     color: red;
 }
