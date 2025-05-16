@@ -1,0 +1,430 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Achievers University Owo</title>
+
+    <link href="{% static './css/inventory.css' %}" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div class="logo_content">
+        <div class="logo">
+          <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
+          <div class="logo_name">AU PHARM</div>
+        </div>
+        <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
+      </div>
+      <ul class="nav_list">
+        <li>
+          <form method="get" action="">
+            <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
+            <input name="item_name" type="text" placeholder="Search name...">
+            <span class="tooltip">Search</span>
+          </form>
+        </li>
+        <li>
+            <a href="/">
+                <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
+                <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li>
+        <li class="store_list">
+            <a href="#">
+                <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+                <span class="links_name">Store</span>
+                <img class="down_arrow" src="{% static './assets/bx-chevron-down.svg' %}" alt="">
+            </a>
+            <span class="tooltip">Store</span>
+            <div class="sub-menu">
+                <div class="card">
+                    <a class="a_sub_links" href="/store/staff">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Staff<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/student">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Student<span>
+                    </a>
+                </div>
+                <!-- <div class="card">
+                    <a class="a_sub_links" href="/store/haematology">
+                        <img src="{% static './assets/bx-donate-blood.svg' %}" alt=""> 
+                        <span class="sub_links_name">Haematology<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/histopathology">
+                        <img src="{% static './assets/bx-band-aid.svg' %}" alt=""> 
+                        <span class="sub_links_name">Histopathology<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/microbiology">
+                        <img src="{% static './assets/bxs-virus.svg' %}" alt=""> 
+                        <span class="sub_links_name">Microbiology<span>
+                    </a>
+                </div> -->
+            </div>
+        </li>
+        <li>
+            <a href="/stock/">
+                <img src="{% static './assets/bx-package.svg' %}" alt="">
+                <span class="links_name">+ Stock</span>
+            </a>
+            <span class="tooltip">+ Stock</span>
+        </li>
+        <li>
+            <a href="/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Stock Report</span>
+            </a>
+            <span class="tooltip">Report</span>
+        </li>
+        <li>
+            <a href="/department/">
+                <img src="{% static './assets/bx-collapse.svg' %}" alt="">
+                <span class="links_name">Department</span>
+            </a>
+            <span class="tooltip">Department</span>
+            
+        </li>
+        <li>
+            <a href="/suppliers/">
+                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
+                <span class="links_name">Supplier</span>
+            </a>
+            <span class="tooltip">Supplier</span>
+        </li>
+        <li>
+            <a href="/cart/">
+                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
+                <span class="links_name">View Cart</span>
+            </a>
+            <span class="tooltip">View Cart</span>
+        </li>
+        {% comment %} <li>
+            <a href="#">
+                <img src="{% static './assets/bxs-report.svg' %}" alt="">
+                <span class="links_name">Quarterly Report</span>
+            </a>
+            <span class="tooltip">Quarterly Report</span>
+        </li> {% endcomment %}
+
+      </ul>
+      <div class="profile_content">
+        <div class="profile">
+          <div class="profile_details">
+            <img src="{% static './assets/AsianManAvatar(1).png' %}" alt="">
+            <div class="name_job">
+              <div class="name">Admin</div>
+              <div class="job">Store Manager</div>
+            </div>
+          </div>
+          <a href="/logout/"><img id="log_out" src="{% static './assets//bx-log-out.svg' %}" alt=""></a>
+        </div>
+
+      </div>
+    </div>
+    {% comment %} <header>
+      <a href="{% url 'store:index' %}" class="header_wrapper">
+        <img src="{% static './assets/achieverslogo.png' %}" alt="" />
+        <h1>AU PAHRM STORE</h1>
+      </a>
+      {% if user.is_authenticated %}
+      <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>
+      {% else %}
+      <span class="login"><a href="{% url 'store:login' %}">login</a></span>
+      {% endif %}
+    </header> {% endcomment %}
+    <main>
+      <!-- <section class="side_nav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">dept 1</a></li>
+                <li><a href="#">dept 2</a></li>
+                <li><a href="#">dept 3</a></li>
+                <li><a href="#">dept 4</a></li>
+            </ul>
+        </section> -->
+
+      <section class="hero">
+        <div class="dept_nav">
+          <a href="#"><span class="active1">Store</span></a>
+
+          {% comment %} <div class="department_links">
+            {% for dept in department %}
+            <a href="/store/{{dept.dept_name}}"
+              ><span {% if dept.dept_name == pk %}class="active5"{% endif %}>{{dept.dept_name}}</span></a
+            >
+            {% endfor %}
+          </div> {% endcomment %}
+          <a href="/store/{{pk}}/"><span class="active2_reload">Reload</span></a>
+        </div>
+
+        <div class="card_wrapper">
+          {% for message in messages %}
+          <h5 style="color: red; font-size: 20px">{{message}}</h5>
+          {% endfor %}
+          <div class="header_div">
+            <h3>{{pk}} items</h3>
+            <div class="wrapper">
+              {% comment %} <button onclick="handleNewStock()">+ New Stock</button> {% endcomment %}
+              {% comment %} <a href="/history/{{pk}}/"
+                ><img src="{% static './assets/Calendar.svg'%}" alt=""
+              /></a> {% endcomment %}
+              <img
+                onclick="showFilterModal()"
+                src="{% static './assets/filterIcon.svg' %}"
+                alt=""
+              />
+              {% comment %}
+              <h3>issue started here</h3>
+              {% endcomment %}
+            </div>
+          </div>
+
+          <div class="items_wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th class="item_name">Item name</th>
+                  <th class="qty">Quantity</th>
+                  <th class="action">Action</th>
+                  <th class="issue">Unit issue</th>
+                  <th class="rate">Unit rate</th>
+                  {% comment %} <th class="delete"></th> {% endcomment %}
+                </tr>
+              </thead>
+
+              <tbody>
+                {% key, item in cart.items %}
+                <tr>
+                  <td class="item_name">
+                    <a class="name" href="#">
+                      {% if item.name|length >= 60 %}
+                      {{item.name|safe|truncatechars:60}} {% else %}
+                      {{item.name}} {% endif %}
+                    </a>
+                  </td>
+                  <td class="qty">{{item.quantity}}</td>
+                  <td class="action">
+                    <button 
+                        onclick="window.location.href='/add-to-cart/{{item.item_id}}'"
+                    >
+                      add to cart
+                    </button>
+                    
+                  </td>
+                  <td class="issue">
+                    {% if cart.unit_issue|length >= 14%}
+                    {{cart.unit_issue|safe|truncatechars:14}} {% else %}
+                    {{cart.unit_issue}} {% endif %}
+                  </td>
+                  <td class="rate">{{item.unit_rate}}</td>
+                  {% comment %} <td class="remove">
+                    <!-- <a>edit</a> -->
+                    <a href="/delete/{{ item.item_id }}"
+                      ><img src="{% static './assets/deleteIcon.svg' %}" alt=""
+                    /></a>
+                  </td> {% endcomment %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Forklift &copy2023</span>
+    </footer>
+
+    <div class="background_wrapper"></div>
+
+    <div class="modal_container issue_modal_container">
+      <form method="post" action="/store/{{pk}}/">
+        {% csrf_token %}
+        <input
+          id="modalIssueNameInput"
+          type="text"
+          name="input_name"
+          value="Paracetamol"
+        />
+        <input
+          id=""
+          type="text"
+          name="input_voucher"
+          placeholder="Voucher no"
+        />
+        <select name="input_dept_name" id="">
+          <option value="{{pk}}">{{pk}}</option>
+          {% comment %} {% for dept in department %}
+          <option value="{{dept.dept_name}}">{{dept.dept_name}}</option>
+          {% endfor %} {% endcomment %}
+        </select>
+        <input type="number" name="input_amount" placeholder="QTY" />
+        <select name="op_type" id="">
+          <option value="subtract">subtract</option>
+        </select>
+        <input
+          type="text"
+          id="modalIssueUnitIssue"
+          name="input_unit_issue"
+          value="kg"
+          placeholder="unit issue"
+          disabled
+        />
+        <input
+          type="number"
+          id="modalIssueUnitRate"
+          name="input_unit_rate"
+          value="150"
+          placeholder="unit rate"
+          disabled
+        />
+        <button>submit</button>
+      </form>
+      <button id="cancelBtn" class="cancel_btn" onclick="closeIssueModal()">
+        cancel
+      </button>
+    </div>
+
+    <div class="modal_container supplier_modal_container">
+      <form method="post" action="/store/{{pk}}/">
+        {% csrf_token %}
+        <input
+          id="modalSupplierNameInput"
+          type="text"
+          name="input_name"
+          value="Paracetamol"
+        />
+        <input
+          id=""
+          type="text"
+          name="input_voucher"
+          placeholder="Voucher no"
+        />
+        <select name="input_supp_name" id="">
+          <option value="">select supplier</option>
+          {% for supp in supplier %}
+          <option value="{{supp.supp_name}}">{{supp.supp_name}}</option>
+          {% endfor %}
+        </select>
+        <input type="number" name="input_amount" placeholder="QTY" />
+        <select name="op_type" id="">
+          <option value="add">add</option>
+        </select>
+        <input
+          type="text"
+          id="modalSupplierUnitIssue"
+          name="input_unit_issue"
+          value="kg"
+          placeholder="unit issue"
+          disabled
+        />
+        <input
+          type="number"
+          id="modalSupplierUnitRate"
+          name="input_unit_rate"
+          value="150"
+          placeholder="unit rate"
+        />
+        <button>submit</button>
+      </form>
+      <button id="cancelBtn" class="cancel_btn" onclick="closeSupplierModal()">
+        cancel
+      </button>
+    </div>
+
+    <div class="new_stock">
+      <form method="post" action="/stock/">
+        {% csrf_token %}
+        <input
+          id="modalNameInput"
+          type="text"
+          name="item_name"
+          placeholder="Item name"
+        />
+        <input type="number" name="item_amount" placeholder="QTY" />
+        <input
+          id="input_unit_issue"
+          type="text"
+          name="input_unit_issue"
+          placeholder="unit of isue"
+        />
+        <input
+          id="input_unit_rate"
+          type="number"
+          name="input_unit_rate"
+          placeholder="unit rate"
+        />
+        {% comment %} <select name="dept" id="" multiple>
+          <option value="">select department</option>
+          {% for dept in department %}
+          <option value="{{dept.id}}">{{dept.dept_name}}</option>
+          {% endfor %}
+        </select> {% endcomment %}
+
+        {% comment %} <label>Departments:</label><br>
+        {% for dept in department %}
+            <input type="checkbox" id="department_{{ dept.id }}" name="departments" value="{{ dept.id }}">
+            <label for="department_{{ dept.id }}">{{ dept.dept_name }}</label><br>
+        {% endfor %} {% endcomment %}
+        <button>submit</button>
+      </form>
+      <button
+        id="cancelNewStock"
+        class="cancel_btn"
+        onclick="closeNewStockModal()"
+      >
+        cancel
+      </button>
+    </div>
+
+    <div class="filter_container">
+      <form method="get" action="">
+        <input
+          id="modalItemNameInput"
+          type="text"
+          name="item_name"
+          placeholder="Item Name"
+        />
+        <input
+          id="modalMinAmtInput"
+          type="number"
+          min="1"
+          name="min_amnt"
+          placeholder="Min Qty"
+        />
+        <input
+          id="modalMaxAmtInput"
+          type="number"
+          min="1"
+          name="max_amnt"
+          placeholder="Max Qty"
+        />
+        <input
+          id="modalIssueUnitInput"
+          type="text"
+          name="issue_unit"
+          placeholder="Issue Unit"
+        />
+        <!-- <input id="modalRateUnitInput" min=1 type="number" name="rate_unit" placeholder="Rate of Unit"> -->
+
+        <button>submit</button>
+      </form>
+      <button id="cancelBtn" class="cancel_btn" onclick="closeFilterModal()">
+        cancel
+      </button>
+    </div>
+    <script src="{% static './js/inventory.js' %}"></script>
+  </body>
+</html>

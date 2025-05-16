@@ -555,6 +555,53 @@ def updateStock(request):
 
     return redirect("/units")
 
+@login_required
+def inventory(request):
+    # if request.method == "POST":
+
+    # context =  {'department': dep, 'items': items, 'supplier': supp, "pk": pk}
+    items = Items.objects.all()
+    return render(request, 'inventory.html',  {'items': items})
+
+def add_to_cart(request, item_id):
+    item = get_object_or_404(Items, item_id=item_id)
+    cart = request.session.get('cart', {})
+
+    if str(item_id) in cart:
+        cart[str(item_id)]['quantity'] += 1
+        #add if condition to make sure amount less than what is available in stock is not added to cart
+    else:
+        cart[str(item_id)] = {
+            'name': item.item_name,
+            'unit_issue': item.unit_issue,
+            'quantity': 1,
+        }
+
+    request.session['cart'] = cart
+    messages.success(request, 'Item added to cart')
+    return redirect('/inventory')
+
+def view_cart(request):
+    cart = request.session.get('cart', {})
+    total = len(cart.values())
+    print(cart)
+    return render(request, 'cart.html', {'cart': cart, 'total': total})
+
+def checkout(request):
+    # Process disbursement here (e.g. convert cart to Disbursement model entries)
+    request.session['cart'] = {}  # Clear cart
+    return render(request, 'inventory/checkout_success.html')
+
+def remove_from_cart(request, item_id):
+    cart = request.session.get('cart', {})
+    item_id_str = str(item_id)
+
+    if item_id_str in cart:
+        del cart[item_id_str]
+        request.session['cart'] = cart
+
+    return redirect('view_cart')
+
 # @login_required
 # def report(request):
 #     allItems = []
