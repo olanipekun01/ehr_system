@@ -91,10 +91,10 @@ function closeNewStockEditModal() {
     document.querySelector(".background_wrapper").style.display = "none";
 }
 
-function handleNewStockEditUnit(id, name) {
+function handleNewStockEditUnit(id, name, pack) {
 
     const nameInput = document.querySelector('#modalEditNameInput');
-    // const packAmountInput = document.querySelector('#inputEditPackAmount');
+    const packAmountInput = document.querySelector('#inputEditPackAmount');
     // const unitIssueInput = document.querySelector('#inputEditUnitIssue');
     const idInput = document.querySelector('#modalEditIdInput');
 
@@ -109,4 +109,5 @@ function handleNewStockEditUnit(id, name) {
     
     nameInput.value = name;
     idInput.value = id;
+    packAmountInput.value = pack;
 }

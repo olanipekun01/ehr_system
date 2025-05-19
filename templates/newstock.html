@@ -14,26 +14,26 @@
       <div class="logo_content">
         <div class="logo">
           <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
-          <div class="logo_name">AU PHARM</div>
+          <div class="logo_name">AU MediLog</div>
         </div>
         <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
       </div>
       <ul class="nav_list">
         <li>
-          <form method="get" action="">>
+          <form method="get" action="">
             <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
-            <input name="item_name" type="text" placeholder="Search name...">
+            <input name="item_name"  type="text" placeholder="Search name...">
             <span class="tooltip">Search</span>
           </form>
         </li>
-        <li>
+        <!-- <li>
             <a href="/">
                 <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
                 <span class="links_name">Dashboard</span>
             </a>
             <span class="tooltip">Dashboard</span>
-        </li>
-        <li class="store_list">
+        </li> -->
+        <!-- <li class="store_list">
             <a href="#">
                 <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
                 <span class="links_name">Store</span>
@@ -53,26 +53,24 @@
                         <span class="sub_links_name">Student<span>
                     </a>
                 </div>
-                <!-- <div class="card">
-                    <a class="a_sub_links" href="/store/haematology">
-                        <img src="{% static './assets/bx-donate-blood.svg' %}" alt=""> 
-                        <span class="sub_links_name">Haematology<span>
-                    </a>
-                </div>
-                <div class="card">
-                    <a class="a_sub_links" href="/store/histopathology">
-                        <img src="{% static './assets/bx-band-aid.svg' %}" alt=""> 
-                        <span class="sub_links_name">Histopathology<span>
-                    </a>
-                </div>
-                <div class="card">
-                    <a class="a_sub_links" href="/store/microbiology">
-                        <img src="{% static './assets/bxs-virus.svg' %}" alt=""> 
-                        <span class="sub_links_name">Microbiology<span>
-                    </a>
-                </div> -->
+                
             </div>
+        </li> -->
+        <li>
+          <a href="/inventory/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Inventory</span>
+          </a>
+          <span class="tooltip">Inventory</span>
         </li>
+        <li>
+          <a href="/cart/">
+              <img src="{% static './assets/cart.png' %}" alt="">
+              <span class="links_name">Cart</span>
+          </a>
+          <span class="tooltip">Cart</span>
+        </li>
+  
         <li>
             <a href="/stock/">
                 <img src="{% static './assets/bx-package.svg' %}" alt="">
@@ -81,20 +79,28 @@
             <span class="tooltip">+ Stock</span>
         </li>
         <li>
-            <a href="/history/">
-                <img src="{% static './assets/bx-history.svg' %}" alt="">
-                <span class="links_name">Stock Report</span>
+            <a href="/disburse/history/">
+                <img src="{% static './assets/calendar-week.png' %}" alt="">
+                <span class="links_name">Disburse Log</span>
             </a>
-            <span class="tooltip">Report</span>
+            <span class="tooltip">Log</span>
         </li>
         <li>
+            <a href="/supply/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Supply Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li>
+        
+        <!-- <li>
             <a href="/department/">
                 <img src="{% static './assets/bx-collapse.svg' %}" alt="">
                 <span class="links_name">Department</span>
             </a>
             <span class="tooltip">Department</span>
             
-        </li>
+        </li> -->
         <li>
             <a href="/suppliers/">
                 <img src="{% static './assets/bx-transfer.svg' %}" alt="">
@@ -102,13 +108,18 @@
             </a>
             <span class="tooltip">Supplier</span>
         </li>
-        {% comment %} <li>
-            <a href="#">
-                <img src="{% static './assets/bxs-report.svg' %}" alt="">
-                <span class="links_name">Quarterly Report</span>
-            </a>
-            <span class="tooltip">Quarterly Report</span>
-        </li> {% endcomment %}
+        <li>
+          <a href="/units/">
+              <img src="{% static './assets/shape-unite.png' %}" alt="">
+              <span class="links_name">Units</span>
+          </a>
+          <span class="tooltip">Units</span>
+      </li>
+
+
+      
+    
+        
 
       </ul>
       <div class="profile_content">
@@ -125,17 +136,7 @@
 
       </div>
     </div>
-    {% comment %} <header>
-      <a href="{% url 'store:index' %}" class="header_wrapper">
-        <img src="{% static './assets/achieverslogo.png' %}" alt="" />
-        <h1>AU PHARM STORE</h1>
-      </a>
-      {% if user.is_authenticated %}
-      <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>
-      {% else %}
-      <span class="login"><a href="{% url 'store:login' %}">login</a></span>
-      {% endif %}
-    </header> {% endcomment %}
+    
     <main>
       <!-- <section class="side_nav">
             <ul>
@@ -149,7 +150,7 @@
 
       <section class="hero">
         <div class="dept_nav">
-          <a href="#"><span class="active1">Store</span></a>
+          <a href="/"><span class="active1">Home</span></a>
 
           {% comment %} <div class="department_links">
             {% for dept in department %}
@@ -166,7 +167,7 @@
           <h5 style="color: red; font-size: 20px">{{message}}</h5>
           {% endfor %}
           <div class="header_div">
-            <h3>Add New Item</h3>
+            <h3>Manage Items</h3>
             <div class="wrapper">
               <button onclick="handleNewStock()">+ New Stock</button>
               {% comment %} <a href="/history"
@@ -225,7 +226,7 @@
                   </td>
 
                   <td class="update">
-                    <button type="button" onclick="handleNewStockEditUnit('{{item.item_id}}', '{{item.item_name}}')">update</button>
+                    <button type="button" onclick="handleNewStockEditUnit('{{item.item_id}}', '{{item.item_name}}', '{{item.pack_amount}}')">update</button>
                   </td>
                   <td class="remove">
                     <!-- <a>edit</a> -->
@@ -283,7 +284,7 @@
           <option value="add">add</option>
         </select>
         <input
-          type="text"
+          type="text" 
           id="modalSupplierUnitIssue"
           name="input_unit_issue"
           value="kg"
@@ -318,6 +319,7 @@
         <select
           id="input_unit_issue"
           name="input_unit_issue">
+          <option>select unit</option>
           {% for unit in units %}
             <option>{{unit.unit_code}}</option>
           {% endfor %}
@@ -334,7 +336,7 @@
           id="input_pack_amount"
           type="number"
           name="input_pack_amount"
-          placeholder="pack amount"
+          placeholder="default quantity"
         />
         
 
@@ -387,7 +389,7 @@
           {% endfor %}
 
         </select>
-  
+        {% endcomment %}
 
         <input
           id="inputEditPackAmount"
@@ -396,7 +398,7 @@
           name="input_edit_pack_amount"
           placeholder="pack amount"
           value="1"
-        /> {% endcomment %}
+        /> 
         
 
         
@@ -449,6 +451,7 @@
         <select
           id="modalIssueUnitInput"
           name="issue_unit">
+          <option>select unit</option>
           {% for unit in units %}
             <option>{{unit.unit_code}}</option>
           {% endfor %}

@@ -1010,7 +1010,7 @@ footer {
 }
 
 
-.filter_container form input {
+.filter_container form input, .filter_container form select {
     width: 220px;
     height: 30px;
     border-radius: 25px;

@@ -14,26 +14,26 @@
       <div class="logo_content">
         <div class="logo">
           <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
-          <div class="logo_name">AU PAHRM</div>
+          <div class="logo_name">AU MediLog</div>
         </div>
         <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
       </div>
       <ul class="nav_list">
         <li>
-          <form method="get">
+          <form method="get" action="">
             <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
-            <input disabled type="text" placeholder="Search...">
+            <input name="item_name"  type="text" placeholder="Search name...">
             <span class="tooltip">Search</span>
           </form>
         </li>
-        <li>
+        <!-- <li>
             <a href="/">
                 <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
                 <span class="links_name">Dashboard</span>
             </a>
             <span class="tooltip">Dashboard</span>
-        </li>
-        <li class="store_list">
+        </li> -->
+        <!-- <li class="store_list">
             <a href="#">
                 <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
                 <span class="links_name">Store</span>
@@ -53,26 +53,24 @@
                         <span class="sub_links_name">Student<span>
                     </a>
                 </div>
-                <!-- <div class="card">
-                    <a class="a_sub_links" href="/store/haematology">
-                        <img src="{% static './assets/bx-donate-blood.svg' %}" alt=""> 
-                        <span class="sub_links_name">Haematology<span>
-                    </a>
-                </div>
-                <div class="card">
-                    <a class="a_sub_links" href="/store/histopathology">
-                        <img src="{% static './assets/bx-band-aid.svg' %}" alt=""> 
-                        <span class="sub_links_name">Histopathology<span>
-                    </a>
-                </div>
-                <div class="card">
-                    <a class="a_sub_links" href="/store/microbiology">
-                        <img src="{% static './assets/bxs-virus.svg' %}" alt=""> 
-                        <span class="sub_links_name">Microbiology<span>
-                    </a>
-                </div> -->
+                
             </div>
+        </li> -->
+        <li>
+          <a href="/inventory/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Inventory</span>
+          </a>
+          <span class="tooltip">Inventory</span>
         </li>
+        <li>
+          <a href="/cart/">
+              <img src="{% static './assets/cart.png' %}" alt="">
+              <span class="links_name">Cart</span>
+          </a>
+          <span class="tooltip">Cart</span>
+        </li>
+  
         <li>
             <a href="/stock/">
                 <img src="{% static './assets/bx-package.svg' %}" alt="">
@@ -81,20 +79,28 @@
             <span class="tooltip">+ Stock</span>
         </li>
         <li>
-            <a href="/history/">
-                <img src="{% static './assets/bx-history.svg' %}" alt="">
-                <span class="links_name">Stock Report</span>
+            <a href="/disburse/history/">
+                <img src="{% static './assets/calendar-week.png' %}" alt="">
+                <span class="links_name">Disburse Log</span>
             </a>
-            <span class="tooltip">Report</span>
+            <span class="tooltip">Log</span>
         </li>
         <li>
+            <a href="/supply/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Supply Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li>
+        
+        <!-- <li>
             <a href="/department/">
                 <img src="{% static './assets/bx-collapse.svg' %}" alt="">
                 <span class="links_name">Department</span>
             </a>
             <span class="tooltip">Department</span>
             
-        </li>
+        </li> -->
         <li>
             <a href="/suppliers/">
                 <img src="{% static './assets/bx-transfer.svg' %}" alt="">
@@ -102,13 +108,18 @@
             </a>
             <span class="tooltip">Supplier</span>
         </li>
-        {% comment %} <li>
-            <a href="#">
-                <img src="{% static './assets/bxs-report.svg' %}" alt="">
-                <span class="links_name">Quarterly Report</span>
-            </a>
-            <span class="tooltip">Quarterly Report</span>
-        </li> {% endcomment %}
+        <li>
+          <a href="/units/">
+              <img src="{% static './assets/shape-unite.png' %}" alt="">
+              <span class="links_name">Units</span>
+          </a>
+          <span class="tooltip">Units</span>
+      </li>
+
+
+      
+    
+        
 
       </ul>
       <div class="profile_content">
@@ -149,7 +160,7 @@
 
       <section class="hero">
         <div class="dept_nav">
-          <a href="#"><span class="active1">Store</span></a>
+          <a href="/"><span class="active1">Home</span></a>
           <!-- {% for dept in dept %}
                 <a href="/dept/{{dept.dept_name}}"><span>{{dept.dept_name}}</span></a>
                 {% endfor %} -->

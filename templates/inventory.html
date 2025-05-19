@@ -167,7 +167,7 @@
           <h5 style="color: red; font-size: 20px">{{message}}</h5>
           {% endfor %}
           <div class="header_div">
-            <h3>{{pk}} items</h3>
+            <h3>Inventory</h3>
             <div class="wrapper">
               {% comment %} <button onclick="handleNewStock()">+ New Stock</button> {% endcomment %}
               {% comment %} <a href="/history/{{pk}}/"
@@ -338,51 +338,7 @@
       </button>
     </div>
 
-    <div class="new_stock">
-      <form method="post" action="/stock/">
-        {% csrf_token %}
-        <input
-          id="modalNameInput"
-          type="text"
-          name="item_name"
-          placeholder="Item name"
-        />
-        <input type="number" name="item_amount" placeholder="QTY" />
-        <input
-          id="input_unit_issue"
-          type="text"
-          name="input_unit_issue"
-          placeholder="unit of isue"
-        />
-        <input
-          id="input_unit_rate"
-          type="number"
-          name="input_unit_rate"
-          placeholder="unit rate"
-        />
-        {% comment %} <select name="dept" id="" multiple>
-          <option value="">select department</option>
-          {% for dept in department %}
-          <option value="{{dept.id}}">{{dept.dept_name}}</option>
-          {% endfor %}
-        </select> {% endcomment %}
-
-        {% comment %} <label>Departments:</label><br>
-        {% for dept in department %}
-            <input type="checkbox" id="department_{{ dept.id }}" name="departments" value="{{ dept.id }}">
-            <label for="department_{{ dept.id }}">{{ dept.dept_name }}</label><br>
-        {% endfor %} {% endcomment %}
-        <button>submit</button>
-      </form>
-      <button
-        id="cancelNewStock"
-        class="cancel_btn"
-        onclick="closeNewStockModal()"
-      >
-        cancel
-      </button>
-    </div>
-
+    
     <div class="filter_container">
       <form method="get" action="">
         <input
@@ -405,12 +361,17 @@
           name="max_amnt"
           placeholder="Max Qty"
         />
-        <input
+        
+
+        <select
           id="modalIssueUnitInput"
-          type="text"
-          name="issue_unit"
-          placeholder="Issue Unit"
-        />
+          name="issue_unit">
+          <option>select unit</option>
+          {% for unit in units %}
+            <option>{{unit.unit_code}}</option>
+          {% endfor %}
+
+        </select>
         <!-- <input id="modalRateUnitInput" min=1 type="number" name="rate_unit" placeholder="Rate of Unit"> -->
 
         <button>submit</button>

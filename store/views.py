@@ -29,7 +29,10 @@ def index(request):
     supp = Supplier.objects.all()
     # dept = Department.objects.all()
     total_items = len(items)
-    out_of_stock = len(items.filter(amount__lt=20))
+    outStockOfitems = Items.objects.annotate(
+        threshold=ExpressionWrapper(F('pack_amount') * 0.3, output_field=FloatField())
+    ).filter(amount__lt=F('threshold'))
+    out_of_stock = len(outStockOfitems)
     suppliers = len(supp)
     # issued = len(dept)
 
@@ -124,7 +127,7 @@ def newstock(request):
         item_name = item_name.strip()
         input_unit_issue = input_unit_issue.strip()
         
-        if (item_name == "" or input_unit_issue == ""):
+        if (item_name == "" or input_unit_issue == "select unit"):
             messages.info(request, 'Enter valid name and unit of issue!')
             return redirect("/stock")
 
@@ -174,7 +177,7 @@ def newstock(request):
     if is_valid(max_amnt):
         items = items.filter(amount__lt=max_amnt)
 
-    if is_valid(issue_unit):
+    if is_valid(issue_unit) and issue_unit != "select unit":
         items = items.filter(unit_issue__icontains=issue_unit)
 
     return render(request, "newstock.html", {"items": items, "department": dept, 'supplier': supp, "units": units})
@@ -421,15 +424,20 @@ def removeDept(request, id):
 
     return redirect("/department")
 
+from django.db.models import F, ExpressionWrapper, FloatField
 
 @login_required
 def outOfStock(request):
-    items = Items.objects.all()
+    # Retrieve all departments
     dept = Department.objects.all()
-    items = items.filter(amount__lt=11)
-    arr = [item.item_name for item in items]
-    return render(request, 'outofstock.html', {"names": arr, "department": dept})
 
+    # Get items where amount < 30% of pack_amount
+    items = Items.objects.annotate(
+        threshold=ExpressionWrapper(F('pack_amount') * 0.3, output_field=FloatField())
+    ).filter(amount__lt=F('threshold'))
+
+    
+    return render(request, 'outofstock.html', {"items": items, "department": dept})
 
 @login_required
 def suppliers(request):
@@ -542,7 +550,7 @@ def updateStock(request):
         item_id = request.POST["item_id"]
         item_name = request.POST["item_name"]
         # input_unit_issue = request.POST["input_unit_issue"]
-        # input_edit_pack_amount = request.POST["input_edit_pack_amount"]
+        input_edit_pack_amount = request.POST["input_edit_pack_amount"]
         item_name = item_name.strip()
         item_id = item_id.strip()
         # input_unit_issue = input_unit_issue.strip()
@@ -559,7 +567,7 @@ def updateStock(request):
         item = get_object_or_404(Items, item_id=item_id)
         if item:
             item.item_name = item_name
-            # item.pack_amount = input_edit_pack_amount
+            item.pack_amount = input_edit_pack_amount
             # item.unit_issue = input_unit_issue
 
             item.save()
@@ -575,9 +583,30 @@ def updateStock(request):
 def inventory(request):
     # if request.method == "POST":
 
-    # context =  {'department': dep, 'items': items, 'supplier': supp, "pk": pk}
-    items = Items.objects.all()
-    return render(request, 'inventory.html',  {'items': items})
+    item_name_input = request.GET.get('item_name')
+    min_amnt = request.GET.get('min_amnt')
+    max_amnt = request.GET.get('max_amnt')
+    issue_unit = request.GET.get('issue_unit')
+    
+    items = Items.objects.all().order_by('-modified_at')
+    dept = Department.objects.all()
+    supp = Supplier.objects.all()
+
+    units = Units.objects.all()
+
+    if is_valid(item_name_input):
+        items = items.filter(item_name__contains=item_name_input)
+
+    if is_valid(min_amnt):
+        items = items.filter(amount__gte=min_amnt)
+
+    if is_valid(max_amnt):
+        items = items.filter(amount__lt=max_amnt)
+
+    if is_valid(issue_unit) and issue_unit != "select unit":
+        items = items.filter(unit_issue__icontains=issue_unit)
+
+    return render(request, 'inventory.html',  {'items': items, 'units': units})
 
 @login_required
 def add_to_cart(request, item_id):
@@ -595,7 +624,7 @@ def add_to_cart(request, item_id):
         }
 
     request.session['cart'] = cart
-    messages.success(request, 'Item added to cart. Go to cart or add more!')
+    messages.success(request, 'Item added to cart. Either add more items or proceed to cart!')
     return redirect('/inventory')
 
 @login_required
