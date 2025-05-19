@@ -1,0 +1,329 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Achievers University Owo</title>
+
+    <link href="{% static './css/history.css' %}" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div class="logo_content">
+        <div class="logo">
+          <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
+          <div class="logo_name">AU MediLog</div>
+        </div>
+        <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
+      </div>
+      <ul class="nav_list">
+        <li>
+          <form method="get" action="">
+            <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
+            <input name="item_name"  type="text" placeholder="Search name...">
+            <span class="tooltip">Search</span>
+          </form>
+        </li>
+        <!-- <li>
+            <a href="/">
+                <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
+                <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li> -->
+        <!-- <li class="store_list">
+            <a href="#">
+                <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+                <span class="links_name">Store</span>
+                <img class="down_arrow" src="{% static './assets/bx-chevron-down.svg' %}" alt="">
+            </a>
+            <span class="tooltip">Store</span>
+            <div class="sub-menu">
+                <div class="card">
+                    <a class="a_sub_links" href="/store/staff">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Staff<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/student">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Student<span>
+                    </a>
+                </div>
+                
+            </div>
+        </li> -->
+        <li>
+          <a href="/inventory/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Inventory</span>
+          </a>
+          <span class="tooltip">Inventory</span>
+        </li>
+        <li>
+          <a href="/cart/">
+              <img src="{% static './assets/cart.png' %}" alt="">
+              <span class="links_name">Cart</span>
+          </a>
+          <span class="tooltip">Cart</span>
+        </li>
+  
+        <li>
+            <a href="/stock/">
+                <img src="{% static './assets/bx-package.svg' %}" alt="">
+                <span class="links_name">+ Stock</span>
+            </a>
+            <span class="tooltip">+ Stock</span>
+        </li>
+        <li>
+            <a href="/disburse/history/">
+                <img src="{% static './assets/calendar-week.png' %}" alt="">
+                <span class="links_name">Disburse Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li>
+        <li>
+            <a href="/supply/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Supply Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li>
+        
+        <!-- <li>
+            <a href="/department/">
+                <img src="{% static './assets/bx-collapse.svg' %}" alt="">
+                <span class="links_name">Department</span>
+            </a>
+            <span class="tooltip">Department</span>
+            
+        </li> -->
+        <li>
+            <a href="/suppliers/">
+                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
+                <span class="links_name">Supplier</span>
+            </a>
+            <span class="tooltip">Supplier</span>
+        </li>
+        <li>
+          <a href="/units/">
+              <img src="{% static './assets/shape-unite.png' %}" alt="">
+              <span class="links_name">Units</span>
+          </a>
+          <span class="tooltip">Units</span>
+      </li>
+
+
+      
+    
+        
+
+      </ul>
+      <div class="profile_content">
+        <div class="profile">
+          <div class="profile_details">
+            <img src="{% static './assets/AsianManAvatar(1).png' %}" alt="">
+            <div class="name_job">
+              <div class="name">Admin</div>
+              <div class="job">Store Manager</div>
+            </div>
+          </div>
+          <a href="/logout/"><img id="log_out" src="{% static './assets//bx-log-out.svg' %}" alt=""></a>
+        </div>
+
+      </div>
+    </div>
+    
+    <main>
+      <!-- <section class="side_nav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">dept 1</a></li>
+                <li><a href="#">dept 2</a></li>
+                <li><a href="#">dept 3</a></li>
+                <li><a href="#">dept 4</a></li>
+            </ul>
+        </section> -->
+
+      <section class="hero">
+        <!-- <a href="/dept">back</a> -->
+
+        <div class="dept_nav">
+          <a href="/"><span class="active1">Home</span></a>
+          <a href="/disburse/history/"><span class="active2_reload">Reload</span></a>
+        </div>
+
+        <div class="card_wrapper">
+          <div class="header_div">
+            <h3>Disburse Log</h3>
+
+            <div class="wrapper">
+              <img
+                onclick="showFilterModal()"
+                src="{% static './assets/filterIcon.svg' %}"
+                alt=""
+              />
+
+              <!-- <a href="/csv_download">Download CSV</a> -->
+              <form method="post" action="/disburse/history/">
+                {% csrf_token %}
+
+                <button type="submit">Download CSV</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="items_wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th class="date">Date</th>
+                  <th class="item">Item</th>
+                  <th>file no</th>
+                  <th class="action">Full name</th>
+                  <th class="desc">type</th>
+                  <th class="issue">Unit issue</th>
+                  <th class="qty">QTY</th>
+                  <th class="bal">Balance</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for hist in page_obj.object_list %}
+                <tr>
+                  <td>{{hist.dateCreated}}</td>
+                  <td>
+                    {% if hist.item_name|length >= 35 %}
+                    {{hist.item_name|safe|truncatechars:35}} {% else %}
+                    {{hist.item_name}} {% endif %}
+                  </td>
+                  <td>{{hist.file_no}}</td>
+                  <td>{{hist.user_name}}</td>
+                  <td>{{hist.user_type}}</td>
+                  
+                  
+                  <td>
+                    {% if hist.unit_issue|length >= 14%}
+                    {{hist.unit_issue|safe|truncatechars:14}} {% else %}
+                    {{hist.unit_issue}} {% endif %}
+                  </td>
+                  <td>{{hist.quantity}}</td>
+                  <td>{{hist.bal}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <center>
+              {%if page_obj.has_previous %}
+              <!--whether the previous page exists-->
+              <a class="active" href="?page={{page_obj.previous_page_number}}"
+                >Prev</a
+              >
+
+              {% else %}
+              <a>Prev</a>
+              {% endif %}
+              <span>{{page_obj.number}}</span>
+
+              {%if page_obj.has_next %}
+              <a class="active" href="?page={{page_obj.next_page_number}}"
+                >Next</a
+              >
+              {% else %}
+              <a>Next</a>
+              {% endif %}
+            </center>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Forklift &copy2023</span>
+    </footer>
+
+    <div class="filter_container">
+      <form method="get" action="">
+        <input
+          id="modalItemNameInput"
+          type="text"
+          name="item_name"
+          placeholder="Item Name"
+        />
+
+        <input
+          id="modalDescriptionInput"
+          type="text"
+          name="file_no"
+          placeholder="File no"
+        />
+
+        <select
+            id="modalIssueUnitInput"
+            name="user_type">
+            <option>select Patient type</option>
+            <option>student</option>
+            <option>staff</option>
+
+        </select>
+
+
+
+        
+        
+        <select
+          id="modalIssueUnitInput"
+          name="issue_unit">
+          <option>select unit</option>
+          {% for unit in units %}
+            <option>{{unit.unit_code}}</option>
+          {% endfor %}
+
+        </select>
+        <!-- <input id="modalRateUnitInput" min=1 type="number" name="rate_unit" placeholder="Rate of Unit"> -->
+        <input type="date" placeholder="min date" name="min_date" />
+        <input type="date" placeholder="max date" name="max_date" />
+        
+        <button>submit</button>
+      </form>
+      <button id="cancelBtn" class="cancel_btn" onclick="closeFilterModal()">
+        cancel
+      </button>
+    </div>
+
+    <!-- <div class="background_wrapper">
+
+    </div>
+
+    <div class="modal_container">
+        <form method="post" action="dept1">
+            {% csrf_token %}
+            <input id="modalNameInput" type="text" name="input_name" value="Paracetamol">
+            <input type="number" name="input_amount" placeholder="amount">
+            <select name="op_type" id="">
+                <option value="add">add</option>
+                <option value="subtract">subtract</option>
+            </select>
+            <button>submit</button>
+        </form>
+        <button id="cancelBtn" class="cancel_btn" onclick="closeModal()">cancel</button>
+    </div>
+
+    <div class="new_stock">
+        <form method="post" action="newstock">
+            {% csrf_token %}
+            <input id="modalNameInput" type="text" name="item_name" placeholder="Item name">
+            <input type="number" name="item_amount" placeholder="amount">
+            <select name="dept" id="">
+                <option value="dept1">dept1</option>
+            </select>
+            <button>submit</button>
+        </form>
+        <button id="cancelNewStock" class="cancel_btn" onclick="closeNewStockModal()">cancel</button>
+    </div> -->
+    <script src="{% static './js/history.js' %}"></script>
+  </body>
+</html>

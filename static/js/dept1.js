@@ -10,7 +10,8 @@ function showIssueModal(name, rate, issue) {
     document.querySelector(".background_wrapper").style.display = "block";
 };
 
-function showSupplierModal(name, rate, issue) {
+function showSupplierModal(id, name, rate, issue) {
+    document.getElementById("modalSupplierIdInput").value = id;
     document.getElementById("modalSupplierNameInput").value = name;
     document.getElementById("modalSupplierUnitRate").value = rate;
     document.getElementById("modalSupplierUnitIssue").value = issue;

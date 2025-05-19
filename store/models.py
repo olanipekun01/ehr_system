@@ -29,36 +29,6 @@ class Supplier(models.Model):
         return self.supp_name
 
 
-class History(models.Model):
-    DEPT = (("MH", "microhistory"),
-            ("HM", "heamhistory"),
-            ("CH", "chemhistory"),
-            ("HH", "histohistory")
-            )
-
-    # turn to to a froenign key later
-    item_id = models.CharField(max_length=500)
-    date_created = models.DateTimeField(auto_now=True)
-    dateCreated = models.DateField(auto_now=True)
-    item_name = models.CharField(max_length=500)
-    voucher_no = models.CharField(max_length=50, blank=True, null=True)
-    description = models.CharField(max_length=500, null=True, blank=True)
-    action = models.CharField(max_length=200, blank=True, null=True)
-    amount = models.CharField(max_length=500)
-    bal = models.CharField(max_length=500, null=True, blank=True)
-    unit_issue = models.CharField(max_length=200, null=True, blank=True)
-    unit_rate = models.CharField(max_length=200, null=True, blank=True)
-    dept_id = models.ForeignKey(Department, related_name="micro_history_category",
-                             on_delete=models.SET_NULL, null=True, blank=True)
-    slug = models.SlugField(max_length=2000, null=True, blank=True)
-
-    def __str__(self):
-        return self.item_name
-    
-    class Meta:
-        ordering = [
-            'dateCreated'
-        ]
 
 
 class Items(models.Model):
@@ -83,6 +53,54 @@ class Items(models.Model):
             'modified_at'
         ]
 
+class Disbursement(models.Model):
+    user_type = models.CharField(max_length=500, null=True, blank=True)  # staff or student
+    user_name =  models.CharField(max_length=500, null=True, blank=True)
+    mat_staff_no = models.CharField(max_length=500, null=True, blank=True) 
+    user_dept = models.CharField(max_length=500, null=True, blank=True) 
+    file_no = models.CharField(max_length=500, null=True, blank=True) 
+    date = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f"Disbursement #{self.id} by {self.user_name}"
+
+class DisbursementItem(models.Model):
+    disbursement = models.ForeignKey(Disbursement, related_name='items', on_delete=models.CASCADE)
+    user_type = models.CharField(max_length=500, null=True, blank=True)  # staff or student
+    user_name =  models.CharField(max_length=500, null=True, blank=True)
+    mat_staff_no = models.CharField(max_length=500, null=True, blank=True) 
+    user_dept = models.CharField(max_length=500, null=True, blank=True) 
+    file_no = models.CharField(max_length=500, null=True, blank=True) 
+    item_name =  models.CharField(max_length=500, null=True, blank=True)
+    item = models.ForeignKey('Items', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    unit_issue = models.CharField(max_length=200, null=True, blank=True)
+    unit_rate = models.DecimalField(max_digits=10, decimal_places=2)
+    date_created = models.DateTimeField(auto_now=True)
+    dateCreated = models.DateField(auto_now=True)
+    bal = models.CharField(max_length=500, null=True, blank=True)
+
+    def total_price(self):
+        return self.unit_price * self.quantity
+
+class SupplyHistory(models.Model):
+    # turn to to a froenign key later
+    item_id = models.CharField(max_length=500)
+    date_created = models.DateTimeField(auto_now=True)
+    dateCreated = models.DateField(auto_now=True)
+    item_name = models.CharField(max_length=500)
+    voucher_no = models.CharField(max_length=50, blank=True, null=True)
+    description = models.CharField(max_length=500, null=True, blank=True)
+    action = models.CharField(max_length=200, blank=True, null=True)
+    amount = models.CharField(max_length=500)
+    bal = models.CharField(max_length=500, null=True, blank=True)
+    unit_issue = models.CharField(max_length=200, null=True, blank=True)
+    unit_rate = models.CharField(max_length=200, null=True, blank=True)
+    slug = models.SlugField(max_length=2000, null=True, blank=True)
+
+    def __str__(self):
+        return self.item_name
 
 @receiver(pre_save, sender=Items)
 def pre_save_receiver(sender, instance, *args, **kwargs):

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Achievers University Owo</title>
 
-    <link href="{% static './css/inventory.css' %}" rel="stylesheet" />
+    <link href="{% static './css/cart.css' %}" rel="stylesheet" />
   </head>
 
   <body>
@@ -14,7 +14,7 @@
       <div class="logo_content">
         <div class="logo">
           <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
-          <div class="logo_name">AU PHARM</div>
+          <div class="logo_name">AU MediLog</div>
         </div>
         <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
       </div>
@@ -22,18 +22,18 @@
         <li>
           <form method="get" action="">
             <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
-            <input name="item_name" type="text" placeholder="Search name...">
+            <input name="item_name"  type="text" placeholder="Search name...">
             <span class="tooltip">Search</span>
           </form>
         </li>
-        <li>
+        <!-- <li>
             <a href="/">
                 <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
                 <span class="links_name">Dashboard</span>
             </a>
             <span class="tooltip">Dashboard</span>
-        </li>
-        <li class="store_list">
+        </li> -->
+        <!-- <li class="store_list">
             <a href="#">
                 <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
                 <span class="links_name">Store</span>
@@ -53,26 +53,24 @@
                         <span class="sub_links_name">Student<span>
                     </a>
                 </div>
-                <!-- <div class="card">
-                    <a class="a_sub_links" href="/store/haematology">
-                        <img src="{% static './assets/bx-donate-blood.svg' %}" alt=""> 
-                        <span class="sub_links_name">Haematology<span>
-                    </a>
-                </div>
-                <div class="card">
-                    <a class="a_sub_links" href="/store/histopathology">
-                        <img src="{% static './assets/bx-band-aid.svg' %}" alt=""> 
-                        <span class="sub_links_name">Histopathology<span>
-                    </a>
-                </div>
-                <div class="card">
-                    <a class="a_sub_links" href="/store/microbiology">
-                        <img src="{% static './assets/bxs-virus.svg' %}" alt=""> 
-                        <span class="sub_links_name">Microbiology<span>
-                    </a>
-                </div> -->
+                
             </div>
+        </li> -->
+        <li>
+          <a href="/inventory/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Inventory</span>
+          </a>
+          <span class="tooltip">Inventory</span>
         </li>
+        <li>
+          <a href="/cart/">
+              <img src="{% static './assets/cart.png' %}" alt="">
+              <span class="links_name">Cart</span>
+          </a>
+          <span class="tooltip">Cart</span>
+        </li>
+  
         <li>
             <a href="/stock/">
                 <img src="{% static './assets/bx-package.svg' %}" alt="">
@@ -81,20 +79,28 @@
             <span class="tooltip">+ Stock</span>
         </li>
         <li>
-            <a href="/history/">
-                <img src="{% static './assets/bx-history.svg' %}" alt="">
-                <span class="links_name">Stock Report</span>
+            <a href="/disburse/history/">
+                <img src="{% static './assets/calendar-week.png' %}" alt="">
+                <span class="links_name">Disburse Log</span>
             </a>
-            <span class="tooltip">Report</span>
+            <span class="tooltip">Log</span>
         </li>
         <li>
+            <a href="/supply/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Supply Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li>
+        
+        <!-- <li>
             <a href="/department/">
                 <img src="{% static './assets/bx-collapse.svg' %}" alt="">
                 <span class="links_name">Department</span>
             </a>
             <span class="tooltip">Department</span>
             
-        </li>
+        </li> -->
         <li>
             <a href="/suppliers/">
                 <img src="{% static './assets/bx-transfer.svg' %}" alt="">
@@ -103,19 +109,17 @@
             <span class="tooltip">Supplier</span>
         </li>
         <li>
-            <a href="/cart/">
-                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
-                <span class="links_name">View Cart</span>
-            </a>
-            <span class="tooltip">View Cart</span>
-        </li>
-        {% comment %} <li>
-            <a href="#">
-                <img src="{% static './assets/bxs-report.svg' %}" alt="">
-                <span class="links_name">Quarterly Report</span>
-            </a>
-            <span class="tooltip">Quarterly Report</span>
-        </li> {% endcomment %}
+          <a href="/units/">
+              <img src="{% static './assets/shape-unite.png' %}" alt="">
+              <span class="links_name">Units</span>
+          </a>
+          <span class="tooltip">Units</span>
+      </li>
+
+
+      
+    
+        
 
       </ul>
       <div class="profile_content">
@@ -132,17 +136,7 @@
 
       </div>
     </div>
-    {% comment %} <header>
-      <a href="{% url 'store:index' %}" class="header_wrapper">
-        <img src="{% static './assets/achieverslogo.png' %}" alt="" />
-        <h1>AU PAHRM STORE</h1>
-      </a>
-      {% if user.is_authenticated %}
-      <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>
-      {% else %}
-      <span class="login"><a href="{% url 'store:login' %}">login</a></span>
-      {% endif %}
-    </header> {% endcomment %}
+   
     <main>
       <!-- <section class="side_nav">
             <ul>
@@ -156,7 +150,7 @@
 
       <section class="hero">
         <div class="dept_nav">
-          <a href="#"><span class="active1">Store</span></a>
+          <a href="/"><span class="active1">Home</span></a>
 
           {% comment %} <div class="department_links">
             {% for dept in department %}
@@ -165,7 +159,7 @@
             >
             {% endfor %}
           </div> {% endcomment %}
-          <a href="/store/{{pk}}/"><span class="active2_reload">Reload</span></a>
+          <a href="/cart/"><span class="active2_reload">Reload</span></a>
         </div>
 
         <div class="card_wrapper">
@@ -173,12 +167,9 @@
           <h5 style="color: red; font-size: 20px">{{message}}</h5>
           {% endfor %}
           <div class="header_div">
-            <h3>{{pk}} items</h3>
+            <h3>Cart</h3>
             <div class="wrapper">
-              {% comment %} <button onclick="handleNewStock()">+ New Stock</button> {% endcomment %}
-              {% comment %} <a href="/history/{{pk}}/"
-                ><img src="{% static './assets/Calendar.svg'%}" alt=""
-              /></a> {% endcomment %}
+             
               <img
                 onclick="showFilterModal()"
                 src="{% static './assets/filterIcon.svg' %}"
@@ -196,15 +187,13 @@
                 <tr>
                   <th class="item_name">Item name</th>
                   <th class="qty">Quantity</th>
-                  <th class="action">Action</th>
                   <th class="issue">Unit issue</th>
-                  <th class="rate">Unit rate</th>
-                  {% comment %} <th class="delete"></th> {% endcomment %}
+                  <th class="action">Action</th>
                 </tr>
               </thead>
 
               <tbody>
-                {% key, item in cart.items %}
+                {% for key, item in cart.items %}
                 <tr>
                   <td class="item_name">
                     <a class="name" href="#">
@@ -213,34 +202,79 @@
                       {{item.name}} {% endif %}
                     </a>
                   </td>
-                  <td class="qty">{{item.quantity}}</td>
-                  <td class="action">
-                    <button 
-                        onclick="window.location.href='/add-to-cart/{{item.item_id}}'"
-                    >
-                      add to cart
-                    </button>
-                    
+                  <td class="qty">
+                    <a class="quantity_action" href="/subquantity/{{key}}/">-</a>
+                    <span class="cart_quantity">{{item.quantity}}</span>
+                    <a class="quantity_action" href="/addquantity/{{key}}/">+</a>
                   </td>
+                 
                   <td class="issue">
-                    {% if cart.unit_issue|length >= 14%}
-                    {{cart.unit_issue|safe|truncatechars:14}} {% else %}
-                    {{cart.unit_issue}} {% endif %}
+                    {% if item.unit_issue|length >= 14%}
+                    {{item.unit_issue|safe|truncatechars:14}} {% else %}
+                    {{item.unit_issue}} {% endif %}
                   </td>
-                  <td class="rate">{{item.unit_rate}}</td>
-                  {% comment %} <td class="remove">
-                    <!-- <a>edit</a> -->
-                    <a href="/delete/{{ item.item_id }}"
+                  <td class="remove">
+                    <a onclick="handleDeletePopOut('/remove-from-cart/{{key}}/', '{{item.item_name}}')" href="#"
                       ><img src="{% static './assets/deleteIcon.svg' %}" alt=""
                     /></a>
-                  </td> {% endcomment %}
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
+
+            <div class="checkout_form">
+              <h1 class="">Patient Info</h1>
+              <form method="post" action="#">
+                {% csrf_token %}
+                <select name="user_type"  id="checkUserType">
+                  <option value="student">Student</option>
+                  <option value="staff">Staff</option>
+                </select>
+                <input
+                  id="checkMatStaffNo"
+                  type="text"
+                  name="matric_no"
+                  placeholder="Matric no | staff id"
+                  value=""
+                />
+                <input
+                  id="fileNo"
+                  type="text"
+                  name="file_no"
+                  placeholder="file no"
+                  value=""
+                />
+                <input
+                  id="checkFullName"
+                  type="text"
+                  name="full_name"
+                  placeholder="Full Name"
+                  value=""
+                />
+                <input
+                  id="checkDept"
+                  type="text"
+                  name="dept"
+                  placeholder="department"
+                  value=""
+                />
+               
+                <button type="button" onclick="openConfirmOrderModal()">Checkout</button>
+              </form>
+             
+            </div>
           </div>
+
+          
         </div>
+
+        
+        
       </section>
+
+      
+      
     </main>
 
     <footer>
@@ -249,141 +283,65 @@
 
     <div class="background_wrapper"></div>
 
-    <div class="modal_container issue_modal_container">
-      <form method="post" action="/store/{{pk}}/">
+    <div class="confirm_order">
+      <form method="post" action="/checkout/">
         {% csrf_token %}
-        <input
-          id="modalIssueNameInput"
-          type="text"
-          name="input_name"
-          value="Paracetamol"
-        />
-        <input
-          id=""
-          type="text"
-          name="input_voucher"
-          placeholder="Voucher no"
-        />
-        <select name="input_dept_name" id="">
-          <option value="{{pk}}">{{pk}}</option>
-          {% comment %} {% for dept in department %}
-          <option value="{{dept.dept_name}}">{{dept.dept_name}}</option>
-          {% endfor %} {% endcomment %}
-        </select>
-        <input type="number" name="input_amount" placeholder="QTY" />
-        <select name="op_type" id="">
-          <option value="subtract">subtract</option>
-        </select>
-        <input
-          type="text"
-          id="modalIssueUnitIssue"
-          name="input_unit_issue"
-          value="kg"
-          placeholder="unit issue"
-          disabled
-        />
-        <input
-          type="number"
-          id="modalIssueUnitRate"
-          name="input_unit_rate"
-          value="150"
-          placeholder="unit rate"
-          disabled
-        />
-        <button>submit</button>
-      </form>
-      <button id="cancelBtn" class="cancel_btn" onclick="closeIssueModal()">
-        cancel
-      </button>
-    </div>
+        <h2>Confirm Order</h2>
+        <div class="user_info">
+          <input id="inputUserType" type="text" name="user_type" value="" hidden />
+          <input id="inputMatStaffNo" type="text" name="matric_no" value="" hidden />
+          <input id="inputFullName" type="text" name="full_name" value="" hidden />
+          <input id="inputFileNo" type="text" name="file_no" value="" hidden />
+          <input id="inputDept" type="text" name="dept" value="" hidden />
+          <span class="header">User Type: <span class="values" id="userTypeValue"></span></span>
+          <span class="header">Name: <span class="values" id="nameValue"></span></span>
+          <span class="header">Staff / Matric No: <span class="values" id="matStaffNoValue"></span></span>
+          <span class="header">File No: <span class="values" id="fileNoValue"></span></span>
+          
+          <span class="header">Department: <span class="values" id="deptValue"></span></span>
+        </div>
 
-    <div class="modal_container supplier_modal_container">
-      <form method="post" action="/store/{{pk}}/">
-        {% csrf_token %}
-        <input
-          id="modalSupplierNameInput"
-          type="text"
-          name="input_name"
-          value="Paracetamol"
-        />
-        <input
-          id=""
-          type="text"
-          name="input_voucher"
-          placeholder="Voucher no"
-        />
-        <select name="input_supp_name" id="">
-          <option value="">select supplier</option>
-          {% for supp in supplier %}
-          <option value="{{supp.supp_name}}">{{supp.supp_name}}</option>
-          {% endfor %}
-        </select>
-        <input type="number" name="input_amount" placeholder="QTY" />
-        <select name="op_type" id="">
-          <option value="add">add</option>
-        </select>
-        <input
-          type="text"
-          id="modalSupplierUnitIssue"
-          name="input_unit_issue"
-          value="kg"
-          placeholder="unit issue"
-          disabled
-        />
-        <input
-          type="number"
-          id="modalSupplierUnitRate"
-          name="input_unit_rate"
-          value="150"
-          placeholder="unit rate"
-        />
-        <button>submit</button>
-      </form>
-      <button id="cancelBtn" class="cancel_btn" onclick="closeSupplierModal()">
-        cancel
-      </button>
-    </div>
-
-    <div class="new_stock">
-      <form method="post" action="/stock/">
-        {% csrf_token %}
-        <input
-          id="modalNameInput"
-          type="text"
-          name="item_name"
-          placeholder="Item name"
-        />
-        <input type="number" name="item_amount" placeholder="QTY" />
-        <input
-          id="input_unit_issue"
-          type="text"
-          name="input_unit_issue"
-          placeholder="unit of isue"
-        />
-        <input
-          id="input_unit_rate"
-          type="number"
-          name="input_unit_rate"
-          placeholder="unit rate"
-        />
-        {% comment %} <select name="dept" id="" multiple>
-          <option value="">select department</option>
-          {% for dept in department %}
-          <option value="{{dept.id}}">{{dept.dept_name}}</option>
-          {% endfor %}
-        </select> {% endcomment %}
-
-        {% comment %} <label>Departments:</label><br>
-        {% for dept in department %}
-            <input type="checkbox" id="department_{{ dept.id }}" name="departments" value="{{ dept.id }}">
-            <label for="department_{{ dept.id }}">{{ dept.dept_name }}</label><br>
-        {% endfor %} {% endcomment %}
-        <button>submit</button>
+        <div class="cartitems">
+          <table>
+            <thead>
+              <tr>
+                <th class="item_name">Item name</th>
+                <th class="qty">Quantity</th>
+                <th class="issue">Unit issue</th>
+              </tr>
+            </thead>
+          <tbody>
+            {% for key, item in cart.items %}
+            <tr>
+              <td class="item_name">
+                <a class="name" href="#">
+                  {% if item.name|length >= 60 %}
+                  {{item.name|safe|truncatechars:60}} {% else %}
+                  {{item.name}} {% endif %}
+                </a>
+              </td>
+              <td class="qty">
+                
+                <span class="cart_quantity">{{item.quantity}}</span>
+                
+              </td>
+             
+              <td class="issue">
+                {% if item.unit_issue|length >= 14%}
+                {{item.unit_issue|safe|truncatechars:14}} {% else %}
+                {{item.unit_issue}} {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        <button>Confirm</button>
       </form>
       <button
         id="cancelNewStock"
         class="cancel_btn"
-        onclick="closeNewStockModal()"
+        onclick="closeConfirmOrderModal()"
       >
         cancel
       </button>
@@ -425,6 +383,19 @@
         cancel
       </button>
     </div>
-    <script src="{% static './js/inventory.js' %}"></script>
+
+    
+    <div class="deletePopOut">
+      <p>Are you sure you want to delete <span class="popOutItemName"></span>?</p>
+      <div class="btn_wrapper">
+        <button class="danger">
+          <a class="popOutItemLink" href="">Yes</a>
+        </button>
+        <button id="cancelPopOut" class="cancel_btnPopOut" onclick="closePopOut()">
+          No
+      </button>
+      </div>
+    </div>
+    <script src="{% static './js/cart.js' %}"></script>
   </body>
 </html>

@@ -25,20 +25,20 @@ def is_valid(param):
 def index(request):
     dept = Department.objects.all()
     items = Items.objects.all()
-    history = History.objects.all()
+    history = SupplyHistory.objects.all()
     supp = Supplier.objects.all()
     # dept = Department.objects.all()
     total_items = len(items)
     out_of_stock = len(items.filter(amount__lt=20))
     suppliers = len(supp)
-    issued = len(dept)
+    # issued = len(dept)
 
     context = {
         "total_items": total_items,
         "out_of_stock": out_of_stock,
         "suppliers": suppliers,
-        "issued": issued,
-        "dept": dept
+    #     "issued": issued,
+    #     "dept": dept
     }
     items = items.values()
     if request.method == "POST":
@@ -62,34 +62,34 @@ def index(request):
 
 
 @login_required
-def dept(request, pk):
+def updateSupply(request):
     if request.method == "POST": 
         op_type = request.POST["op_type"]
         if op_type == "add":
+            input_id = request.POST['input_id']
             input_name = request.POST['input_name']
             input_voucher = request.POST['input_voucher']
             input_supplier_name = request.POST['input_supp_name']
             input_amount = request.POST['input_amount']
-            # input_unit_issue = request.POST["input_unit_issue"]
             input_unit_rate = request.POST["input_unit_rate"]
             
             if input_supplier_name == "":
                 messages.info(request, 'Select a Supplier!')
-                return redirect('/store/' + pk)
+                return redirect('/stock/')
             
             if validateRate(input_unit_rate) == False:
                 messages.info(request, 'Input right Unit Rate!')
-                return redirect('/store/' + pk)
+                return redirect('/stock/')
             
-            if Items.objects.filter(item_name=input_name).exists():
+            item = get_object_or_404(Items, item_id=input_id)
+            if item:
                 if validate(input_amount) == True:
-                    item = Items.objects.all().filter(item_name=input_name)[0]
                     amnt = int(input_amount)
                     item.amount += amnt
                     # item.unit_issue = input_unit_issue
                     item.unit_rate = input_unit_rate
                     item.save()
-                    history = History.objects.create(item_name=item.item_name,
+                    history = SupplyHistory.objects.create(item_name=item.item_name,
                                                     voucher_no=input_voucher,
                                                     description=input_supplier_name,
                                                     action="received",
@@ -99,89 +99,18 @@ def dept(request, pk):
                                                     unit_rate=input_unit_rate,
                                                     slug=item.slug)
                     history.save()
-                    return redirect('/store/' + pk)
+                    messages.info(request, 'Supply updated!')
+                    return redirect('/stock/')
                 else:
                     messages.info(request, 'Enter a valid Quantity!')
-                    return redirect('/store/' + pk)
+                    return redirect('/stock/')
             else:
                 messages.info(request, 'Item does not exist!')
-                return redirect('/store/' + pk)
-        elif op_type == "subtract":
-            input_name = request.POST['input_name']
-            input_voucher = request.POST['input_voucher']
-            input_dept_name = request.POST['input_dept_name']
-            input_amount = request.POST['input_amount']
-            # input_unit_issue = request.POST["input_unit_issue"]
-            # input_unit_rate = request.POST["input_unit_rate"]
-            
-            if input_dept_name == "":
-                messages.info(request, 'Select a Department!')
-                return redirect('/store/' + pk)
-            
-            # if validateRate(input_unit_rate) == False:
-            #     messages.info(request, 'Input right Unit Rate!')
-            #     return redirect('/store')
-            
-            if Items.objects.filter(item_name=input_name).exists():
-                if validate(input_amount) == True:
-                    item = Items.objects.all().filter(item_name=input_name)[0]
-                    if item.amount >= int(input_amount):
-                        amnt = int(input_amount)
-                        item.amount -= amnt
-                        item.save()
-                        history = History.objects.create(item_name=item.item_name,
-                                                        voucher_no=input_voucher,
-                                                        description=input_dept_name,
-                                                        action="issued",
-                                                        amount=str(amnt),
-                                                        bal=str(item.amount),
-                                                        unit_issue=item.unit_issue,
-                                                        unit_rate=item.unit_rate,
-                                                        slug=item.slug)
-                        history.save()
-                        return redirect('/store/' + pk)
-                    else:
-                        messages.info(request, 'Not enough in stock!')
-                        return redirect('/store/' + pk)
-                else:
-                    messages.info(request, 'enter a valid amount!')
-                    return redirect('/store/' + pk)
-            else:
-                messages.info(request, 'Item does not exist!')
-                return redirect('/store/' + pk)
+                return redirect('/stock')
 
-    item_name_input = request.GET.get('item_name')
-    min_amnt = request.GET.get('min_amnt')
-    max_amnt = request.GET.get('max_amnt')
-    issue_unit = request.GET.get('issue_unit')
+   
 
-    try:
-        department = Department.objects.get(dept_name=pk)
-    except:
-        return redirect('/')
-    # if is_in_department == False:
-        # 
-    # Check if the department is associated with the item
-    # is_in_department = Items.departments.filter(pk=department.pk).exists()
-    
-    department = Department.objects.get(dept_name=pk)
-    dep = Department.objects.all()
-    items = Items.objects.filter(dept__id=department.pk).order_by('-modified_at')
-    supp = Supplier.objects.all()
-
-    if is_valid(item_name_input):
-        items = items.filter(item_name__contains=item_name_input)
-
-    if is_valid(min_amnt):
-        items = items.filter(amount__gte=min_amnt)
-
-    if is_valid(max_amnt):
-        items = items.filter(amount__lt=max_amnt)
-
-    if is_valid(issue_unit):
-        items = items.filter(unit_issue__icontains=issue_unit)
-
-    return render(request, 'dept1.html', {'department': dep, 'items': items, 'supplier': supp, "pk": pk})
+    redirect('/stock')
 
 
 @login_required
@@ -207,12 +136,12 @@ def newstock(request):
             item = Items.objects.create(item_id=test,
                                          item_name=item_name, amount=item_amount, pack_amount=input_pack_amount, unit_issue=input_unit_issue, unit_rate=input_unit_rate)
             item.save()
-            departments_ids = request.POST.getlist('departments')  # Assuming departments are selected in a form
-            for department_id in departments_ids:
-                department = get_object_or_404(Department, pk=department_id)
-                item.dept.add(department)
+            # departments_ids = request.POST.getlist('departments')  # Assuming departments are selected in a form
+            # for department_id in departments_ids:
+            #     department = get_object_or_404(Department, pk=department_id)
+            #     item.dept.add(department)
             item = Items.objects.all().filter(item_name=item_name)[0]
-            history = History.objects.create(item_id=str(item.item_id),
+            history = SupplyHistory.objects.create(item_id=str(item.item_id),
                                              item_name=item.item_name,
                                              voucher_no="",
                                              description="",
@@ -232,6 +161,8 @@ def newstock(request):
     
     items = Items.objects.all().order_by('-modified_at')
     dept = Department.objects.all()
+    supp = Supplier.objects.all()
+
     units = Units.objects.all()
 
     if is_valid(item_name_input):
@@ -246,12 +177,12 @@ def newstock(request):
     if is_valid(issue_unit):
         items = items.filter(unit_issue__icontains=issue_unit)
 
-    return render(request, "newstock.html", {"items": items, "department": dept, "units": units})
+    return render(request, "newstock.html", {"items": items, "department": dept, 'supplier': supp, "units": units})
 
 
 @login_required
 def history(request):
-    history = History.objects.all()
+    history = SupplyHistory.objects.all()
     dept = Department.objects.all()
 
     item_name_input = request.GET.get('item_name')
@@ -277,7 +208,7 @@ def history(request):
     if is_valid(action) and action != "Choose...":
         history = history.filter(action__iexact=action)
 
-    if is_valid(issue_unit):
+    if is_valid(issue_unit) and issue_unit != "select unit":
         history = history.filter(unit_issue__iexact=issue_unit)
 
     # if is_valid(rate_unit):
@@ -326,10 +257,95 @@ def history(request):
         # if page is empty then return last page
         page_obj = p.page(p.num_pages)
     # print('obj', page_obj.object_list)
-    acts = ["issued", "received", "removed", "added"]
-    context = {'page_obj': page_obj, "actions": acts, "department": dept}
+    acts = ["received", "removed", "added"]
+    units = Units.objects.all()
+    context = {'page_obj': page_obj, "units": units, "actions": acts, "department": dept}
 
     return render(request, 'history.html', context)
+
+@login_required
+def DisburseHistory(request):
+    history = DisbursementItem.objects.all()
+    
+    dept = Department.objects.all()
+
+    item_name_input = request.GET.get('item_name')
+    file_no = request.GET.get('file_no')
+    user_type = request.GET.get('user_type')
+    user_type = request.GET.get('user_type')
+    issue_unit = request.GET.get('issue_unit')
+    min_date_string = request.GET.get('min_date')
+    max_date_string = request.GET.get('max_date')
+    # if dept !=  "general":
+    #     history = history.filter(description=dept)
+
+    # if item != "":
+    #     history = history.filter(slug=item)
+    # else:
+    if is_valid(item_name_input):
+        history = history.filter(item_name__icontains=item_name_input)
+
+    if is_valid(file_no):
+        history = history.filter(file_no__icontains=file_no)
+
+    # if is_valid(action) and action != "Choose...":
+    #     history = history.filter(action__iexact=action)
+    
+    if is_valid(user_type) and user_type != "select Patient type":
+        history = history.filter(user_type__iexact=user_type)
+
+    if is_valid(issue_unit) and issue_unit != "select unit":
+        history = history.filter(unit_issue__iexact=issue_unit)
+
+    # if is_valid(rate_unit):
+    #     print("rateping")
+    #     history = history.filter(unit_rate=rate_unit)
+
+    if is_valid(min_date_string):
+        specific_date = datetime.strptime(
+            min_date_string, '%Y-%m-%d').date()
+        # print("min date", min_date_string)
+        # print("specific date", specific_date)
+        # formatted_date = specific_date.strftime('%B %d, %Y')
+        history = history.filter(dateCreated__gte=specific_date)
+
+    if is_valid(max_date_string):
+        specific_date = datetime.strptime(
+            max_date_string, '%Y-%m-%d').date()
+        # formatted_date = specific_date.strftime('%B %d, %Y')
+        history = history.filter(dateCreated__lt=specific_date)
+
+    history = history.order_by('-date_created')
+    history = history.values()
+    if request.method == "POST":
+        # Create the CSV file
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="my_model.csv"'
+
+        # Write model data to the CSV file
+        writer = csv.writer(response)
+        writer.writerow(['date', 'item', 'file no', 'full name',
+                         'user_type', 'unit issue',  'amount', 'balance'])
+        for obj in history:
+            writer.writerow([obj['dateCreated'], obj['item_name'], obj['file_no'], obj['user_name'],
+                             obj['user_type'], obj['unit_issue'], obj['quantity'], obj['bal']])
+
+        return response
+
+    p = Paginator(history, 7)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = p.get_page(page_number)  # returns the desired page object
+    except PageNotAnInteger73:
+        # if page_number is not an integer then assign the first page
+        page_obj = p.page(1)
+    except EmptyPage:
+        # if page is empty then return last page
+        page_obj = p.page(p.num_pages)
+    units = Units.objects.all()
+    context = {'page_obj': page_obj, "units": units,  "department": dept}
+
+    return render(request, 'disbursehistory.html', context)
 
 
 @login_required
@@ -563,6 +579,7 @@ def inventory(request):
     items = Items.objects.all()
     return render(request, 'inventory.html',  {'items': items})
 
+@login_required
 def add_to_cart(request, item_id):
     item = get_object_or_404(Items, item_id=item_id)
     cart = request.session.get('cart', {})
@@ -578,19 +595,117 @@ def add_to_cart(request, item_id):
         }
 
     request.session['cart'] = cart
-    messages.success(request, 'Item added to cart')
+    messages.success(request, 'Item added to cart. Go to cart or add more!')
     return redirect('/inventory')
 
+@login_required
 def view_cart(request):
     cart = request.session.get('cart', {})
     total = len(cart.values())
+    if total < 1:
+        messages.success(request, "Add Item to cart")
+        return redirect('/inventory')
     print(cart)
     return render(request, 'cart.html', {'cart': cart, 'total': total})
 
+
+@login_required
+def subquantity(request, item_id):
+    item = get_object_or_404(Items, item_id=item_id)
+    cart = request.session.get('cart', {})
+    item_id_str = str(item_id)
+
+    if item_id_str in cart:
+        if cart[item_id_str]['quantity'] > 1:
+            cart[item_id_str]['quantity'] -= 1
+            messages.success(request, f"{item.item_name} quantity decreased.")
+        else:
+            del cart[item_id_str]
+            messages.success(request, f"{item.item_name} removed from cart.")
+    else:
+        messages.warning(request, "Item not in cart.")
+
+    request.session['cart'] = cart
+    return redirect('/cart')
+
+@login_required
+def addquantity(request, item_id):
+    item = get_object_or_404(Items, item_id=item_id)
+    cart = request.session.get('cart', {})
+    item_id_str = str(item_id)
+
+    if item_id_str in cart:
+        current_quantity = cart[item_id_str]['quantity']
+        if current_quantity + 1 <= item.amount:
+            cart[item_id_str]['quantity'] += 1
+            messages.success(request, f"{item.item_name} quantity increased.")
+        else:
+            messages.warning(request, f"Only {item.amount} in stock. Cannot add more.")
+            return redirect('/cart')
+    else:
+        messages.warning(request, "Item not in cart.")
+        return redirect('/cart')
+
+    request.session['cart'] = cart
+    return redirect('/cart')
+
+@login_required
 def checkout(request):
     # Process disbursement here (e.g. convert cart to Disbursement model entries)
-    request.session['cart'] = {}  # Clear cart
-    return render(request, 'inventory/checkout_success.html')
+    if request.method == 'POST':
+        cart = request.session.get('cart', {})
+        if not cart:
+            messages.warning(request, "Cart is empty.")
+            return redirect('/cart')
+
+        user_type = request.POST['user_type']
+        matStaffNum = request.POST['matric_no']
+        full_name = request.POST['full_name']
+        dept = request.POST['dept']
+        file_no = request.POST['file_no']
+
+        if full_name.strip() == "" or dept == "" or file_no == "":
+            messages.warning(request, "Complete User Info.")
+            return redirect('/cart')
+
+        disbursement = Disbursement.objects.create(user_name=full_name, user_type=user_type, mat_staff_no=matStaffNum, file_no=file_no, user_dept=dept)
+        
+
+        for item_id_str, item_data in cart.items():
+            item_id = item_id_str
+            item = get_object_or_404(Items, item_id=item_id)
+
+            quantity = item_data['quantity']
+            unit_issue = item_data['unit_issue']
+
+            # Check stock
+            if quantity > item.amount:
+                messages.error(request, f"Insufficient stock for {item.item_name}")
+                disbursement.delete()  # rollback
+                return redirect('/cart')
+
+            # Reduce stock
+            item.amount -= quantity
+            item.save()
+
+            # Record disbursement
+            DisbursementItem.objects.create(
+                disbursement=disbursement,
+                item=item,
+                user_name=full_name, user_type=user_type, mat_staff_no=matStaffNum, file_no=file_no, user_dept=dept,
+                quantity=quantity,
+                item_name=item.item_name,
+                unit_issue=unit_issue,
+                unit_rate=item.unit_rate,
+                bal=item.amount,
+            )
+
+
+        # Clear cart
+        request.session['cart'] = {}
+        messages.success(request, "Disbursement processed successfully.")
+        return redirect("/cart")
+    return redirect("/cart")
 
 def remove_from_cart(request, item_id):
     cart = request.session.get('cart', {})
@@ -600,7 +715,7 @@ def remove_from_cart(request, item_id):
         del cart[item_id_str]
         request.session['cart'] = cart
 
-    return redirect('view_cart')
+    return redirect('/cart/')
 
 # @login_required
 # def report(request):

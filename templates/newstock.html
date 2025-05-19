@@ -220,9 +220,9 @@
                   <td class="rate">{{item.unit_rate}}</td>
                   <td class="pack_amount">{{item.pack_amount}}</td>
 
-                  {% comment %} <td class="update">
-                    <button type="button" onclick="handleNewStockEditUnit('{{item.item_id}}', '{{item.item_name}}', '{{item.pack_amount}}', '{{item.unit_issue}}')">update</button>
-                  </td> {% endcomment %}
+                  <td class="update">
+                    <button type="button" onclick="showSupplierModal('{{item.item_id}}', '{{item.item_name}}', '{{item.unit_rate}}', '{{item.unit_issue}}')">receive supply</button>
+                  </td>
 
                   <td class="update">
                     <button type="button" onclick="handleNewStockEditUnit('{{item.item_id}}', '{{item.item_name}}')">update</button>
@@ -250,7 +250,59 @@
 
     <div class="background_wrapper"></div>
 
-    
+    <div class="modal_container supplier_modal_container">
+      <form method="post" action="/updatesupply/">
+        {% csrf_token %}
+        <input
+          id="modalSupplierIdInput"
+          type="text"
+          name="input_id"
+          value=""
+          hidden
+        />
+        <input
+          id="modalSupplierNameInput"
+          type="text"
+          name="input_name"
+          value="Paracetamol"
+        />
+        <input
+          id=""
+          type="text"
+          name="input_voucher"
+          placeholder="Voucher no"
+        />
+        <select name="input_supp_name" id="">
+          <option value="">select supplier</option>
+          {% for supp in supplier %}
+          <option value="{{supp.supp_name}}">{{supp.supp_name}}</option>
+          {% endfor %}
+        </select>
+        <input type="number" name="input_amount" placeholder="QTY" />
+        <select name="op_type" id="">
+          <option value="add">add</option>
+        </select>
+        <input
+          type="text"
+          id="modalSupplierUnitIssue"
+          name="input_unit_issue"
+          value="kg"
+          placeholder="unit issue"
+          disabled
+        />
+        <input
+          type="number"
+          id="modalSupplierUnitRate"
+          name="input_unit_rate"
+          value="150"
+          placeholder="unit rate"
+        />
+        <button>submit</button>
+      </form>
+      <button id="cancelBtn" class="cancel_btn" onclick="closeSupplierModal()">
+        cancel
+      </button>
+    </div>
 
     <div class="new_stock">
       <form method="post" action="/stock/">
@@ -286,14 +338,14 @@
         />
         
 
-        <label class="depts_checkbox">Departments:</label><br>
+        <!-- <label class="depts_checkbox">Departments:</label><br>
         
           {% for dept in department %}
               <div class="checkbox_card">
                 <input type="checkbox" class="checkbx" id="department_{{ dept.id }}" name="departments" value="{{ dept.id }}">
                 <label class="checkbx_label" for="department_{{ dept.id }}">{{ dept.dept_name }}</label>
               </div>
-          {% endfor %}
+          {% endfor %} -->
         
         <button>submit</button>
       </form>
@@ -394,12 +446,14 @@
           name="max_amnt"
           placeholder="Max Qty"
         />
-        <input
+        <select
           id="modalIssueUnitInput"
-          type="text"
-          name="issue_unit"
-          placeholder="Issue Unit"
-        />
+          name="issue_unit">
+          {% for unit in units %}
+            <option>{{unit.unit_code}}</option>
+          {% endfor %}
+
+        </select>
         <!-- <input id="modalRateUnitInput" min=1 type="number" name="rate_unit" placeholder="Rate of Unit"> -->
 
         <button>submit</button>
