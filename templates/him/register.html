@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New Patient</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 p-6">
+    <div class="space-y-6 max-w-4xl mx-auto">
+        <div class="flex items-center space-x-3">
+            <i data-lucide="user-plus" class="h-8 w-8 text-blue-600"></i>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Register New Patient</h1>
+                <p class="text-gray-600">Add a new patient to the medical records system</p>
+            </div>
+        </div>
+        {% for message in messages %}
+          <h5 style="color: red">{{message}}</h5>
+        {% endfor %}
+
+        <div class="bg-white shadow-sm rounded-lg border">
+            <form id="patientForm" method="post" action="/him/" class="space-y-6 p-8">
+                {% csrf_token %}
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">
+                                First Name *
+                            </label>
+                            <input
+                                type="text"
+                                name="first_name"
+                                id="first_name"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">
+                                Last Name *
+                            </label>
+                            <input
+                                type="text"
+                                name="last_name"
+                                id="last_name"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+
+                        <div>
+                            <label for="dob" class="block text-sm font-medium text-gray-700 mb-1">
+                                Date of Birth *
+                            </label>
+                            <input
+                                type="date"
+                                name="dob"
+                                id="dob"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+
+                        <div>
+                            <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">
+                                Gender *
+                            </label>
+                            <select
+                                name="gender"
+                                id="gender"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                                <option value="O">Other</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">
+                                Status *
+                            </label>
+                            <select
+                                name="status"
+                                id="status"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                                <option value="">Select Status</option>
+                                <option value="STUDENT">Student</option>
+                                <option value="STAFF">Staff</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="id_no" class="block text-sm font-medium text-gray-700 mb-1">
+                                ID Number *
+                            </label>
+                            <input
+                                type="text"
+                                name="id_no"
+                                id="id_no"
+                                required
+                                maxlength="15"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+
+                        <div>
+                            <label for="xray_no" class="block text-sm font-medium text-gray-700 mb-1">
+                                X-Ray Number 
+                            </label>
+                            <input
+                                type="text"
+                                name="xray_no"
+                                id="xray_no"
+                                maxlength="15"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+                                Phone Number *
+                            </label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                id="phone"
+                                required
+                                maxlength="15"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                                Email Address
+                            </label>
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="address" class="block text-sm font-medium text-gray-700 mb-1">
+                                Address *
+                            </label>
+                            <textarea
+                                name="address"
+                                id="address"
+                                required
+                                rows="3"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Cultural Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label for="religion" class="block text-sm font-medium text-gray-700 mb-1">
+                                Religion *
+                            </label>
+                            <select
+                                name="religion"
+                                id="religion"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                                <option value="">Select Religion</option>
+                                <option value="CHRISTIAN">Christianity</option>
+                                <option value="MUSLIM">Muslim</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="state_of_origin" class="block text-sm font-medium text-gray-700 mb-1">
+                                State of Origin *
+                            </label>
+                            <input
+                                type="text"
+                                name="state_of_origin"
+                                id="state_of_origin"
+                                required
+                                maxlength="50"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+
+                        <div>
+                            <label for="Tribe" class="block text-sm font-medium text-gray-700 mb-1">
+                                Tribe *
+                            </label>
+                            <input
+                                type="text"
+                                name="Tribe"
+                                id="Tribe"
+                                required
+                                maxlength="60"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div id="errorMessage" class="hidden rounded-lg bg-red-50 p-4 border border-red-200">
+                    <div class="text-sm text-red-700">Failed to register patient. Please try again.</div>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-6 border-t">
+                    <button
+                        type="button"
+                        onclick="window.location.reload()"
+                        class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                        <i data-lucide="x" class="h-4 w-4"></i>
+                        <span>Cancel</span>
+                    </button>
+                    <button
+                        type="submit"
+                        id="submitButton"
+                        class="flex items-center space-x-2 px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <i data-lucide="save" class="h-4 w-4"></i>
+                        <span>Register Patient</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            const form = document.getElementById('patientForm');
+            const submitButton = document.getElementById('submitButton');
+            const errorMessage = document.getElementById('errorMessage');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                submitButton.disabled = true;
+                submitButton.querySelector('span').textContent = 'Registering...';
+                errorMessage.classList.add('hidden');
+
+                try {
+                    // Simulate API call with a 2-second delay
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    const randomSuccess = Math.random() > 0.3; // 70% success rate for demo
+                    if (randomSuccess) {
+                        alert('Patient registered successfully!');
+                        // window.location.href = '/dashboard/patients/list'; // Simulate navigation
+                        form.submit()
+                    } else {
+                        throw new Error('Registration failed');
+                    }
+                } catch (error) {
+                    errorMessage.classList.remove('hidden');
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.querySelector('span').textContent = 'Register Patient';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

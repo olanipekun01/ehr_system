@@ -1,6 +1,6 @@
 from . import views
 from django.urls import path, include
-
+from django.conf.urls import handler404
 
 app_name = 'common'
 
@@ -8,6 +8,13 @@ app_name = 'common'
 #     PasswordResetOTPEmailView,
 #     PasswordResetConfirmationView,
 # )
+
+# Define the custom 404 view
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
+# Set the handler for 404 errors
+handler404 = custom_404_view
 
 urlpatterns = [
     # path('register/', views.RegisterView.as_view(), name='register'),
