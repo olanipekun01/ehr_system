@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Achievers University Owo</title>
+
+    <link href="{% static './css/login.css' %}" rel="stylesheet" />
+  </head>
+
+  <body>
+    <header>
+      <a href="{% url 'store:index' %}" class="header_wrapper">
+        <img src="{% static './assets/achieverslogo.png' %}" alt="" />
+        <h1>AU PHARM</h1>
+      </a>
+      {% if user.is_authenticated %}
+      <span class="logout"><a href="{% url 'store:logout' %}">logout</a></span>
+      {% else %}
+      <span class="login"><a href="{% url 'store:login' %}">login</a></span>
+      {% endif %}
+    </header>
+    <main>
+        {% for message in messages %}
+          <h5 style="color: red">{{message}}</h5>
+        {% endfor %}
+      <form method="post" action="">
+        {% csrf_token %}
+        <label for="username">Username</label>
+        <input placeholder="username" name="username" type="text" />
+        <label for="password">Password</label>
+        <input type="password" name="password" id="" />
+        <button>submit</button>
+      </form>
+    </main>
+
+    <footer>
+      <span>Forklift &copy2023</span>
+    </footer>
+  </body>
+</html>

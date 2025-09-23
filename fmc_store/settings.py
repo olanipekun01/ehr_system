@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store',
+    'common',
+    'him',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +60,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'fmc_store.wsgi.application'
+
+AUTH_USER_MODEL = 'common.User'
 
 
 # Database
