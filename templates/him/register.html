@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,247 +15,628 @@
             0%, 100% { opacity: 1; }
             50% { opacity: .5; }
         }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 78px;
+            background: #2a67eb;
+            padding: 6px 14px;
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            width: 240px;
+        }
+
+        .sidebar .logo_content .logo {
+            display: flex;
+            color: #ffff;
+            width: 100%;
+            height: 50px;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar.active .logo_content .logo {
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        .logo_content .logo img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .logo_content .logo .logo_name {
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .sidebar #btn {
+            position: absolute;
+            color: #ffff;
+            left: 50%;
+            top: 18px;
+            font-size: 20px;
+            height: 25px;
+            width: 25px;
+            text-align: center;
+            line-height: 50px;
+            transform: translateX(-50%);
+        }
+
+        .sidebar.active #btn {
+            left: 90%;
+        }
+
+        .sidebar ul {
+            margin-top: 20px;
+        }
+
+        .sidebar ul li {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin: 5px 5px;
+            list-style: none;
+            line-height: 50px;
+        }
+
+        .sidebar ul li .tooltip {
+            position: absolute;
+            left: 122px;
+            top: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 6px;
+            height: 35px;
+            width: 122px;
+            background: #fff;
+            line-height: 35px;
+            text-align: center;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: 0s;
+            opacity: 0;
+            pointer-events: none;
+            display: block;
+
+        }
+
+        .sidebar.active ul li .tooltip {
+            display: none;
+        }
+
+        .sidebar ul li:hover .tooltip {
+            transition: all 0.5s ease;
+            opacity: 1;
+            top: 50%;
+            z-index: 999;
+        }
+
+        .sidebar ul li input {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            border-radius: 12px;
+            outline: none;
+            border: none;
+            background: #6181c7;
+            padding-left: 50px;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .sidebar ul li .bx-search {
+            position: absolute;
+            z-index: 99;
+            color: #fff;
+            top: 13px;
+            left: 10px;
+            font-size: 22px;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar ul li .bx-search:hover {
+            background: #fff;
+            color: #1d1b31;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        .sidebar ul li a:hover {
+            color: #11101d;
+            background-color: #fff;
+        }
+
+
+        .sidebar ul li a img {
+            height: 25px;
+            min-width: 22px;
+            border-radius: 12px;
+            line-height: 50px;
+            text-align: center;
+            margin-left: 5px;
+        }
+
+
+        .sidebar .links_name {
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            margin-left: 5px;
+        }
+
+        .sidebar.active .links_name {
+            opacity: 1;
+            pointer-events: auto;
+
+        }
+
+        .sidebar .profile_content {
+            position: absolute;
+            color: #fff;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .sidebar .profile_content .profile {
+            position: relative;
+            padding: 10px 6px;
+            height: 60px;
+            background: none;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.active .profile_content .profile {
+            background: #6181c7;
+        }
+
+        .sidebar .profile_content .profile .profile_details {
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .sidebar.active .profile .profile_details {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile .profile_details img {
+            height: 45px;
+            width: 45px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .profile #log_out {
+            position: absolute;
+            left: 50%;
+            bottom: 5px;
+            transform: translateX(-50%);
+            min-width: 50px;
+            line-height: 50px;
+            font-size: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.4s ease;
+            background: #6181c7;
+        }
+
+        .sidebar.active .profile #log_out {
+            left: 88%;
+            background: none;
+        }
+
+        .profile .profile_details .name_job {
+            margin-left: 10px;
+        }
+
+        .profile .profile_details .name {
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .profile .profile_details .job {
+            font-size: 12px;
+        }
+
+        main.active {
+            position: absolute;
+            height: 100%;
+            width: calc(100% - 78px);
+            left: 78px;
+            transition: all 0.5s ease;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-100 p-6">
-    <div class="space-y-6 max-w-4xl mx-auto">
-        <div class="flex items-center space-x-3">
-            <i data-lucide="user-plus" class="h-8 w-8 text-blue-600"></i>
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Register New Patient</h1>
-                <p class="text-gray-600">Add a new patient to the medical records system</p>
+    <div class="sidebar">
+      <div class="logo_content">
+        <div class="logo">
+          <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
+          <div class="logo_name">AU MediLog</div>
+        </div>
+        <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
+      </div>
+      <ul class="nav_list">
+        <li>
+          <form method="get" action="">
+            <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
+            <input name="item_name"  type="text" placeholder="Search name...">
+            <span class="tooltip">Search</span>
+          </form>
+        </li>
+        <!-- <li>
+            <a href="/">
+                <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
+                <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li> -->
+        <!-- <li class="store_list">
+            <a href="#">
+                <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+                <span class="links_name">Store</span>
+                <img class="down_arrow" src="{% static './assets/bx-chevron-down.svg' %}" alt="">
+            </a>
+            <span class="tooltip">Store</span>
+            <div class="sub-menu">
+                <div class="card">
+                    <a class="a_sub_links" href="/store/staff">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Staff<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/student">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Student<span>
+                    </a>
+                </div>
+                
             </div>
+        </li> -->
+        <li>
+          <a href="/him/patientlist/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Patient List</span>
+          </a>
+          <span class="tooltip">Patient List</span>
+        </li>
+        <li>
+          <a href="/him/registerpatient/">
+              <img src="{% static './assets/cart.png' %}" alt="">
+              <span class="links_name">Register Patient</span>
+          </a>
+          <span class="tooltip">Register Patient</span>
+        </li>
+  
+        <!-- <li>
+            <a href="/stock/">
+                <img src="{% static './assets/bx-package.svg' %}" alt="">
+                <span class="links_name">+ Stock</span>
+            </a>
+            <span class="tooltip">+ Stock</span>
+        </li>
+        <li>
+            <a href="/disburse/history/">
+                <img src="{% static './assets/calendar-week.png' %}" alt="">
+                <span class="links_name">Disburse Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li>
+        <li>
+            <a href="/supply/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Supply Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li> -->
+        
+        <!-- <li>
+            <a href="/department/">
+                <img src="{% static './assets/bx-collapse.svg' %}" alt="">
+                <span class="links_name">Department</span>
+            </a>
+            <span class="tooltip">Department</span>
+            
+        </li> -->
+        <!-- <li>
+            <a href="/suppliers/">
+                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
+                <span class="links_name">Supplier</span>
+            </a>
+            <span class="tooltip">Supplier</span>
+        </li>
+        <li>
+          <a href="/units/">
+              <img src="{% static './assets/shape-unite.png' %}" alt="">
+              <span class="links_name">Units</span>
+          </a>
+          <span class="tooltip">Units</span>
+      </li> -->
+
+
+      
+    
+        
+
+      </ul>
+      <div class="profile_content">
+        <div class="profile">
+          <div class="profile_details">
+            <img src="{% static './assets/AsianManAvatar(1).png' %}" alt="">
+            <div class="name_job">
+              <div class="name">Admin</div>
+              <div class="job">Store Manager</div>
+            </div>
+          </div>
+          <a href="/logout/"><img id="log_out" src="{% static './assets//bx-log-out.svg' %}" alt=""></a>
         </div>
-        {% for message in messages %}
-          <h5 style="color: red">{{message}}</h5>
-        {% endfor %}
 
-        <div class="bg-white shadow-sm rounded-lg border">
-            <form id="patientForm" method="post" action="/him/" class="space-y-6 p-8">
-                {% csrf_token %}
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">
-                                First Name *
-                            </label>
-                            <input
-                                type="text"
-                                name="first_name"
-                                id="first_name"
-                                required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                        </div>
-
-                        <div>
-                            <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">
-                                Last Name *
-                            </label>
-                            <input
-                                type="text"
-                                name="last_name"
-                                id="last_name"
-                                required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                        </div>
-
-                        <div>
-                            <label for="dob" class="block text-sm font-medium text-gray-700 mb-1">
-                                Date of Birth *
-                            </label>
-                            <input
-                                type="date"
-                                name="dob"
-                                id="dob"
-                                required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                        </div>
-
-                        <div>
-                            <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">
-                                Gender *
-                            </label>
-                            <select
-                                name="gender"
-                                id="gender"
-                                required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                                <option value="">Select Gender</option>
-                                <option value="M">Male</option>
-                                <option value="F">Female</option>
-                                <option value="O">Other</option>
-                            </select>
-                        </div>
-                         <div>
-                            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">
-                                Status *
-                            </label>
-                            <select
-                                name="status"
-                                id="status"
-                                required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                                <option value="">Select Status</option>
-                                <option value="STUDENT">Student</option>
-                                <option value="STAFF">Staff</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="id_no" class="block text-sm font-medium text-gray-700 mb-1">
-                                ID Number *
-                            </label>
-                            <input
-                                type="text"
-                                name="id_no"
-                                id="id_no"
-                                required
-                                maxlength="15"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                        </div>
-
-                        <div>
-                            <label for="xray_no" class="block text-sm font-medium text-gray-700 mb-1">
-                                X-Ray Number 
-                            </label>
-                            <input
-                                type="text"
-                                name="xray_no"
-                                id="xray_no"
-                                maxlength="15"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
-                                Phone Number *
-                            </label>
-                            <input
-                                type="tel"
-                                name="phone"
-                                id="phone"
-                                required
-                                maxlength="15"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                        </div>
-
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-                                Email Address
-                            </label>
-                            <input
-                                type="email"
-                                name="email"
-                                id="email"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                        </div>
-
-                        <div class="md:col-span-2">
-                            <label for="address" class="block text-sm font-medium text-gray-700 mb-1">
-                                Address *
-                            </label>
-                            <textarea
-                                name="address"
-                                id="address"
-                                required
-                                rows="3"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            ></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Cultural Information</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label for="religion" class="block text-sm font-medium text-gray-700 mb-1">
-                                Religion *
-                            </label>
-                            <select
-                                name="religion"
-                                id="religion"
-                                required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                                <option value="">Select Religion</option>
-                                <option value="CHRISTIAN">Christianity</option>
-                                <option value="MUSLIM">Muslim</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="state_of_origin" class="block text-sm font-medium text-gray-700 mb-1">
-                                State of Origin *
-                            </label>
-                            <input
-                                type="text"
-                                name="state_of_origin"
-                                id="state_of_origin"
-                                required
-                                maxlength="50"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                        </div>
-
-                        <div>
-                            <label for="Tribe" class="block text-sm font-medium text-gray-700 mb-1">
-                                Tribe *
-                            </label>
-                            <input
-                                type="text"
-                                name="Tribe"
-                                id="Tribe"
-                                required
-                                maxlength="60"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div id="errorMessage" class="hidden rounded-lg bg-red-50 p-4 border border-red-200">
-                    <div class="text-sm text-red-700">Failed to register patient. Please try again.</div>
-                </div>
-
-                <div class="flex justify-end space-x-3 pt-6 border-t">
-                    <button
-                        type="button"
-                        onclick="window.location.reload()"
-                        class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                        <i data-lucide="x" class="h-4 w-4"></i>
-                        <span>Cancel</span>
-                    </button>
-                    <button
-                        type="submit"
-                        id="submitButton"
-                        class="flex items-center space-x-2 px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        <i data-lucide="save" class="h-4 w-4"></i>
-                        <span>Register Patient</span>
-                    </button>
-                </div>
-            </form>
-        </div>
+      </div>
     </div>
 
+    <main id="mainClass">
+        <div class="space-y-6 max-w-4xl mx-auto">
+            <div class="flex items-center space-x-3">
+                <i data-lucide="user-plus" class="h-8 w-8 text-blue-600"></i>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Register New Patient</h1>
+                    <p class="text-gray-600">Add a new patient to the medical records system</p>
+                </div>
+            </div>
+            {% for message in messages %}
+            <h5 style="color: red">{{message}}</h5>
+            {% endfor %}
+
+            <div class="bg-white shadow-sm rounded-lg border">
+                <form id="patientForm" method="post" action="/him/" class="space-y-6 p-8">
+                    {% csrf_token %}
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">
+                                    First Name *
+                                </label>
+                                <input
+                                    type="text"
+                                    name="first_name"
+                                    id="first_name"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+
+                            <div>
+                                <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Last Name *
+                                </label>
+                                <input
+                                    type="text"
+                                    name="last_name"
+                                    id="last_name"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+
+                            <div>
+                                <label for="dob" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Date of Birth *
+                                </label>
+                                <input
+                                    type="date"
+                                    name="dob"
+                                    id="dob"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+
+                            <div>
+                                <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Gender *
+                                </label>
+                                <select
+                                    name="gender"
+                                    id="gender"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    <option value="">Select Gender</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                    <option value="O">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="status" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Status *
+                                </label>
+                                <select
+                                    name="status"
+                                    id="status"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    <option value="">Select Status</option>
+                                    <option value="STUDENT">Student</option>
+                                    <option value="STAFF">Staff</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="id_no" class="block text-sm font-medium text-gray-700 mb-1">
+                                    ID Number *
+                                </label>
+                                <input
+                                    type="text"
+                                    name="id_no"
+                                    id="id_no"
+                                    required
+                                    maxlength="15"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+
+                            <div>
+                                <label for="xray_no" class="block text-sm font-medium text-gray-700 mb-1">
+                                    X-Ray Number 
+                                </label>
+                                <input
+                                    type="text"
+                                    name="xray_no"
+                                    id="xray_no"
+                                    maxlength="15"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Phone Number *
+                                </label>
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    id="phone"
+                                    required
+                                    maxlength="15"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Email Address
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label for="address" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Address *
+                                </label>
+                                <textarea
+                                    name="address"
+                                    id="address"
+                                    required
+                                    rows="3"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Cultural Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label for="religion" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Religion *
+                                </label>
+                                <select
+                                    name="religion"
+                                    id="religion"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    <option value="">Select Religion</option>
+                                    <option value="CHRISTIAN">Christianity</option>
+                                    <option value="MUSLIM">Muslim</option>
+                                    <option value="OTHER">Other</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="state_of_origin" class="block text-sm font-medium text-gray-700 mb-1">
+                                    State of Origin *
+                                </label>
+                                <input
+                                    type="text"
+                                    name="state_of_origin"
+                                    id="state_of_origin"
+                                    required
+                                    maxlength="50"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+
+                            <div>
+                                <label for="Tribe" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Tribe *
+                                </label>
+                                <input
+                                    type="text"
+                                    name="Tribe"
+                                    id="Tribe"
+                                    required
+                                    maxlength="60"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="errorMessage" class="hidden rounded-lg bg-red-50 p-4 border border-red-200">
+                        <div class="text-sm text-red-700">Failed to register patient. Please try again.</div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-6 border-t">
+                        <button
+                            type="button"
+                            onclick="window.location.reload()"
+                            class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        >
+                            <i data-lucide="x" class="h-4 w-4"></i>
+                            <span>Cancel</span>
+                        </button>
+                        <button
+                            type="submit"
+                            id="submitButton"
+                            class="flex items-center space-x-2 px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <i data-lucide="save" class="h-4 w-4"></i>
+                            <span>Register Patient</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>   
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
@@ -288,6 +670,21 @@
                 }
             });
         });
+
+        let btn = document.querySelector('#btn');
+        let sidebar = document.querySelector('.sidebar');
+        let searchBtn = document.querySelector('.bx-search');
+        let mainClass = document.querySelector('#mainClass');
+
+        btn.onclick = function () {
+            sidebar.classList.toggle("active");
+            // mainClass.classList.toggle("active");
+        }
+
+        searchBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+        }
+
     </script>
 </body>
 </html>

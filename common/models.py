@@ -65,6 +65,7 @@ class Patient(models.Model):
     religion = models.CharField(max_length=25, choices=RELIGION_CHOICES)
     state_of_origin = models.CharField(max_length=50)
     Tribe = models.CharField(max_length=60)
+    # last_visitation_date
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_patients')
     created_at = models.DateTimeField(auto_now_add=True)
     

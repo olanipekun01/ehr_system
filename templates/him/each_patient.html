@@ -1,0 +1,775 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 78px;
+            background: #2a67eb;
+            padding: 6px 14px;
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            width: 240px;
+        }
+
+        .sidebar .logo_content .logo {
+            display: flex;
+            color: #ffff;
+            width: 100%;
+            height: 50px;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar.active .logo_content .logo {
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        .logo_content .logo img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .logo_content .logo .logo_name {
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .sidebar #btn {
+            position: absolute;
+            color: #ffff;
+            left: 50%;
+            top: 18px;
+            font-size: 20px;
+            height: 25px;
+            width: 25px;
+            text-align: center;
+            line-height: 50px;
+            transform: translateX(-50%);
+        }
+
+        .sidebar.active #btn {
+            left: 90%;
+        }
+
+        .sidebar ul {
+            margin-top: 20px;
+        }
+
+        .sidebar ul li {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin: 5px 5px;
+            list-style: none;
+            line-height: 50px;
+        }
+
+        .sidebar ul li .tooltip {
+            position: absolute;
+            left: 122px;
+            top: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 6px;
+            height: 35px;
+            width: 122px;
+            background: #fff;
+            line-height: 35px;
+            text-align: center;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: 0s;
+            opacity: 0;
+            pointer-events: none;
+            display: block;
+
+        }
+
+        .sidebar.active ul li .tooltip {
+            display: none;
+        }
+
+        .sidebar ul li:hover .tooltip {
+            transition: all 0.5s ease;
+            opacity: 1;
+            top: 50%;
+            z-index: 999;
+        }
+
+        .sidebar ul li input {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            border-radius: 12px;
+            outline: none;
+            border: none;
+            background: #6181c7;
+            padding-left: 50px;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .sidebar ul li .bx-search {
+            position: absolute;
+            z-index: 99;
+            color: #fff;
+            top: 13px;
+            left: 10px;
+            font-size: 22px;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar ul li .bx-search:hover {
+            background: #fff;
+            color: #1d1b31;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        .sidebar ul li a:hover {
+            color: #11101d;
+            background-color: #fff;
+        }
+
+
+        .sidebar ul li a img {
+            height: 25px;
+            min-width: 22px;
+            border-radius: 12px;
+            line-height: 50px;
+            text-align: center;
+            margin-left: 5px;
+        }
+
+
+        .sidebar .links_name {
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            margin-left: 5px;
+        }
+
+        .sidebar.active .links_name {
+            opacity: 1;
+            pointer-events: auto;
+
+        }
+
+        .sidebar .profile_content {
+            position: absolute;
+            color: #fff;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .sidebar .profile_content .profile {
+            position: relative;
+            padding: 10px 6px;
+            height: 60px;
+            background: none;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.active .profile_content .profile {
+            background: #6181c7;
+        }
+
+        .sidebar .profile_content .profile .profile_details {
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .sidebar.active .profile .profile_details {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile .profile_details img {
+            height: 45px;
+            width: 45px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .profile #log_out {
+            position: absolute;
+            left: 50%;
+            bottom: 5px;
+            transform: translateX(-50%);
+            min-width: 50px;
+            line-height: 50px;
+            font-size: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.4s ease;
+            background: #6181c7;
+        }
+
+        .sidebar.active .profile #log_out {
+            left: 88%;
+            background: none;
+        }
+
+        .profile .profile_details .name_job {
+            margin-left: 10px;
+        }
+
+        .profile .profile_details .name {
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .profile .profile_details .job {
+            font-size: 12px;
+        }
+
+        main.active {
+            position: absolute;
+            height: 100%;
+            width: calc(100% - 78px);
+            left: 78px;
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 p-6">
+
+    <div class="sidebar">
+      <div class="logo_content">
+        <div class="logo">
+          <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
+          <div class="logo_name">AU MediLog</div>
+        </div>
+        <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
+      </div>
+      <ul class="nav_list">
+        <li>
+          <form method="get" action="">
+            <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
+            <input name="item_name"  type="text" placeholder="Search name...">
+            <span class="tooltip">Search</span>
+          </form>
+        </li>
+        <!-- <li>
+            <a href="/">
+                <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
+                <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li> -->
+        <!-- <li class="store_list">
+            <a href="#">
+                <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+                <span class="links_name">Store</span>
+                <img class="down_arrow" src="{% static './assets/bx-chevron-down.svg' %}" alt="">
+            </a>
+            <span class="tooltip">Store</span>
+            <div class="sub-menu">
+                <div class="card">
+                    <a class="a_sub_links" href="/store/staff">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Staff<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/student">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Student<span>
+                    </a>
+                </div>
+                
+            </div>
+        </li> -->
+        <li>
+          <a href="/him/patientlist/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Patient List</span>
+          </a>
+          <span class="tooltip">Patient List</span>
+        </li>
+        <li>
+          <a href="/him/registerpatient/">
+              <img src="{% static './assets/cart.png' %}" alt="">
+              <span class="links_name">Register Patient</span>
+          </a>
+          <span class="tooltip">Register Patient</span>
+        </li>
+  
+        <!-- <li>
+            <a href="/stock/">
+                <img src="{% static './assets/bx-package.svg' %}" alt="">
+                <span class="links_name">+ Stock</span>
+            </a>
+            <span class="tooltip">+ Stock</span>
+        </li>
+        <li>
+            <a href="/disburse/history/">
+                <img src="{% static './assets/calendar-week.png' %}" alt="">
+                <span class="links_name">Disburse Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li>
+        <li>
+            <a href="/supply/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Supply Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li> -->
+        
+        <!-- <li>
+            <a href="/department/">
+                <img src="{% static './assets/bx-collapse.svg' %}" alt="">
+                <span class="links_name">Department</span>
+            </a>
+            <span class="tooltip">Department</span>
+            
+        </li> -->
+        <!-- <li>
+            <a href="/suppliers/">
+                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
+                <span class="links_name">Supplier</span>
+            </a>
+            <span class="tooltip">Supplier</span>
+        </li>
+        <li>
+          <a href="/units/">
+              <img src="{% static './assets/shape-unite.png' %}" alt="">
+              <span class="links_name">Units</span>
+          </a>
+          <span class="tooltip">Units</span>
+      </li> -->
+
+
+      
+    
+        
+
+      </ul>
+      <div class="profile_content">
+        <div class="profile">
+          <div class="profile_details">
+            <img src="{% static './assets/AsianManAvatar(1).png' %}" alt="">
+            <div class="name_job">
+              <div class="name">Admin</div>
+              <div class="job">Store Manager</div>
+            </div>
+          </div>
+          <a href="/logout/"><img id="log_out" src="{% static './assets//bx-log-out.svg' %}" alt=""></a>
+        </div>
+
+      </div>
+    </div>
+
+    <main id="mainClass">
+        <div class="space-y-6 max-w-5xl mx-auto">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center space-x-4">
+                    <button
+                        onclick="window.location.reload()"
+                        class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+                    >
+                        <i data-lucide="arrow-left" class="h-5 w-5"></i>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="user" class="h-8 w-8 text-blue-600"></i>
+                        <div>
+                            <h1 id="patientName" class="text-3xl font-bold text-gray-900">{{patient.first_name}} {{patient.last_name}}</h1>
+                            <p id="patientId" class="text-gray-600">{{patient.id_no}}</p>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    onclick="window.location.href = '/him/patient/edit/{{patient.id}}'"
+                    class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                    <i data-lucide="edit" class="h-4 w-4"></i>
+                    <span>Edit Patient</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Personal Information -->
+                <div class="bg-white rounded-lg shadow-sm border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i data-lucide="user" class="h-5 w-5 mr-2 text-blue-600"></i>
+                        Personal Information
+                    </h3>
+                    <div class="space-y-3" id="personalInfo">
+                        <div><span class="text-sm text-gray-500">Full Name:</span><p class="font-medium">{{patient.first_name}} {{patient.last_name}}</p></div>
+                        <div><span class="text-sm text-gray-500">Date of Birth:</span><p class="font-medium">{{patient.dob}}</p></div>
+                        <div><span class="text-sm text-gray-500">Gender:</span><p class="font-medium">{{patient.gender}}</p></div>
+                        <div><span class="text-sm text-gray-500">X-Ray Number:</span><p class="font-medium">{{patient.xray_no}}</p></div>
+                        <div><span class="text-sm text-gray-500">Status:</span><span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">{{patient.status}}</span></div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="bg-white rounded-lg shadow-sm border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i data-lucide="phone" class="h-5 w-5 mr-2 text-blue-600"></i>
+                        Contact Information
+                    </h3>
+                    <div class="space-y-3" id="contactInfo">
+                        <div class="flex items-center space-x-2"><i data-lucide="phone" class="h-4 w-4 text-gray-400"></i><span class="font-medium">{{patient.phone}}</span></div>
+                        <div class="flex items-center space-x-2"><i data-lucide="mail" class="h-4 w-4 text-gray-400"></i><span class="font-medium">{{patient.email}}</span></div>
+                        <div class="flex items-start space-x-2"><i data-lucide="map-pin" class="h-4 w-4 text-gray-400 mt-1"></i><span class="font-medium">{{patient.address}}</span></div>
+                    </div>
+                </div>
+
+                <!-- Cultural Information -->
+                <div class="bg-white rounded-lg shadow-sm border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i data-lucide="map-pin" class="h-5 w-5 mr-2 text-blue-600"></i>
+                        Cultural Information
+                    </h3>
+                    <div class="space-y-3" id="culturalInfo">
+                        <div><span class="text-sm text-gray-500">Religion:</span><p class="font-medium">{{patient.religion}}</p></div>
+                        <div><span class="text-sm text-gray-500">State of Origin:</span><p class="font-medium">{{patient.state_of_origin}}</p></div>
+                        <div><span class="text-sm text-gray-500">Tribe:</span><p class="font-medium">{{patient.Tribe}}</p></div>
+                        <div><span class="text-sm text-gray-500">Registration Date:</span><p class="font-medium">{{patient.created_at}}</p></div>
+                    
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical History -->
+            <div class="bg-white rounded-lg shadow-sm border p-6" id="medicalHistory" style="display: none;">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i data-lucide="heart" class="h-5 w-5 mr-2 text-red-600"></i>
+                    Medical History
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="medicalHistoryData">
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Hypertension</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.hypertension}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Measles</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.measles}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Chicken_pox</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.chicken_pox}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Tb</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.tb}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Diabetes</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.diabetes}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Yellow_fever</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.yellow_fever}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Sti</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.sti}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Kidney Disease</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.kidney_disease}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Liver Disease</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.liver_disease}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Epilepsy</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.epilepsy}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">SC Disease</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.sc_disease}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">GD Disease</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.gd_ulcer}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">RTA Injury</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.rta_injury}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Alcohol Smoking</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.alcohol_smoking}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Previous Ops</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.previous_ops}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Schistosomiasis</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.schistosomiasis}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Respiratpry Disease</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.respiratory_disease}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Mental Disease</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.mental_disease}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">HIV</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.hiv}}</div>
+                    </div>
+                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
+                            <span class="text-sm font-medium text-red-800">Allergies</span>
+                            <div class="text-xs mt-1 text-gray-500">{{medhist.allergies}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vital Signs -->
+            <div class="bg-white rounded-lg shadow-sm border p-6" id="vitalSigns" style="display: none;">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i data-lucide="activity" class="h-5 w-5 mr-2 text-green-600"></i>
+                    Recent Vital Signs
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200" id="vitalSignsTable">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">BP</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Pulse</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Weight</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Height</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            {% for vital in vitals %}
+                                <tr>
+                                    <td class="px-4 py-2 text-sm text-gray-900">{{vital.recorded_at}}</td>
+                                    <td class="px-4 py-2 text-sm text-gray-900">{{vital.blood_pressure}}</td>
+                                    <td class="px-4 py-2 text-sm text-gray-900">{{vital.pulse}}</td>
+                                    <td class="px-4 py-2 text-sm text-gray-900">{{vital.weight}}</td>
+                                    <td class="px-4 py-2 text-sm text-gray-900">{{vital.height}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="bg-white rounded-lg shadow-sm border p-6" id="notes" style="display: none;">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <i data-lucide="file-text" class="h-5 w-5 mr-2 text-purple-600"></i>
+                    Recent Notes
+                </h3>
+                <div class="space-y-4" id="notesData">
+                    {% for note in notes %}
+                        <div class="border-l-4 border-blue-500 pl-4 py-2">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${note.user_type === "DOCTOR" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}">${note.user_type}</span>
+                                <span class="text-xs text-gray-500">{{note.date}}</span>
+                            </div>
+                            <p class="text-sm text-gray-700">{{note.notes}}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Edit Modal -->
+            <!-- <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                    <h3 class="text-lg font-semibold mb-4">Edit Patient Information</h3>
+                    <p class="text-gray-600 mb-4">Edit functionality will be implemented here.</p>
+                    <div class="flex justify-end space-x-3">
+                        <button
+                            onclick="document.getElementById('editModal').classList.add('hidden')"
+                            class="px-4 py-2 text-gray-600 hover:text-gray-800"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onclick="document.getElementById('editModal').classList.add('hidden')"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                        >
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            // Mock patient data
+            // const mockPatient = {
+            //     id: "1",
+            //     first_name: "John",
+            //     last_name: "Doe",
+            //     dob: "1995-05-15",
+            //     gender: "M",
+            //     id_no: "PAT001",
+            //     status: "1",
+            //     address: "123 Main St, Lagos",
+            //     phone: "+234 801 234 5678",
+            //     email: "john.doe@email.com",
+            //     xray_no: "XRAY001",
+            //     religion: "Christianity",
+            //     state_of_origin: "Lagos",
+            //     Tribe: "Yoruba",
+            //     created_at: "2024-01-15"
+            // };
+
+            // const mockMedicalHistory = {
+            //     id: "1",
+            //     hypertension: true,
+            //     diabetes: false,
+            //     asthma: true,
+            //     allergies: false
+            // };
+
+            // const mockVitalSigns = [
+            //     { id: "1", recorded_at: "2024-09-01", blood_pressure: "120/80", pulse: "72", weight: "75", height: "175" },
+            //     { id: "2", recorded_at: "2024-08-25", blood_pressure: "118/78", pulse: "70", weight: "74", height: "175" }
+            // ];
+
+            // const mockNotes = [
+            //     { id: "1", date: "2024-09-01", notes: "Routine checkup, patient stable.", user_type: "DOCTOR" },
+            //     { id: "2", date: "2024-08-25", notes: "Prescribed medication for hypertension.", user_type: "NURSE" }
+            // ];
+
+            // const patientName = document.getElementById('patientName');
+            // const patientId = document.getElementById('patientId');
+            // const personalInfo = document.getElementById('personalInfo');
+            // const contactInfo = document.getElementById('contactInfo');
+            // const culturalInfo = document.getElementById('culturalInfo');
+            // const medicalHistory = document.getElementById('medicalHistory');
+            // const medicalHistoryData = document.getElementById('medicalHistoryData');
+            // const vitalSigns = document.getElementById('vitalSigns');
+            // const vitalSignsTable = document.getElementById('vitalSignsTable').getElementsByTagName('tbody')[0];
+            // const notes = document.getElementById('notes');
+            // const notesData = document.getElementById('notesData');
+
+            // // Render patient data
+            // patientName.textContent = `${mockPatient.first_name} ${mockPatient.last_name}`;
+            // patientId.textContent = `Patient ID: ${mockPatient.id_no}`;
+
+            // personalInfo.innerHTML = `
+            //     <div><span class="text-sm text-gray-500">Full Name:</span><p class="font-medium">${mockPatient.first_name} ${mockPatient.last_name}</p></div>
+            //     <div><span class="text-sm text-gray-500">Date of Birth:</span><p class="font-medium">${new Date(mockPatient.dob).toLocaleDateString()}</p></div>
+            //     <div><span class="text-sm text-gray-500">Gender:</span><p class="font-medium">${mockPatient.gender === "M" ? "Male" : mockPatient.gender === "F" ? "Female" : "Other"}</p></div>
+            //     <div><span class="text-sm text-gray-500">X-Ray Number:</span><p class="font-medium">${mockPatient.xray_no}</p></div>
+            //     <div><span class="text-sm text-gray-500">Status:</span><span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${mockPatient.status === "1" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}">${mockPatient.status === "1" ? "Active" : "Inactive"}</span></div>
+            // `;
+
+            // contactInfo.innerHTML = `
+            //     <div class="flex items-center space-x-2"><i data-lucide="phone" class="h-4 w-4 text-gray-400"></i><span class="font-medium">${mockPatient.phone}</span></div>
+            //     ${mockPatient.email ? `<div class="flex items-center space-x-2"><i data-lucide="mail" class="h-4 w-4 text-gray-400"></i><span class="font-medium">${mockPatient.email}</span></div>` : ''}
+            //     <div class="flex items-start space-x-2"><i data-lucide="map-pin" class="h-4 w-4 text-gray-400 mt-1"></i><span class="font-medium">${mockPatient.address}</span></div>
+            // `;
+
+            // culturalInfo.innerHTML = `
+            //     <div><span class="text-sm text-gray-500">Religion:</span><p class="font-medium">${mockPatient.religion}</p></div>
+            //     <div><span class="text-sm text-gray-500">State of Origin:</span><p class="font-medium">${mockPatient.state_of_origin}</p></div>
+            //     <div><span class="text-sm text-gray-500">Tribe:</span><p class="font-medium">${mockPatient.Tribe}</p></div>
+            //     <div><span class="text-sm text-gray-500">Registration Date:</span><p class="font-medium">${new Date(mockPatient.created_at).toLocaleDateString()}</p></div>
+            // `;
+
+            // if (mockMedicalHistory) {
+            //     medicalHistory.style.display = 'block';
+            //     medicalHistoryData.innerHTML = Object.entries(mockMedicalHistory)
+            //         .filter(([key]) => key !== "id")
+            //         .map(([key, value]) => {
+            //             const label = key.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+            //             return `<div class="p-3 rounded-lg border ${value ? "bg-red-50 border-red-200" : "bg-gray-50 border-gray-200"}">
+            //                 <span class="text-sm font-medium ${value ? "text-red-800" : "text-gray-600"}">${label}</span>
+            //                 <div class="text-xs mt-1 ${value ? "text-red-600" : "text-gray-500"}">${value ? "Yes" : "No"}</div>
+            //             </div>`;
+            //         })
+            //         .join('');
+            // }
+
+            // if (mockVitalSigns.length > 0) {
+            //     vitalSigns.style.display = 'block';
+            //     vitalSignsTable.innerHTML = mockVitalSigns
+            //         .map(vital => `
+            //             <tr>
+            //                 <td class="px-4 py-2 text-sm text-gray-900">${new Date(vital.recorded_at).toLocaleDateString()}</td>
+            //                 <td class="px-4 py-2 text-sm text-gray-900">${vital.blood_pressure}</td>
+            //                 <td class="px-4 py-2 text-sm text-gray-900">${vital.pulse}</td>
+            //                 <td class="px-4 py-2 text-sm text-gray-900">${vital.weight}</td>
+            //                 <td class="px-4 py-2 text-sm text-gray-900">${vital.height}</td>
+            //             </tr>
+            //         `)
+            //         .join('');
+            // }
+
+            // if (mockNotes.length > 0) {
+            //     notes.style.display = 'block';
+            //     notesData.innerHTML = mockNotes
+            //         .map(note => `
+            //             <div class="border-l-4 border-blue-500 pl-4 py-2">
+            //                 <div class="flex justify-between items-start mb-2">
+            //                     <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${note.user_type === "DOCTOR" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}">${note.user_type}</span>
+            //                     <span class="text-xs text-gray-500">${new Date(note.date).toLocaleDateString()}</span>
+            //                 </div>
+            //                 <p class="text-sm text-gray-700">${note.notes}</p>
+            //             </div>
+            //         `)
+            //         .join('');
+            // }
+        });
+
+        let btn = document.querySelector('#btn');
+        let sidebar = document.querySelector('.sidebar');
+        let searchBtn = document.querySelector('.bx-search');
+        let mainClass = document.querySelector('#mainClass');
+
+        btn.onclick = function () {
+            sidebar.classList.toggle("active");
+            // mainClass.classList.toggle("active");
+        }
+
+        searchBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

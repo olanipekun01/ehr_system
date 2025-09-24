@@ -14,12 +14,19 @@ from datetime import datetime
 import csv
 from django.http import HttpResponse
 
-from common.models import Patient
+from common.models import Patient, PatientNote, MedicalHistory, VitalSigns, CaseFolder
 
 def is_him(user):
     return user.is_authenticated and user.role == "HIM"
 
 # Create your views here.
+@login_required
+@user_passes_test(is_him, login_url="/404")
+def HimDashboard(request):
+            
+    return render(request, 'him/dashboard.html')
+
+
 @login_required
 @user_passes_test(is_him, login_url="/404")
 def RegisterPatients(request):
@@ -52,8 +59,49 @@ def RegisterPatients(request):
         )
 
         patient.save()
+
+        casefolder = CaseFolder.objects.create(
+            patient = patient,
+            folder_number = "1001"
+            created_by = request.user,]
+        )
+        casefolder.save()
         messages.success(request, "Patient Information Saved!")
         redirect("/him/")
         
     return render(request, 'him/register.html')
 
+@login_required
+@user_passes_test(is_him, login_url="/404")
+def PatientList(request):
+    patients = Patient.objects.all()
+
+    context = {
+        "patients": patients
+    }
+            
+    return render(request, 'him/patient_list.html', context)
+
+@login_required
+@user_passes_test(is_him, login_url="/404")
+def EachPatient(request, id):
+    patient = Patient.objects.filter(id=id).first()
+    casefolder = CaseFolder.objects,filter(patient=patient).first()
+    notes = PatientNote.objects.filter(id=id).first()
+    medhistory = MedicalHistory.objects.filter(id=id).first()
+    vitals = VitalSigns.objects.filter(id=id).first()
+
+    context = {
+        "patient": patient,
+        "notes": notes,
+        "medhist": medhistory,
+        "vitals": vitals,
+    }
+
+    return render(request, 'him/each_patient.html', context)
+
+@login_required
+@user_passes_test(is_him, login_url="/404")
+def EditPatientInfo(request, id):
+            
+    return render(request, 'him/edit_patient_info.html')

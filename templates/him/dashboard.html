@@ -1,0 +1,587 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Information Management Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 78px;
+            background: #2a67eb;
+            padding: 6px 14px;
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            width: 240px;
+        }
+
+        .sidebar .logo_content .logo {
+            display: flex;
+            color: #ffff;
+            width: 100%;
+            height: 50px;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar.active .logo_content .logo {
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        .logo_content .logo img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .logo_content .logo .logo_name {
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .sidebar #btn {
+            position: absolute;
+            color: #ffff;
+            left: 50%;
+            top: 18px;
+            font-size: 20px;
+            height: 25px;
+            width: 25px;
+            text-align: center;
+            line-height: 50px;
+            transform: translateX(-50%);
+        }
+
+        .sidebar.active #btn {
+            left: 90%;
+        }
+
+        .sidebar ul {
+            margin-top: 20px;
+        }
+
+        .sidebar ul li {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin: 5px 5px;
+            list-style: none;
+            line-height: 50px;
+        }
+
+        .sidebar ul li .tooltip {
+            position: absolute;
+            left: 122px;
+            top: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 6px;
+            height: 35px;
+            width: 122px;
+            background: #fff;
+            line-height: 35px;
+            text-align: center;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: 0s;
+            opacity: 0;
+            pointer-events: none;
+            display: block;
+
+        }
+
+        .sidebar.active ul li .tooltip {
+            display: none;
+        }
+
+        .sidebar ul li:hover .tooltip {
+            transition: all 0.5s ease;
+            opacity: 1;
+            top: 50%;
+            z-index: 999;
+        }
+
+        .sidebar ul li input {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            border-radius: 12px;
+            outline: none;
+            border: none;
+            background: #6181c7;
+            padding-left: 50px;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .sidebar ul li .bx-search {
+            position: absolute;
+            z-index: 99;
+            color: #fff;
+            top: 13px;
+            left: 10px;
+            font-size: 22px;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar ul li .bx-search:hover {
+            background: #fff;
+            color: #1d1b31;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        .sidebar ul li a:hover {
+            color: #11101d;
+            background-color: #fff;
+        }
+
+
+        .sidebar ul li a img {
+            height: 25px;
+            min-width: 22px;
+            border-radius: 12px;
+            line-height: 50px;
+            text-align: center;
+            margin-left: 5px;
+        }
+
+
+        .sidebar .links_name {
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            margin-left: 5px;
+        }
+
+        .sidebar.active .links_name {
+            opacity: 1;
+            pointer-events: auto;
+
+        }
+
+        .sidebar .profile_content {
+            position: absolute;
+            color: #fff;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .sidebar .profile_content .profile {
+            position: relative;
+            padding: 10px 6px;
+            height: 60px;
+            background: none;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.active .profile_content .profile {
+            background: #6181c7;
+        }
+
+        .sidebar .profile_content .profile .profile_details {
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .sidebar.active .profile .profile_details {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile .profile_details img {
+            height: 45px;
+            width: 45px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .profile #log_out {
+            position: absolute;
+            left: 50%;
+            bottom: 5px;
+            transform: translateX(-50%);
+            min-width: 50px;
+            line-height: 50px;
+            font-size: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.4s ease;
+            background: #6181c7;
+        }
+
+        .sidebar.active .profile #log_out {
+            left: 88%;
+            background: none;
+        }
+
+        .profile .profile_details .name_job {
+            margin-left: 10px;
+        }
+
+        .profile .profile_details .name {
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .profile .profile_details .job {
+            font-size: 12px;
+        }
+
+        main.active {
+            position: absolute;
+            height: 100%;
+            width: calc(100% - 78px);
+            left: 78px;
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 p-6">
+    <div class="sidebar">
+      <div class="logo_content">
+        <div class="logo">
+          <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
+          <div class="logo_name">AU MediLog</div>
+        </div>
+        <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
+      </div>
+      <ul class="nav_list">
+        <li>
+          <form method="get" action="">
+            <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
+            <input name="item_name"  type="text" placeholder="Search name...">
+            <span class="tooltip">Search</span>
+          </form>
+        </li>
+        <!-- <li>
+            <a href="/">
+                <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
+                <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li> -->
+        <!-- <li class="store_list">
+            <a href="#">
+                <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+                <span class="links_name">Store</span>
+                <img class="down_arrow" src="{% static './assets/bx-chevron-down.svg' %}" alt="">
+            </a>
+            <span class="tooltip">Store</span>
+            <div class="sub-menu">
+                <div class="card">
+                    <a class="a_sub_links" href="/store/staff">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Staff<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/student">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Student<span>
+                    </a>
+                </div>
+                
+            </div>
+        </li> -->
+        <li>
+          <a href="/him/dashboard/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Dashbaord</span>
+          </a>
+          <span class="tooltip">dashbaord</span>
+        </li>
+        <li>
+          <a href="/him/patients/list/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Patient List</span>
+          </a>
+          <span class="tooltip">patient list</span>
+        </li>
+        <li>
+          <a href="/him/patients/new/">
+              <img src="{% static './assets/cart.png' %}" alt="">
+              <span class="links_name">Register Patient</span>
+          </a>
+          <span class="tooltip">register patient</span>
+        </li>
+  
+        <!-- <li>
+            <a href="/stock/">
+                <img src="{% static './assets/bx-package.svg' %}" alt="">
+                <span class="links_name">+ Stock</span>
+            </a>
+            <span class="tooltip">+ Stock</span>
+        </li>
+        <li>
+            <a href="/disburse/history/">
+                <img src="{% static './assets/calendar-week.png' %}" alt="">
+                <span class="links_name">Disburse Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li>
+        <li>
+            <a href="/supply/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Supply Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li> -->
+        
+        <!-- <li>
+            <a href="/department/">
+                <img src="{% static './assets/bx-collapse.svg' %}" alt="">
+                <span class="links_name">Department</span>
+            </a>
+            <span class="tooltip">Department</span>
+            
+        </li> -->
+        <!-- <li>
+            <a href="/suppliers/">
+                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
+                <span class="links_name">Supplier</span>
+            </a>
+            <span class="tooltip">Supplier</span>
+        </li>
+        <li>
+          <a href="/units/">
+              <img src="{% static './assets/shape-unite.png' %}" alt="">
+              <span class="links_name">Units</span>
+          </a>
+          <span class="tooltip">Units</span>
+      </li> -->
+
+
+      
+    
+        
+
+      </ul>
+      <div class="profile_content">
+        <div class="profile">
+          <div class="profile_details">
+            <img src="{% static './assets/AsianManAvatar(1).png' %}" alt="">
+            <div class="name_job">
+              <div class="name">Admin</div>
+              <div class="job">Store Manager</div>
+            </div>
+          </div>
+          <a href="/logout/"><img id="log_out" src="{% static './assets//bx-log-out.svg' %}" alt=""></a>
+        </div>
+
+      </div>
+    </div>
+
+    <main id="mainClass">
+        <div class="space-y-6 max-w-4xl mx-auto">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Health Information Management</h1>
+                    <p class="text-gray-600">Manage patient records and case folders</p>
+                </div>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                    HIM Dashboard
+                </span>
+            </div>
+
+            <div id="statsLoading" class="flex items-center justify-center min-h-64 hidden">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>
+            <div id="statsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 hidden">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Patients</p>
+                            <p id="totalPatients" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Registered in system</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">New Today</p>
+                            <p id="newPatientsToday" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">New registrations</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Active Cases</p>
+                            <p id="activeCases" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Currently active</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Pending Records</p>
+                            <p id="pendingRecords" class="text-2xl font-bold text-gray-900">0</p>
+                        </div>
+                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Require attention</p>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-semibold mb-4 text-gray-900">Quick Actions</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <a href="/him/patients/new" class="block bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center mb-3">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-1">Register New Patient</h3>
+                        <p class="text-sm text-gray-600">Add a new patient to the system</p>
+                    </a>
+                    <a href="/him/patients/list" class="block bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center mb-3">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-1">View All Patients</h3>
+                        <p class="text-sm text-gray-600">Browse and manage patient records</p>
+                    </a>
+                    <a href="/him/casefolders" class="block bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500 flex items-center justify-center mb-3">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-semibold text-gray-900 mb-1">Manage Case Folders</h3>
+                        <p class="text-sm text-gray-600">Organize and update case folders</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+                    <p class="text-sm text-gray-600">Latest patient registrations and case updates</p>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-900">New patient registered: Sarah Johnson</p>
+                                <p class="text-xs text-gray-500">2 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-900">Case folder updated: CF-2024-001</p>
+                                <p class="text-xs text-gray-500">4 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-900">Record pending review: Michael Brown</p>
+                                <p class="text-xs text-gray-500">6 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const statsLoading = document.getElementById('statsLoading');
+            const statsGrid = document.getElementById('statsGrid');
+            const totalPatients = document.getElementById('totalPatients');
+            const newPatientsToday = document.getElementById('newPatientsToday');
+            const activeCases = document.getElementById('activeCases');
+            const pendingRecords = document.getElementById('pendingRecords');
+
+            // Simulate data loading with delay
+            statsLoading.classList.remove('hidden');
+            setTimeout(() => {
+                statsLoading.classList.add('hidden');
+                statsGrid.classList.remove('hidden');
+                // totalPatients.textContent = 1247.toLocaleString();
+                totalPatients.textContent = 1247
+                newPatientsToday.textContent = 8;
+                activeCases.textContent = 156;
+                pendingRecords.textContent = 23;
+            }, 1000);
+        });
+
+        let btn = document.querySelector('#btn');
+        let sidebar = document.querySelector('.sidebar');
+        let searchBtn = document.querySelector('.bx-search');
+        let mainClass = document.querySelector('#mainClass');
+
+        btn.onclick = function () {
+            sidebar.classList.toggle("active");
+            // mainClass.classList.toggle("active");
+        }
+
+        searchBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

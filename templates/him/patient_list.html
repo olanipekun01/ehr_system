@@ -1,0 +1,684 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Records</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 78px;
+            background: #2a67eb;
+            padding: 6px 14px;
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            width: 240px;
+        }
+
+        .sidebar .logo_content .logo {
+            display: flex;
+            color: #ffff;
+            width: 100%;
+            height: 50px;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar.active .logo_content .logo {
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        .logo_content .logo img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .logo_content .logo .logo_name {
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .sidebar #btn {
+            position: absolute;
+            color: #ffff;
+            left: 50%;
+            top: 18px;
+            font-size: 20px;
+            height: 25px;
+            width: 25px;
+            text-align: center;
+            line-height: 50px;
+            transform: translateX(-50%);
+        }
+
+        .sidebar.active #btn {
+            left: 90%;
+        }
+
+        .sidebar ul {
+            margin-top: 20px;
+        }
+
+        .sidebar ul li {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin: 5px 5px;
+            list-style: none;
+            line-height: 50px;
+        }
+
+        .sidebar ul li .tooltip {
+            position: absolute;
+            left: 122px;
+            top: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 6px;
+            height: 35px;
+            width: 122px;
+            background: #fff;
+            line-height: 35px;
+            text-align: center;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: 0s;
+            opacity: 0;
+            pointer-events: none;
+            display: block;
+
+        }
+
+        .sidebar.active ul li .tooltip {
+            display: none;
+        }
+
+        .sidebar ul li:hover .tooltip {
+            transition: all 0.5s ease;
+            opacity: 1;
+            top: 50%;
+            z-index: 999;
+        }
+
+        .sidebar ul li input {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            border-radius: 12px;
+            outline: none;
+            border: none;
+            background: #6181c7;
+            padding-left: 50px;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .sidebar ul li .bx-search {
+            position: absolute;
+            z-index: 99;
+            color: #fff;
+            top: 13px;
+            left: 10px;
+            font-size: 22px;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar ul li .bx-search:hover {
+            background: #fff;
+            color: #1d1b31;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        .sidebar ul li a:hover {
+            color: #11101d;
+            background-color: #fff;
+        }
+
+
+        .sidebar ul li a img {
+            height: 25px;
+            min-width: 22px;
+            border-radius: 12px;
+            line-height: 50px;
+            text-align: center;
+            margin-left: 5px;
+        }
+
+
+        .sidebar .links_name {
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            margin-left: 5px;
+        }
+
+        .sidebar.active .links_name {
+            opacity: 1;
+            pointer-events: auto;
+
+        }
+
+        .sidebar .profile_content {
+            position: absolute;
+            color: #fff;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .sidebar .profile_content .profile {
+            position: relative;
+            padding: 10px 6px;
+            height: 60px;
+            background: none;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.active .profile_content .profile {
+            background: #6181c7;
+        }
+
+        .sidebar .profile_content .profile .profile_details {
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .sidebar.active .profile .profile_details {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile .profile_details img {
+            height: 45px;
+            width: 45px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .profile #log_out {
+            position: absolute;
+            left: 50%;
+            bottom: 5px;
+            transform: translateX(-50%);
+            min-width: 50px;
+            line-height: 50px;
+            font-size: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.4s ease;
+            background: #6181c7;
+        }
+
+        .sidebar.active .profile #log_out {
+            left: 88%;
+            background: none;
+        }
+
+        .profile .profile_details .name_job {
+            margin-left: 10px;
+        }
+
+        .profile .profile_details .name {
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .profile .profile_details .job {
+            font-size: 12px;
+        }
+
+        main.active {
+            position: absolute;
+            height: 100%;
+            width: calc(100% - 78px);
+            left: 78px;
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 p-6">
+    <div class="sidebar">
+      <div class="logo_content">
+        <div class="logo">
+          <img class="logo_icon" src="{% static './assets/achieverslogo.png' %}" alt=""/>
+          <div class="logo_name">AU MediLog</div>
+        </div>
+        <img src="{% static './assets/bx-menu.svg' %}" id="btn" alt="">
+      </div>
+      <ul class="nav_list">
+        <li>
+          <form method="get" action="">
+            <button><img class="bx-search" src="{% static './assets/bx-search.svg' %}" alt=""></button>
+            <input name="item_name"  type="text" placeholder="Search name...">
+            <span class="tooltip">Search</span>
+          </form>
+        </li>
+        <!-- <li>
+            <a href="/">
+                <img src="{% static './assets/bx-grid-alt.svg' %}" alt="">
+                <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li> -->
+        <!-- <li class="store_list">
+            <a href="#">
+                <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+                <span class="links_name">Store</span>
+                <img class="down_arrow" src="{% static './assets/bx-chevron-down.svg' %}" alt="">
+            </a>
+            <span class="tooltip">Store</span>
+            <div class="sub-menu">
+                <div class="card">
+                    <a class="a_sub_links" href="/store/staff">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Staff<span>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="a_sub_links" href="/store/student">
+                        <img src="{% static './assets/bx-bong.svg' %}" alt=""> 
+                        <span class="sub_links_name">Student<span>
+                    </a>
+                </div>
+                
+            </div>
+        </li> -->
+        <li>
+          <a href="/him/dashboard/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Dashbaord</span>
+          </a>
+          <span class="tooltip">dashbaord</span>
+        </li>
+        <li>
+          <a href="/him/patients/list/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Patient List</span>
+          </a>
+          <span class="tooltip">patient list</span>
+        </li>
+        <li>
+          <a href="/him/patients/new/">
+              <img src="{% static './assets/cart.png' %}" alt="">
+              <span class="links_name">Register Patient</span>
+          </a>
+          <span class="tooltip">register patient</span>
+        </li>
+  
+        <!-- <li>
+            <a href="/stock/">
+                <img src="{% static './assets/bx-package.svg' %}" alt="">
+                <span class="links_name">+ Stock</span>
+            </a>
+            <span class="tooltip">+ Stock</span>
+        </li>
+        <li>
+            <a href="/disburse/history/">
+                <img src="{% static './assets/calendar-week.png' %}" alt="">
+                <span class="links_name">Disburse Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li>
+        <li>
+            <a href="/supply/history/">
+                <img src="{% static './assets/bx-history.svg' %}" alt="">
+                <span class="links_name">Supply Log</span>
+            </a>
+            <span class="tooltip">Log</span>
+        </li> -->
+        
+        <!-- <li>
+            <a href="/department/">
+                <img src="{% static './assets/bx-collapse.svg' %}" alt="">
+                <span class="links_name">Department</span>
+            </a>
+            <span class="tooltip">Department</span>
+            
+        </li> -->
+        <!-- <li>
+            <a href="/suppliers/">
+                <img src="{% static './assets/bx-transfer.svg' %}" alt="">
+                <span class="links_name">Supplier</span>
+            </a>
+            <span class="tooltip">Supplier</span>
+        </li>
+        <li>
+          <a href="/units/">
+              <img src="{% static './assets/shape-unite.png' %}" alt="">
+              <span class="links_name">Units</span>
+          </a>
+          <span class="tooltip">Units</span>
+      </li> -->
+
+
+      
+    
+        
+
+      </ul>
+      <div class="profile_content">
+        <div class="profile">
+          <div class="profile_details">
+            <img src="{% static './assets/AsianManAvatar(1).png' %}" alt="">
+            <div class="name_job">
+              <div class="name">Admin</div>
+              <div class="job">Store Manager</div>
+            </div>
+          </div>
+          <a href="/logout/"><img id="log_out" src="{% static './assets//bx-log-out.svg' %}" alt=""></a>
+        </div>
+
+      </div>
+    </div>
+
+    <main id="mainClass">
+        <div class="space-y-6 max-w-5xl mx-auto">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i data-lucide="user" class="h-8 w-8 text-blue-600"></i>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Patient Records</h1>
+                        <p class="text-gray-600">Manage and view all registered patients</p>
+                    </div>
+                </div>
+                <a
+                    href="/him/patients/new"
+                    class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                >
+                    <i data-lucide="plus" class="h-4 w-4"></i>
+                    <span>Register New Patient</span>
+                </a>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                <form id="searchForm" class="flex gap-4">
+                    <div class="flex-1 relative">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"></i>
+                        <input
+                            type="text"
+                            id="searchTerm"
+                            placeholder="Search by name, ID number, phone..."
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                        Search
+                    </button>
+                </form>
+            </div>
+
+            <div id="errorMessage" class="hidden rounded-lg bg-red-50 p-4 border border-red-200">
+                <div class="text-sm text-red-700">Failed to fetch patients</div>
+            </div>
+
+            <div class="bg-white shadow-sm rounded-lg overflow-hidden border">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Patient Information
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Contact & Location
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Medical Info
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dates</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientTable" class="bg-white divide-y divide-gray-200">
+                       {% for patient in patients %}
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="space-y-1">
+                                    <div class="text-sm font-semibold text-gray-900">{{patient.first_name}} {{patient.last_name}}</div>
+                                    <div class="text-xs text-gray-500">ID: {{patient.id_no}}</div>
+                                    <div class="text-xs text-gray-500">{{patient.gender}} • DOB: {{patient.dob}}</div>
+                                    <div class="text-xs text-gray-500">X-Ray: {{patient.xray_no}}</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="space-y-1">
+                                    <div class="text-sm text-gray-900">{{patient.phone}}</div>
+                                    <div class="text-sm text-gray-600">{{patient.email}}</div>
+                                    <div class="text-xs text-gray-500">{{patient.state_of_origin}}</div>
+                                    <div class="text-xs text-gray-500">{{patient.Tribe}}</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="space-y-1">
+                                    <div class="text-xs text-gray-500">Religion: {{patient.religion}}</div>
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${patient.status === "1" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}">
+                                        {{patient.status}}
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="space-y-1">
+                                    <div class="flex items-center text-xs text-gray-500">
+                                        <i data-lucide="calendar" class="h-3 w-3 mr-1"></i>
+                                        Registered: {{patient.created_at}}
+                                    </div>
+                                    <!-- ${patient.folder_creation_date ? `<div class="text-xs text-gray-500">Folder: ${new Date(patient.folder_creation_date).toLocaleDateString()}</div>` : ''} -->
+                                    <div class="text-xs text-gray-500">Last Visit: {{patient.last_visitation_date}}</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex space-x-2">
+                                    <button onclick="window.location.href ='/him/patient/each/{{patient.id}}'" class="flex items-center space-x-1 text-blue-600 hover:text-blue-900 text-sm font-medium">
+                                        <i data-lucide="eye" class="h-4 w-4"></i>
+                                        <span>View</span>
+                                    </button>
+                                    <button onclick="window.location.href ='/him/patient/edit/{{patient.id}}'" class="flex items-center space-x-1 text-green-600 hover:text-green-900 text-sm font-medium">
+                                        <i data-lucide="edit" class="h-4 w-4"></i>
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                       {% endfor %}
+                    </tbody>
+                </table>
+
+                <div id="noPatients" class="text-center py-12 hidden">
+                    <i data-lucide="user" class="mx-auto h-12 w-12 text-gray-400"></i>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No patients found</h3>
+                    <p class="mt-1 text-sm text-gray-500">Get started by registering a new patient.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            // Mock patient data
+            const mockPatients = [
+                {
+                    id: "1",
+                    first_name: "John",
+                    last_name: "Doe",
+                    dob: "1995-05-15",
+                    gender: "M",
+                    id_no: "PAT001",
+                    status: "1",
+                    address: "123 Main St",
+                    phone: "+234 801 234 5678",
+                    email: "john.doe@email.com",
+                    xray_no: "XRAY001",
+                    religion: "Christianity",
+                    state_of_origin: "Lagos",
+                    Tribe: "Yoruba",
+                    created_at: "2024-01-15",
+                    folder_creation_date: "2024-01-16",
+                    last_visitation_date: "2024-09-01"
+                },
+                {
+                    id: "2",
+                    first_name: "Jane",
+                    last_name: "Smith",
+                    dob: "1990-08-22",
+                    gender: "F",
+                    id_no: "PAT002",
+                    status: "1",
+                    address: "456 Oak Ave",
+                    phone: "+234 802 345 6789",
+                    email: "jane.smith@email.com",
+                    xray_no: "XRAY002",
+                    religion: "Islam",
+                    state_of_origin: "Kano",
+                    Tribe: "Hausa",
+                    created_at: "2024-02-10",
+                    folder_creation_date: "2024-02-11",
+                    last_visitation_date: "2024-09-10"
+                }
+            ];
+
+            const errorMessage = document.getElementById('errorMessage');
+            const patientTable = document.getElementById('patientTable');
+            const noPatients = document.getElementById('noPatients');
+            const searchForm = document.getElementById('searchForm');
+            const searchTermInput = document.getElementById('searchTerm');
+
+            // const renderPatients = (patients) => {
+            //     patientTable.innerHTML = '';
+            //     if (patients.length === 0) {
+            //         patientTable.classList.add('hidden');
+            //         noPatients.classList.remove('hidden');
+            //         return;
+            //     }
+            //     noPatients.classList.add('hidden');
+            //     patientTable.classList.remove('hidden');
+
+            //     patients.forEach(patient => {
+            //         const row = document.createElement('tr');
+            //         row.className = 'hover:bg-gray-50 transition-colors';
+            //         row.innerHTML = `
+            //             <td class="px-6 py-4">
+            //                 <div class="space-y-1">
+            //                     <div class="text-sm font-semibold text-gray-900">${patient.first_name} ${patient.last_name}</div>
+            //                     <div class="text-xs text-gray-500">ID: ${patient.id_no}</div>
+            //                     <div class="text-xs text-gray-500">${patient.gender === "M" ? "Male" : patient.gender === "F" ? "Female" : "Other"} • DOB: ${new Date(patient.dob).toLocaleDateString()}</div>
+            //                     <div class="text-xs text-gray-500">X-Ray: ${patient.xray_no}</div>
+            //                 </div>
+            //             </td>
+            //             <td class="px-6 py-4">
+            //                 <div class="space-y-1">
+            //                     <div class="text-sm text-gray-900">${patient.phone}</div>
+            //                     ${patient.email ? `<div class="text-sm text-gray-600">${patient.email}</div>` : ''}
+            //                     <div class="text-xs text-gray-500">${patient.state_of_origin}</div>
+            //                     <div class="text-xs text-gray-500">${patient.Tribe}</div>
+            //                 </div>
+            //             </td>
+            //             <td class="px-6 py-4">
+            //                 <div class="space-y-1">
+            //                     <div class="text-xs text-gray-500">Religion: ${patient.religion}</div>
+            //                     <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${patient.status === "1" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}">
+            //                         ${patient.status === "1" ? "Active" : "Inactive"}
+            //                     </span>
+            //                 </div>
+            //             </td>
+            //             <td class="px-6 py-4">
+            //                 <div class="space-y-1">
+            //                     <div class="flex items-center text-xs text-gray-500">
+            //                         <i data-lucide="calendar" class="h-3 w-3 mr-1"></i>
+            //                         Registered: ${new Date(patient.created_at).toLocaleDateString()}
+            //                     </div>
+            //                     ${patient.folder_creation_date ? `<div class="text-xs text-gray-500">Folder: ${new Date(patient.folder_creation_date).toLocaleDateString()}</div>` : ''}
+            //                     ${patient.last_visitation_date ? `<div class="text-xs text-gray-500">Last Visit: ${new Date(patient.last_visitation_date).toLocaleDateString()}</div>` : ''}
+            //                 </div>
+            //             </td>
+            //             <td class="px-6 py-4">
+            //                 <div class="flex space-x-2">
+            //                     <button onclick="alert('Viewing patient ${patient.id}')" class="flex items-center space-x-1 text-blue-600 hover:text-blue-900 text-sm font-medium">
+            //                         <i data-lucide="eye" class="h-4 w-4"></i>
+            //                         <span>View</span>
+            //                     </button>
+            //                     <button onclick="alert('Editing patient ${patient.id}')" class="flex items-center space-x-1 text-green-600 hover:text-green-900 text-sm font-medium">
+            //                         <i data-lucide="edit" class="h-4 w-4"></i>
+            //                         <span>Edit</span>
+            //                     </button>
+            //                 </div>
+            //             </td>
+            //         `;
+            //         patientTable.appendChild(row);
+            //     });
+            // };
+
+            // const fetchPatients = () => {
+            //     const searchTerm = searchTermInput.value.toLowerCase();
+            //     const filteredPatients = mockPatients.filter(patient =>
+            //         `${patient.first_name} ${patient.last_name}`.toLowerCase().includes(searchTerm) ||
+            //         patient.id_no.toLowerCase().includes(searchTerm) ||
+            //         patient.phone.toLowerCase().includes(searchTerm)
+            //     );
+            //     renderPatients(filteredPatients);
+            // };
+
+        //     searchForm.addEventListener('submit', (e) => {
+        //         e.preventDefault();
+        //         fetchPatients();
+        //     });
+
+        //     searchTermInput.addEventListener('input', fetchPatients);
+
+        //     // Initial render
+        //     fetchPatients();
+        });
+
+        let btn = document.querySelector('#btn');
+        let sidebar = document.querySelector('.sidebar');
+        let searchBtn = document.querySelector('.bx-search');
+        let mainClass = document.querySelector('#mainClass');
+
+        btn.onclick = function () {
+            sidebar.classList.toggle("active");
+            // mainClass.classList.toggle("active");
+        }
+
+        searchBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+        }
+    </script>
+</body>
+</html>
