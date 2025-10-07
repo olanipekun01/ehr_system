@@ -107,8 +107,8 @@ class MedicalHistory(models.Model):
     schistosomiasis = models.BooleanField(default=False)
     respiratory_disease = models.BooleanField(default=False)
     mental_disease = models.BooleanField(default=False)
-    hiv = models.BooleanField(default=False)
-    allergies = models.BooleanField(default=False)
+    hiv = models.BooleanField(default=False) 
+    allergies= models.BooleanField(default=False)
     recorded_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recorded_medicalhistory')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -169,3 +169,6 @@ class PatientNote(models.Model):
     
     def __str__(self):
         return f"Note - {self.case_folder.patient} - {self.date.strftime('%Y-%m-%d')}"
+
+
+

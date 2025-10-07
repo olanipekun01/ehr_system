@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurse Intake Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-100 p-6">
+    <div class="space-y-6 max-w-4xl mx-auto" id="intakeForm">
+        <!-- Header -->
+        <div class="flex items-center space-x-4">
+            <button onclick="window.history.back()" class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </button>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Nurse Intake Form</h1>
+                <p class="text-gray-600">Record vital signs and medical history</p>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden rounded-md bg-red-50 p-4">
+            <div class="text-sm text-red-700" id="errorText"></div>
+        </div>
+
+        <!-- Form -->
+        <form id="intakeFormElement" class="space-y-8">
+            <!-- Patient Selection -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg class="h-5 w-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Select Patient
+                </h3>
+                <select id="patientSelect" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select a patient...</option>
+                    <!-- Populated by JavaScript -->
+                </select>
+            </div>
+
+            <!-- Vital Signs -->
+            <div id="vitalSignsSection" class="hidden bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg class="h-5 w-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Vital Signs
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Blood Pressure</label>
+                        <input type="text" id="bloodPressure" placeholder="120/80" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Pulse (bpm)</label>
+                        <input type="text" id="pulse" placeholder="72" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+                        <input type="text" id="weight" placeholder="70" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Height (cm)</label>
+                        <input type="text" id="height" placeholder="170" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Temperature (°C)</label>
+                        <input type="text" id="temperature" placeholder="36.5" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Urine Albumin</label>
+                        <input type="text" id="urineAlbumin" placeholder="Negative" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Urine Sugar</label>
+                        <input type="text" id="urineSugar" placeholder="Negative" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical History -->
+            <div id="medicalHistorySection" class="hidden bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg class="h-5 w-5 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    Medical History
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="medicalHistoryCheckboxes">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Nurse Notes -->
+            <div id="notesSection" class="hidden bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Nurse Notes</h3>
+                <textarea id="notes" rows="4" placeholder="Additional observations, patient complaints, or notes..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div id="submitSection" class="hidden flex justify-end">
+                <button type="submit" id="submitButton" class="flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span id="submitText">Send to Doctor</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // State management
+            let patients = [];
+            let selectedPatient = null;
+            let isLoading = false;
+            let error = '';
+            let vitalSigns = {
+                blood_pressure: '',
+                pulse: '',
+                weight: '',
+                height: '',
+                temperature: '',
+                urine_albumin: '',
+                urine_sugar: ''
+            };
+            let medicalHistory = {
+                hypertension: false,
+                measles: false,
+                chicken_pox: false,
+                tb: false,
+                diabetes: false,
+                yellow_fever: false,
+                sti: false,
+                kidney_disease: false,
+                liver_disease: false,
+                epilepsy: false,
+                sc_disease: false,
+                gd_ulcer: false,
+                rta_injury: false,
+                alcohol_smoking: false,
+                previous_ops: false,
+                schistosomiasis: false,
+                respiratory_disease: false,
+                mental_disease: false,
+                hiv: false,
+                allergies: false
+            };
+            let notes = '';
+
+            // DOM elements
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const patientSelect = document.getElementById('patientSelect');
+            const vitalSignsSection = document.getElementById('vitalSignsSection');
+            const medicalHistorySection = document.getElementById('medicalHistorySection');
+            const notesSection = document.getElementById('notesSection');
+            const submitSection = document.getElementById('submitSection');
+            const submitButton = document.getElementById('submitButton');
+            const submitText = document.getElementById('submitText');
+            const bloodPressure = document.getElementById('bloodPressure');
+            const pulse = document.getElementById('pulse');
+            const weight = document.getElementById('weight');
+            const height = document.getElementById('height');
+            const temperature = document.getElementById('temperature');
+            const urineAlbumin = document.getElementById('urineAlbumin');
+            const urineSugar = document.getElementById('urineSugar');
+            const notesInput = document.getElementById('notes');
+            const medicalHistoryCheckboxes = document.getElementById('medicalHistoryCheckboxes');
+
+            // Mock fetch patients
+            function fetchPatients() {
+                // Simulate API call with mock data
+                const mockPatients = [
+                    { id: '1', first_name: 'John', last_name: 'Doe', id_no: 'ID123' },
+                    { id: '2', first_name: 'Jane', last_name: 'Smith', id_no: 'ID456' }
+                ];
+                patients = mockPatients;
+                populatePatientSelect();
+            }
+
+            // Populate patient select
+            function populatePatientSelect() {
+                patientSelect.innerHTML = '<option value="">Select a patient...</option>';
+                patients.forEach(patient => {
+                    const option = document.createElement('option');
+                    option.value = patient.id;
+                    option.textContent = `${patient.first_name} ${patient.last_name} - ${patient.id_no}`;
+                    patientSelect.appendChild(option);
+                });
+            }
+
+            // Update sections visibility
+            function updateSections() {
+                if (selectedPatient) {
+                    vitalSignsSection.classList.remove('hidden');
+                    medicalHistorySection.classList.remove('hidden');
+                    notesSection.classList.remove('hidden');
+                    submitSection.classList.remove('hidden');
+                } else {
+                    vitalSignsSection.classList.add('hidden');
+                    medicalHistorySection.classList.add('hidden');
+                    notesSection.classList.add('hidden');
+                    submitSection.classList.add('hidden');
+                }
+            }
+
+            // Populate medical history checkboxes
+            function populateMedicalHistory() {
+                medicalHistoryCheckboxes.innerHTML = '';
+                Object.keys(medicalHistory).forEach(key => {
+                    const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center space-x-2';
+                    div.innerHTML = `
+                        <input type="checkbox" id="${key}" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <label for="${key}" class="text-sm text-gray-700">${label}</label>
+                    `;
+                    medicalHistoryCheckboxes.appendChild(div);
+                    const checkbox = div.querySelector('input');
+                    checkbox.checked = medicalHistory[key];
+                    checkbox.addEventListener('change', (e) => {
+                        medicalHistory[key] = e.target.checked;
+                    });
+                });
+            }
+
+            // Update input values
+            function updateInputs() {
+                bloodPressure.value = vitalSigns.blood_pressure;
+                pulse.value = vitalSigns.pulse;
+                weight.value = vitalSigns.weight;
+                height.value = vitalSigns.height;
+                temperature.value = vitalSigns.temperature;
+                urineAlbumin.value = vitalSigns.urine_albumin;
+                urineSugar.value = vitalSigns.urine_sugar;
+                notesInput.value = notes;
+            }
+
+            // Handle patient selection
+            patientSelect.addEventListener('change', (e) => {
+                const patientId = e.target.value;
+                selectedPatient = patients.find(p => p.id === patientId) || null;
+                updateSections();
+                updateInputs();
+            });
+
+            // Handle input changes
+            bloodPressure.addEventListener('input', (e) => { vitalSigns.blood_pressure = e.target.value; });
+            pulse.addEventListener('input', (e) => { vitalSigns.pulse = e.target.value; });
+            weight.addEventListener('input', (e) => { vitalSigns.weight = e.target.value; });
+            height.addEventListener('input', (e) => { vitalSigns.height = e.target.value; });
+            temperature.addEventListener('input', (e) => { vitalSigns.temperature = e.target.value; });
+            urineAlbumin.addEventListener('input', (e) => { vitalSigns.urine_albumin = e.target.value; });
+            urineSugar.addEventListener('input', (e) => { vitalSigns.urine_sugar = e.target.value; });
+            notesInput.addEventListener('input', (e) => { notes = e.target.value; });
+
+            // Handle form submission
+            document.getElementById('intakeFormElement').addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!selectedPatient) return;
+
+                setIsLoading(true);
+                error = '';
+                errorMessage.classList.add('hidden');
+                submitText.textContent = 'Submitting...';
+                submitButton.disabled = true;
+
+                // Simulate API post
+                setTimeout(() => {
+                    const intakeData = {
+                        patient_id: selectedPatient.id,
+                        vital_signs: vitalSigns,
+                        medical_history: medicalHistory,
+                        nurse_notes: notes,
+                        status: 'pending_doctor_review'
+                    };
+                    console.log('Submitting:', intakeData); // Mock API call
+                    localStorage.setItem('intakeData', JSON.stringify(intakeData)); // Simulate storage
+                    alert('Intake form submitted successfully!');
+                    window.location.href = '/dashboard/nurse'; // Redirect
+                }, 1000); // Simulate loading delay
+
+                // Reset state
+                setIsLoading(false);
+                submitText.textContent = 'Send to Doctor';
+                submitButton.disabled = false;
+            });
+
+            // Initialize
+            fetchPatients();
+            populateMedicalHistory();
+            updateSections();
+            updateInputs();
+
+            function setIsLoading(value) {
+                isLoading = value;
+                submitButton.disabled = isLoading;
+            }
+
+            function setError(message) {
+                error = message;
+                if (error) {
+                    errorText.textContent = error;
+                    errorMessage.classList.remove('hidden');
+                } else {
+                    errorMessage.classList.add('hidden');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

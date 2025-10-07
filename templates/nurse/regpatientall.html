@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Patients</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .healthcare-heading { font-size: 1.25rem; font-weight: 600; }
+        .healthcare-form { border-color: #e5e7eb; }
+        .bg-primary { background-color: #3b82f6; }
+        .hover:bg-primary-dark { background-color: #2563eb; }
+        .bg-secondary { background-color: #9333ea; }
+        .bg-destructive { background-color: #ef4444; }
+        .text-muted-foreground { color: #6b7280; }
+        .capitalize { text-transform: capitalize; }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 p-6 flex flex-row">
+    <nav class="w-64 bg-surface shadow-lg border-r border-gray-200">
+        <div class="p-6 border-b border-gray-200">
+            <h1 class="text-xl font-bold text-primary">Nurse Dashboard</h1>
+            <p class="text-sm text-secondary mt-1">EHR System</p>
+        </div>
+        
+        <div class="p-4">
+            <ul class="space-y-2">
+                <li>
+                    <a href="/nurse/dashboard/" class="flex items-center p-3 rounded-lg bg-primary text-white">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        </svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/nurse/registration/all/" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                        Patient Registration
+                    </a>
+                </li>
+                <li>
+                    <a href="/nurse/attend/" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        Attend to Patients
+                    </a>
+                </li>
+                <li>
+                    <a href="/nurse/inpatient/" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        Inpatient Care
+                    </a>
+                </li>
+                <li>
+                    <a href="/nurse/reports/" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Reports
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class=" w-[70%] mx-auto space-y-6" id="app">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">All Patients</h1>
+                <p class="text-gray-600">View and manage all registered patients</p>
+            </div>
+        </div>
+
+        <!-- Patients Table -->
+        <div class="bg-white rounded-lg shadow healthcare-form">
+            <div class="p-6 border-b">
+                <h2 class="flex items-center gap-2 healthcare-heading">
+                    <svg class="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    Registered Patients (<span id="patientCount">{{ patients|length }}</span>)
+                </h2>
+            </div>
+            {% for message in messages %}
+            <h5 style="color: red">{{message}}</h5>
+            {% endfor %}
+            <div class="p-6">
+                {% if patients %} 
+                <div id="patientsTable" class="">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="text-left py-2">Name</th>
+                                <th class="text-left py-2">Age</th>
+                                <th class="text-left py-2">Gender</th>
+                                <th class="text-left py-2">Contact</th>
+                                <th class="text-left py-2">Diagnosis</th>
+                                <th class="text-left py-2">Medical History</th>
+                                <th class="text-left py-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientsBody">
+                            {% for patient in patients %}
+                            <tr class="border-b">
+                                <td class="py-2 font-medium">{{patient.first_name}} {{patient.last_name}}</td>
+                                <td class="py-2">{{patient.dob}}</td>
+                                <td class="py-2 capitalize">{{patient.gender}}</td>
+                                <td class="py-2">{{patient.phone}}</td>
+                                <td class="py-2">{{'N/A'}}</td>
+                                <td class="py-2">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-gray-500 text-sm">None</span>
+                                    </div>
+                                </td>
+                                <td class="py-2">
+                                    <button class="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center" onclick="window.location.href = '/nurse/registration/each/{{patient.id}}'">
+                                        <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                        Add History
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div id="noPatients" class="text-center py-8 text-gray-500">
+                    No patients registered yet
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Dialog for Adding Medical History -->
+        <div id="dialog" class="fixed inset-0 bg-black bg-opacity-50 hidden" style="z-index: 50;">
+            <div class="bg-white rounded-lg p-6 max-w-md mx-auto mt-20">
+                <div class="border-b pb-4">
+                    <h3 class="text-lg font-semibold" id="dialogTitle">Add Medical History for [Patient Name]</h3>
+                </div>
+                <div class="space-y-4 py-4">
+                    <div class="space-y-2">
+                        <label for="disease" class="block text-sm font-medium text-gray-700">Disease/Condition</label>
+                        <input id="disease" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter disease or condition">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label for="hasDisease" class="text-sm font-medium text-gray-700">Patient Currently Has This Condition</label>
+                        <input id="hasDisease" type="checkbox" class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button id="cancelButton" class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">Cancel</button>
+                    <button id="addHistoryButton" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Add Medical History</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mock types and utilities
+            // const Patient = {
+            //     id: String,
+            //     name: String,
+            //     age: Number,
+            //     gender: String,
+            //     contact: String,
+            //     emergencyContact: String,
+            //     vitals: Array,
+            //     diagnosis: String,
+            //     admissionDate: String,
+            //     dischargeDate: String,
+            //     medicalHistory: Array,
+            //     complaints: Array,
+            //     nurseNotes: Array,
+            //     careProvided: Array,
+            //     patientResponse: Array,
+            //     medications: Array,
+            //     fluidChart: Array,
+            //     observationNotes: Array,
+            //     createdAt: String,
+            //     updatedAt: String
+            // };
+            // const MedicalHistory = {
+            //     disease: String,
+            //     hasDisease: Boolean
+            // };
+
+            // function generateId() {
+            //     return 'xxxx-xxxx-xxx'.replace(/x/g, () => (Math.random() * 16 | 0).toString(16));
+            // }
+
+            // // Mock storage
+            // const patientStorage = {
+            //     getAll: () => {
+            //         const stored = localStorage.getItem('patients');
+            //         return stored ? JSON.parse(stored) : [];
+            //     },
+            //     save: (patient) => {
+            //         const allPatients = patientStorage.getAll();
+            //         const index = allPatients.findIndex(p => p.id === patient.id);
+            //         if (index !== -1) allPatients[index] = patient;
+            //         else allPatients.push(patient);
+            //         localStorage.setItem('patients', JSON.stringify(allPatients));
+            //     }
+            // };
+
+            // // State
+            // let patients = [];
+            // let selectedPatient = null;
+            // let isDialogOpen = false;
+            // let newHistory = { disease: "", hasDisease: false };
+
+            // // DOM elements
+            // const patientCount = document.getElementById('patientCount');
+            // const patientsTable = document.getElementById('patientsTable');
+            // const noPatients = document.getElementById('noPatients');
+            // const patientsBody = document.getElementById('patientsBody');
+            // const dialog = document.getElementById('dialog');
+            // const dialogTitle = document.getElementById('dialogTitle');
+            // const diseaseInput = document.getElementById('disease');
+            // const hasDiseaseInput = document.getElementById('hasDisease');
+            // const cancelButton = document.getElementById('cancelButton');
+            // const addHistoryButton = document.getElementById('addHistoryButton');
+
+            // // Load patients
+            // function loadPatients() {
+            //     patients = patientStorage.getAll();
+            //     patientCount.textContent = patients.length;
+            //     if (patients.length === 0) {
+            //         patientsTable.classList.add('hidden');
+            //         noPatients.classList.remove('hidden');
+            //     } else {
+            //         patientsTable.classList.remove('hidden');
+            //         noPatients.classList.add('hidden');
+            //         populateTable();
+            //     }
+            // }
+
+            // // Populate table
+            // function populateTable() {
+            //     patientsBody.innerHTML = '';
+            //     patients.forEach(patient => {
+            //         const row = document.createElement('tr');
+            //         row.className = 'border-b';
+            //         row.innerHTML = `
+            //             <td class="py-2 font-medium">${patient.name}</td>
+            //             <td class="py-2">${patient.age}</td>
+            //             <td class="py-2 capitalize">${patient.gender}</td>
+            //             <td class="py-2">${patient.contact}</td>
+            //             <td class="py-2">${patient.diagnosis || 'N/A'}</td>
+            //             <td class="py-2">
+            //                 <div class="flex flex-wrap gap-1">
+            //                     ${patient.medicalHistory.length === 0 ? '<span class="text-gray-500 text-sm">None</span>' : patient.medicalHistory.map(history => `
+            //                         <span class="px-2 py-1 rounded text-xs ${history.hasDisease ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800'}">
+            //                             ${history.disease}
+            //                         </span>
+            //                     `).join('')}
+            //                 </div>
+            //             </td>
+            //             <td class="py-2">
+            //                 <button class="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center" onclick="openAddHistoryDialog('${patient.id}')">
+            //                     <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            //                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            //                     </svg>
+            //                     Add History
+            //                 </button>
+            //             </td>
+            //         `;
+            //         patientsBody.appendChild(row);
+            //     });
+            // }
+
+            // // Open dialog
+            // window.openAddHistoryDialog = function(patientId) {
+            //     selectedPatient = patients.find(p => p.id === patientId);
+            //     if (selectedPatient) {
+            //         isDialogOpen = true;
+            //         dialog.classList.remove('hidden');
+            //         dialogTitle.textContent = `Add Medical History for ${selectedPatient.name}`;
+            //         diseaseInput.value = newHistory.disease;
+            //         hasDiseaseInput.checked = newHistory.hasDisease;
+            //     }
+            // };
+
+            // // Handle dialog inputs
+            // diseaseInput.addEventListener('input', (e) => { newHistory.disease = e.target.value; });
+            // hasDiseaseInput.addEventListener('change', (e) => { newHistory.hasDisease = e.target.checked; });
+
+            // // Handle dialog actions
+            // cancelButton.addEventListener('click', () => {
+            //     isDialogOpen = false;
+            //     dialog.classList.add('hidden');
+            //     newHistory = { disease: "", hasDisease: false };
+            //     diseaseInput.value = '';
+            //     hasDiseaseInput.checked = false;
+            // });
+
+            // addHistoryButton.addEventListener('click', () => {
+            //     if (!selectedPatient || !newHistory.disease.trim()) {
+            //         alert('Error\nPlease enter a disease name');
+            //         return;
+            //     }
+
+            //     const updatedPatient = {
+            //         ...selectedPatient,
+            //         medicalHistory: [...selectedPatient.medicalHistory, { ...newHistory, id: generateId() }]
+            //     };
+
+            //     patientStorage.save(updatedPatient);
+            //     loadPatients();
+
+            //     alert('Success\nMedical history added successfully');
+
+            //     isDialogOpen = false;
+            //     dialog.classList.add('hidden');
+            //     newHistory = { disease: "", hasDisease: false };
+            //     diseaseInput.value = '';
+            //     hasDiseaseInput.checked = false;
+            //     selectedPatient = null;
+            // });
+
+            // Initialize
+            loadPatients();
+        });
+    </script>
+</body>
+</html>

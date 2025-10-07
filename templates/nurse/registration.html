@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration - Nurse Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#64748b',
+                        accent: '#10b981',
+                        background: '#f8fafc',
+                        surface: '#ffffff',
+                        text: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-text">
+    <div class="flex h-screen">
+         Sidebar 
+        <nav class="w-64 bg-surface shadow-lg border-r border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h1 class="text-xl font-bold text-primary">Nurse Dashboard</h1>
+                <p class="text-sm text-secondary mt-1">EHR System</p>
+            </div>
+            
+            <div class="p-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="index.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="registration.html" class="flex items-center p-3 rounded-lg bg-primary text-white">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            Patient Registration
+                        </a>
+                    </li>
+                    <li>
+                        <a href="attend.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            Attend to Patients
+                        </a>
+                    </li>
+                    <li>
+                        <a href="inpatient.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            Inpatient Care
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Reports
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+         Main Content 
+        <main class="flex-1 overflow-auto">
+            <div class="p-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-text mb-2">Patient Registration</h2>
+                    <p class="text-secondary">Register new patients and record initial vitals and medical history</p>
+                </div>
+
+                 Registration Form 
+                <form id="registrationForm" class="space-y-8">
+                     Basic Patient Information 
+                    <div class="bg-surface p-6 rounded-lg shadow-sm border border-gray-200">
+                        <h3 class="text-lg font-semibold text-text mb-4">Basic Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">First Name *</label>
+                                <input type="text" id="firstName" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Last Name *</label>
+                                <input type="text" id="lastName" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Date of Birth *</label>
+                                <input type="date" id="dateOfBirth" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Gender *</label>
+                                <select id="gender" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Phone Number</label>
+                                <input type="tel" id="phoneNumber" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Emergency Contact</label>
+                                <input type="tel" id="emergencyContact" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-text mb-2">Address</label>
+                            <textarea id="address" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                        </div>
+                    </div>
+
+                     Vitals Form 
+                    <div class="bg-surface p-6 rounded-lg shadow-sm border border-gray-200">
+                        <h3 class="text-lg font-semibold text-text mb-4">Initial Vitals</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Temperature (°C)</label>
+                                <input type="number" id="temperature" step="0.1" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Pulse (bpm)</label>
+                                <input type="number" id="pulse" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Respiration (rpm)</label>
+                                <input type="number" id="respiration" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Blood Pressure (Systolic)</label>
+                                <input type="number" id="bpSystolic" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Blood Pressure (Diastolic)</label>
+                                <input type="number" id="bpDiastolic" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Weight (kg)</label>
+                                <input type="number" id="weight" step="0.1" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Height (cm)</label>
+                                <input type="number" id="height" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                        </div>
+                    </div>
+
+                     Diagnosis/Admission Form 
+                    <div class="bg-surface p-6 rounded-lg shadow-sm border border-gray-200">
+                        <h3 class="text-lg font-semibold text-text mb-4">Diagnosis & Admission</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Initial Diagnosis</label>
+                                <textarea id="diagnosis" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter initial diagnosis or observations"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Admission Type</label>
+                                <select id="admissionType" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">Select Admission Type</option>
+                                    <option value="outpatient">Outpatient</option>
+                                    <option value="inpatient">Inpatient</option>
+                                    <option value="emergency">Emergency</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Date of Admission</label>
+                                <input type="datetime-local" id="admissionDate" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Expected Discharge Date</label>
+                                <input type="date" id="expectedDischargeDate" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                        </div>
+                    </div>
+
+                     Medical History 
+                    <div class="bg-surface p-6 rounded-lg shadow-sm border border-gray-200">
+                        <h3 class="text-lg font-semibold text-text mb-4">Medical History</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-text mb-2">Diabetes</label>
+                                    <div class="flex items-center space-x-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="diabetes" value="no" class="mr-2" checked>
+                                            <span>No</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="diabetes" value="yes" class="mr-2">
+                                            <span>Yes</span>
+                                        </label>
+                                    </div>
+                                    <input type="text" id="diabetesDetails" placeholder="If yes, specify type and details" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent hidden">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-text mb-2">Hypertension</label>
+                                    <div class="flex items-center space-x-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="hypertension" value="no" class="mr-2" checked>
+                                            <span>No</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="hypertension" value="yes" class="mr-2">
+                                            <span>Yes</span>
+                                        </label>
+                                    </div>
+                                    <input type="text" id="hypertensionDetails" placeholder="If yes, specify details" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent hidden">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-text mb-2">Heart Disease</label>
+                                    <div class="flex items-center space-x-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="heartDisease" value="no" class="mr-2" checked>
+                                            <span>No</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="heartDisease" value="yes" class="mr-2">
+                                            <span>Yes</span>
+                                        </label>
+                                    </div>
+                                    <input type="text" id="heartDiseaseDetails" placeholder="If yes, specify details" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent hidden">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-text mb-2">Allergies</label>
+                                    <div class="flex items-center space-x-4">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="allergies" value="no" class="mr-2" checked>
+                                            <span>No</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="allergies" value="yes" class="mr-2">
+                                            <span>Yes</span>
+                                        </label>
+                                    </div>
+                                    <input type="text" id="allergiesDetails" placeholder="If yes, specify allergens" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent hidden">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Other Medical Conditions</label>
+                                <textarea id="otherConditions" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="List any other medical conditions, surgeries, or relevant medical history"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text mb-2">Current Medications</label>
+                                <textarea id="currentMedications" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="List current medications and dosages"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                     Submit Button 
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" onclick="window.location.href='index.html'" class="px-6 py-3 border border-gray-300 rounded-lg text-secondary hover:bg-gray-50 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                            Register Patient
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+     Success Modal 
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                    <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Patient Registered Successfully!</h3>
+                <p class="text-sm text-gray-500 mb-4">The patient has been added to the system with ID: <span id="patientId" class="font-mono font-bold"></span></p>
+                <div class="flex justify-center space-x-3">
+                    <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors">
+                        Close
+                    </button>
+                    <button onclick="registerAnother()" class="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors">
+                        Register Another
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/registration.js">
+        class PatientRegistration {
+  constructor() {
+    this.init()
+  }
+
+  init() {
+    this.setupEventListeners()
+    this.setActiveNavigation()
+    this.setDefaultValues()
+  }
+
+  setupEventListeners() {
+    document.getElementById("registrationForm").addEventListener("submit", (e) => {
+      e.preventDefault()
+      this.registerPatient()
+    })
+
+    // Show/hide medical history details based on yes/no selection
+    const medicalConditions = ["diabetes", "hypertension", "heartDisease", "allergies"]
+    medicalConditions.forEach((condition) => {
+      const radios = document.querySelectorAll(`input[name="${condition}"]`)
+      radios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+          const detailsInput = document.getElementById(`${condition}Details`)
+          if (radio.value === "yes" && radio.checked) {
+            detailsInput.classList.remove("hidden")
+            detailsInput.required = true
+          } else if (radio.value === "no" && radio.checked) {
+            detailsInput.classList.add("hidden")
+            detailsInput.required = false
+            detailsInput.value = ""
+          }
+        })
+      })
+    })
+  }
+
+  setDefaultValues() {
+    // Set admission date to current date/time
+    const now = new Date()
+    const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
+    document.getElementById("admissionDate").value = localDateTime
+  }
+
+  registerPatient() {
+    const formData = this.collectFormData()
+
+    if (!this.validateForm(formData)) {
+      return
+    }
+
+    const patient = this.createPatientObject(formData)
+    this.savePatient(patient)
+    this.showSuccessModal(patient.id)
+  }
+
+  collectFormData() {
+    return {
+      // Basic Information
+      firstName: document.getElementById("firstName").value.trim(),
+      lastName: document.getElementById("lastName").value.trim(),
+      dateOfBirth: document.getElementById("dateOfBirth").value,
+      gender: document.getElementById("gender").value,
+      phoneNumber: document.getElementById("phoneNumber").value.trim(),
+      emergencyContact: document.getElementById("emergencyContact").value.trim(),
+      address: document.getElementById("address").value.trim(),
+
+      // Vitals
+      temperature: document.getElementById("temperature").value,
+      pulse: document.getElementById("pulse").value,
+      respiration: document.getElementById("respiration").value,
+      bpSystolic: document.getElementById("bpSystolic").value,
+      bpDiastolic: document.getElementById("bpDiastolic").value,
+      weight: document.getElementById("weight").value,
+      height: document.getElementById("height").value,
+
+      // Diagnosis & Admission
+      diagnosis: document.getElementById("diagnosis").value.trim(),
+      admissionType: document.getElementById("admissionType").value,
+      admissionDate: document.getElementById("admissionDate").value,
+      expectedDischargeDate: document.getElementById("expectedDischargeDate").value,
+
+      // Medical History
+      diabetes: document.querySelector('input[name="diabetes"]:checked').value,
+      diabetesDetails: document.getElementById("diabetesDetails").value.trim(),
+      hypertension: document.querySelector('input[name="hypertension"]:checked').value,
+      hypertensionDetails: document.getElementById("hypertensionDetails").value.trim(),
+      heartDisease: document.querySelector('input[name="heartDisease"]:checked').value,
+      heartDiseaseDetails: document.getElementById("heartDiseaseDetails").value.trim(),
+      allergies: document.querySelector('input[name="allergies"]:checked').value,
+      allergiesDetails: document.getElementById("allergiesDetails").value.trim(),
+      otherConditions: document.getElementById("otherConditions").value.trim(),
+      currentMedications: document.getElementById("currentMedications").value.trim(),
+    }
+  }
+
+  validateForm(formData) {
+    const requiredFields = ["firstName", "lastName", "dateOfBirth", "gender"]
+
+    for (const field of requiredFields) {
+      if (!formData[field]) {
+        alert(`Please fill in the ${field.replace(/([A-Z])/g, " $1").toLowerCase()}`)
+        return false
+      }
+    }
+
+    // Validate date of birth (not in future)
+    if (new Date(formData.dateOfBirth) > new Date()) {
+      alert("Date of birth cannot be in the future")
+      return false
+    }
+
+    // Validate vitals if provided
+    if (formData.temperature && (formData.temperature < 30 || formData.temperature > 45)) {
+      alert("Temperature must be between 30°C and 45°C")
+      return false
+    }
+
+    if (formData.pulse && (formData.pulse < 30 || formData.pulse > 200)) {
+      alert("Pulse must be between 30 and 200 bpm")
+      return false
+    }
+
+    return true
+  }
+
+  createPatientObject(formData) {
+    const patientId = this.generatePatientId()
+    const currentDateTime = new Date().toISOString()
+
+    return {
+      id: patientId,
+      registrationDate: currentDateTime,
+
+      // Basic Information
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      fullName: `${formData.firstName} ${formData.lastName}`,
+      dateOfBirth: formData.dateOfBirth,
+      gender: formData.gender,
+      phoneNumber: formData.phoneNumber,
+      emergencyContact: formData.emergencyContact,
+      address: formData.address,
+
+      // Initial Vitals
+      initialVitals: {
+        date: currentDateTime,
+        temperature: formData.temperature ? Number.parseFloat(formData.temperature) : null,
+        pulse: formData.pulse ? Number.parseInt(formData.pulse) : null,
+        respiration: formData.respiration ? Number.parseInt(formData.respiration) : null,
+        bloodPressure: {
+          systolic: formData.bpSystolic ? Number.parseInt(formData.bpSystolic) : null,
+          diastolic: formData.bpDiastolic ? Number.parseInt(formData.bpDiastolic) : null,
+        },
+        weight: formData.weight ? Number.parseFloat(formData.weight) : null,
+        height: formData.height ? Number.parseInt(formData.height) : null,
+      },
+
+      // Vitals History (for tracking multiple readings)
+      vitalsHistory: [],
+
+      // Diagnosis & Admission
+      initialDiagnosis: formData.diagnosis,
+      admissionType: formData.admissionType,
+      admissionDate: formData.admissionDate || null,
+      expectedDischargeDate: formData.expectedDischargeDate || null,
+      dischargeDate: null,
+
+      // Medical History
+      medicalHistory: {
+        diabetes: {
+          hasCondition: formData.diabetes === "yes",
+          details: formData.diabetesDetails,
+        },
+        hypertension: {
+          hasCondition: formData.hypertension === "yes",
+          details: formData.hypertensionDetails,
+        },
+        heartDisease: {
+          hasCondition: formData.heartDisease === "yes",
+          details: formData.heartDiseaseDetails,
+        },
+        allergies: {
+          hasCondition: formData.allergies === "yes",
+          details: formData.allergiesDetails,
+        },
+        otherConditions: formData.otherConditions,
+        currentMedications: formData.currentMedications,
+      },
+
+      // Care Records
+      visits: [],
+      nurseNotes: [],
+      careProvided: [],
+      medications: [],
+      fluidChart: [],
+      observationNotes: [],
+
+      // Status
+      status: formData.admissionType === "inpatient" ? "admitted" : "registered",
+    }
+  }
+
+  generatePatientId() {
+    const prefix = "PT"
+    const timestamp = Date.now().toString().slice(-6)
+    const random = Math.random().toString(36).substr(2, 3).toUpperCase()
+    return `${prefix}${timestamp}${random}`
+  }
+
+  savePatient(patient) {
+    const patients = JSON.parse(localStorage.getItem("patients") || "[]")
+    patients.push(patient)
+    localStorage.setItem("patients", JSON.stringify(patients))
+  }
+
+  showSuccessModal(patientId) {
+    document.getElementById("patientId").textContent = patientId
+    document.getElementById("successModal").classList.remove("hidden")
+    document.getElementById("successModal").classList.add("flex")
+  }
+
+  setActiveNavigation() {
+    const navLinks = document.querySelectorAll("nav a")
+    navLinks.forEach((link) => {
+      link.classList.remove("bg-primary", "text-white")
+      link.classList.add("text-secondary", "hover:bg-gray-100")
+
+      if (link.getAttribute("href") === "registration.html") {
+        link.classList.remove("text-secondary", "hover:bg-gray-100")
+        link.classList.add("bg-primary", "text-white")
+      }
+    })
+  }
+}
+
+// Modal functions
+function closeModal() {
+  document.getElementById("successModal").classList.add("hidden")
+  document.getElementById("successModal").classList.remove("flex")
+}
+
+function registerAnother() {
+  closeModal()
+  document.getElementById("registrationForm").reset()
+
+  // Reset medical history detail fields
+  const detailFields = ["diabetesDetails", "hypertensionDetails", "heartDiseaseDetails", "allergiesDetails"]
+  detailFields.forEach((fieldId) => {
+    const field = document.getElementById(fieldId)
+    field.classList.add("hidden")
+    field.required = false
+  })
+
+  // Set default values again
+  const registration = new PatientRegistration()
+  registration.setDefaultValues()
+}
+
+// Initialize when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  new PatientRegistration()
+})
+
+    </script>
+</body>
+</html>

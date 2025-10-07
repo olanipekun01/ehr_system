@@ -318,18 +318,25 @@
             </div>
         </li> -->
         <li>
-          <a href="/him/patientlist/">
+          <a href="/him/dashboard/">
+            <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
+              <span class="links_name">Dashbaord</span>
+          </a>
+          <span class="tooltip">dashbaord</span>
+        </li>
+        <li>
+          <a href="/him/patients/list/">
             <img src="{% static './assets/bx-store-alt.svg' %}" alt="">
               <span class="links_name">Patient List</span>
           </a>
-          <span class="tooltip">Patient List</span>
+          <span class="tooltip">patient list</span>
         </li>
         <li>
-          <a href="/him/registerpatient/">
+          <a href="/him/patients/new/">
               <img src="{% static './assets/cart.png' %}" alt="">
               <span class="links_name">Register Patient</span>
           </a>
-          <span class="tooltip">Register Patient</span>
+          <span class="tooltip">register patient</span>
         </li>
   
         <!-- <li>
@@ -403,7 +410,7 @@
             <div class="flex justify-between items-start">
                 <div class="flex items-center space-x-4">
                     <button
-                        onclick="window.location.reload()"
+                        onclick="window.location.href='/him/dashboard/'"
                         class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
                     >
                         <i data-lucide="arrow-left" class="h-5 w-5"></i>
@@ -413,8 +420,10 @@
                         <div>
                             <h1 id="patientName" class="text-3xl font-bold text-gray-900">{{patient.first_name}} {{patient.last_name}}</h1>
                             <p id="patientId" class="text-gray-600">{{patient.id_no}}</p>
+                            <p id="patientfolder" class="text-gray-600">Folder No: {{casefolder.folder_number}}</p>
                         </div>
                     </div>
+                    
                 </div>
                 <button
                     onclick="window.location.href = '/him/patient/edit/{{patient.id}}'"
@@ -424,6 +433,10 @@
                     <span>Edit Patient</span>
                 </button>
             </div>
+
+            {% for message in messages %}
+            <h5 style="color: red">{{message}}</h5>
+            {% endfor %}
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Personal Information -->
@@ -470,98 +483,27 @@
                 </div>
             </div>
 
-            <!-- Medical History -->
-            <div class="bg-white rounded-lg shadow-sm border p-6" id="medicalHistory" style="display: none;">
+           <!-- Notes -->
+            <div class="bg-white rounded-lg shadow-sm border p-6" id="notes" style="">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <i data-lucide="heart" class="h-5 w-5 mr-2 text-red-600"></i>
-                    Medical History
+                    <i data-lucide="file-text" class="h-5 w-5 mr-2 text-purple-600"></i>
+                    Recent Notes
                 </h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="medicalHistoryData">
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Hypertension</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.hypertension}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Measles</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.measles}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Chicken_pox</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.chicken_pox}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Tb</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.tb}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Diabetes</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.diabetes}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Yellow_fever</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.yellow_fever}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Sti</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.sti}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Kidney Disease</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.kidney_disease}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Liver Disease</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.liver_disease}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Epilepsy</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.epilepsy}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">SC Disease</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.sc_disease}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">GD Disease</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.gd_ulcer}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">RTA Injury</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.rta_injury}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Alcohol Smoking</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.alcohol_smoking}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Previous Ops</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.previous_ops}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Schistosomiasis</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.schistosomiasis}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Respiratpry Disease</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.respiratory_disease}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Mental Disease</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.mental_disease}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">HIV</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.hiv}}</div>
-                    </div>
-                    <div class="p-3 rounded-lg border bg-red-50 border-red-200">
-                            <span class="text-sm font-medium text-red-800">Allergies</span>
-                            <div class="text-xs mt-1 text-gray-500">{{medhist.allergies}}</div>
-                    </div>
+                <div class="space-y-4" id="notesData">
+                    {% for note in notes %}
+                        <div class="border-l-4 border-blue-500 pl-4 py-2">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${note.user_type === "DOCTOR" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}">${note.user_type}</span>
+                                <span class="text-xs text-gray-500">{{note.date}}</span>
+                            </div>
+                            <p class="text-sm text-gray-700">{{note.notes}}</p>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
 
             <!-- Vital Signs -->
-            <div class="bg-white rounded-lg shadow-sm border p-6" id="vitalSigns" style="display: none;">
+            <div class="bg-white rounded-lg shadow-sm border p-6" id="vitalSigns" style="">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                     <i data-lucide="activity" class="h-5 w-5 mr-2 text-green-600"></i>
                     Recent Vital Signs
@@ -592,24 +534,159 @@
                 </div>
             </div>
 
-            <!-- Notes -->
-            <div class="bg-white rounded-lg shadow-sm border p-6" id="notes" style="display: none;">
+            <!-- Medical History -->
+            <div class="bg-white rounded-lg shadow-sm border p-6" id="medicalHistory" style="">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <i data-lucide="file-text" class="h-5 w-5 mr-2 text-purple-600"></i>
-                    Recent Notes
+                    <i data-lucide="heart" class="h-5 w-5 mr-2 text-red-600"></i>
+                    Medical History
                 </h3>
-                <div class="space-y-4" id="notesData">
-                    {% for note in notes %}
-                        <div class="border-l-4 border-blue-500 pl-4 py-2">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${note.user_type === "DOCTOR" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}">${note.user_type}</span>
-                                <span class="text-xs text-gray-500">{{note.date}}</span>
-                            </div>
-                            <p class="text-sm text-gray-700">{{note.notes}}</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="medicalHistoryData">
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.hypertension %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                        <span class="text-sm font-medium {% if medhist and medhist.hypertension %}text-red-800{% else %}text-gray-600{% endif %}">Hypertension</span>
+                        <div class="text-xs mt-1 {% if medhist and medhist.hypertension %}text-red-600{% else %}text-gray-500{% endif %}">
+                            {% if medhist and medhist.hypertension %}Yes{% else %}No{% endif %}
                         </div>
-                    {% endfor %}
+                    </div>
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.measle %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.measle %}text-red-800{% else %}text-gray-600{% endif %}">Measles</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.hypertension %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.measles %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.chicken_pox %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.chicken_pox %}text-red-800{% else %}text-gray-600{% endif %}">Chicken_pox</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.chicken_pox %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.chicken_pox %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+
+
+
+                    <div class="p-3 rounded-lg border  {% if medhist and medhist.tb %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.tb %}text-red-800{% else %}text-gray-600{% endif %}">TB</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.tb %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.tb %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                    
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.diabetes %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.diabetes %}text-red-800{% else %}text-gray-600{% endif %}">Diabetes</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.diabetes %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.diabetes %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                    
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.yellow_fever %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.yellow_fever %}text-red-800{% else %}text-gray-600{% endif %}">Yellow Fever</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.yellow_fever %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.yellow_fever %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                     
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.sti %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.sti %}text-red-800{% else %}text-gray-600{% endif %}">STI</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.sti %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.sti %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                     
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.kidney_disease %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.kidney_disease %}text-red-800{% else %}text-gray-600{% endif %}">Kidney Disease</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.kidney_disease %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.kidney_disease %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                     
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.liver_disease %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.liver_disease %}text-red-800{% else %}text-gray-600{% endif %}">Liver Disease</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.liver_disease %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.liver_disease %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                     
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.epilepsy %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.epilepsy %}text-red-800{% else %}text-gray-600{% endif %}">Epilepsy</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.epilepsy %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.epilepsy %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                    
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.sc_disease %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.sc_disease %}text-red-800{% else %}text-gray-600{% endif %}">Sickle Cell disease</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.sc_disease %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.sc_disease %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                     
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.gd_ulcer %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.gd_ulcer %}text-red-800{% else %}text-gray-600{% endif %}">GD Ulcer</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.gd_ulcer %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.gd_ulcer %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                     
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.rta_injury %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.rta_injury %}text-red-800{% else %}text-gray-600{% endif %}">RTA Injury</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.rta_injury %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.rta_injury %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                     
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.alcohol_smoking %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.alcohol_smoking %}text-red-800{% else %}text-gray-600{% endif %}">Alcohol / Smoking</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.alcohol_smoking %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.alcohol_smoking %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                    
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.previous_ops %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.previous_ops %}text-red-800{% else %}text-gray-600{% endif %}">Previous Operations</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.previous_ops %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.previous_ops %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                     
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.schistosomiasis%}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.schistosomiasis %}text-red-800{% else %}text-gray-600{% endif %}">Schistosomiasis</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.schistosomiasis%}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.schistosomiasis%}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                    
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.respiratory_disease %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.respiratory_disease %}text-red-800{% else %}text-gray-600{% endif %}">Respiratory Disease</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.respiratory_disease %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.respiratory_disease %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                    
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.mental_disease %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.mental_disease %}text-red-800{% else %}text-gray-600{% endif %}">Mental Disease</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.mental_disease %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.mental_disease %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                     
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.hiv %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.hiv %}text-red-800{% else %}text-gray-600{% endif %}">HIV</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.hiv %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.hiv %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                    
+                    <div class="p-3 rounded-lg border {% if medhist and medhist.allergies %}bg-red-50 border-red-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                            <span class="text-sm font-medium text-red-800 {% if medhist and medhist.allergies %}text-red-800{% else %}text-gray-600{% endif %}">Allergies</span>
+                            <div class="text-xs mt-1 {% if medhist and medhist.allergies %}text-red-600{% else %}text-gray-500{% endif %}">
+                                {% if medhist and medhist.allergies %}Yes{% else %}No{% endif %}
+                            </div>
+                    </div>
+                   
                 </div>
             </div>
+
+            
+
+            
 
             <!-- Edit Modal -->
             <!-- <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">

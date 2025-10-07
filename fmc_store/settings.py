@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'store',
     'common',
     'him',
+    'nurse',
+    'doc',
 ]
 
 MIDDLEWARE = [

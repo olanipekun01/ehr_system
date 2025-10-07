@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurse Health Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .healthcare-heading { font-size: 1.25rem; font-weight: 600; }
+        .card-hover { transition: all 0.2s ease; }
+        .card-hover:hover { transform: scale(1.05); }
+        .bg-primary { background-color: #3b82f6; }
+        .bg-primary-light { background-color: #dbeafe; }
+        .bg-secondary { background-color: #9333ea; }
+        .bg-secondary-accent { color: #9333ea; }
+        .bg-accent { background-color: #8b5cf6; }
+        .bg-accent-light { background-color: #ede9fe; }
+        .bg-warning { background-color: #f59e0b; }
+        .bg-warning-light { background-color: #fef3c7; }
+        .bg-critical { background-color: #ef4444; }
+        .bg-critical-light { background-color: #fee2e2; }
+        .text-primary { color: #3b82f6; }
+        .text-secondary-accent { color: #9333ea; }
+        .text-accent { color: #8b5cf6; }
+        .text-warning { color: #f59e0b; }
+        .text-critical { color: #ef4444; }
+        .text-success-foreground { color: #22c55e; }
+        .text-muted-foreground { color: #6b7280; }
+        .bg-muted\/50 { background-color: #e5e7eb80; }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 p-6 flex flex-row">
+    <nav class="w-64 bg-surface shadow-lg border-r border-gray-200">
+        <div class="p-6 border-b border-gray-200">
+            <h1 class="text-xl font-bold text-primary">Nurse Dashboard</h1>
+            <p class="text-sm text-secondary mt-1">EHR System</p>
+        </div>
+        
+        <div class="p-4">
+            <ul class="space-y-2">
+                <li>
+                    <a href="/nurse/dashboard/" class="flex items-center p-3 rounded-lg bg-primary text-white">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        </svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/nurse/registration/all/" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                        Patient Registration
+                    </a>
+                </li>
+                <li>
+                    <a href="/nurse/attend/" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        Attend to Patients
+                    </a>
+                </li>
+                <li>
+                    <a href="/nurse/inpatient/" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        Inpatient Care
+                    </a>
+                </li>
+                <li>
+                    <a href="/nurse/reports/" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Reports
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto space-y-6" id="app">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Nurse Health Dashboard</h1>
+                <p class="text-gray-600">Electronic Health Records System - Overview</p>
+            </div>
+        </div>
+
+        <!-- Welcome Section -->
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg shadow">
+            <div class="p-6 flex items-center gap-4">
+                <div class="p-3 bg-white/20 rounded-lg">
+                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold mb-2">Welcome to the EHR System</h1>
+                    <p class="text-white/90">
+                        Comprehensive patient management and care coordination platform for healthcare professionals.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="statsOverview">
+            <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b">
+                <h2 class="flex items-center gap-2 healthcare-heading">
+                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4m4 4V7" />
+                    </svg>
+                    Quick Actions
+                </h2>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="quickActions">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity & System Status -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b">
+                    <h2 class="flex items-center gap-2 healthcare-heading">
+                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                        </svg>
+                        Recent Activity
+                    </h2>
+                </div>
+                <div class="p-6" id="recentActivity">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b">
+                    <h2 class="flex items-center gap-2 healthcare-heading">
+                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        System Status
+                    </h2>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Patient Database</span>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-500 text-white">Online</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">EHR System</span>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-500 text-white">Operational</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Data Backup</span>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-500 text-white">Active</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Last Sync</span>
+                        <span class="text-sm text-gray-500" id="lastSync">09:12 AM EDT, Oct 01, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Schedule -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b">
+                <h2 class="flex items-center gap-2 healthcare-heading">
+                    <svg class="h-5 w-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Today's Priorities
+                </h2>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="todaysSchedule">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mock types and utilities
+            const Patient = {
+                id: String,
+                name: String,
+                age: Number,
+                gender: String,
+                contact: String,
+                emergencyContact: String,
+                diagnosis: String,
+                vitals: Array,
+                complaints: Array,
+                nurseNotes: Array
+            };
+            const Report = {
+                shiftDate: String,
+                content: String
+            };
+
+            function getVitalStatus(vitals) {
+                const tempThreshold = 38;
+                const pulseThreshold = 100;
+                const respThreshold = 20;
+                const bpThreshold = 140;
+                if (vitals.temperature > tempThreshold || vitals.pulse > pulseThreshold || vitals.respiration > respThreshold || vitals.systolic > bpThreshold) {
+                    return "critical";
+                } else if (vitals.temperature > 37.5 || vitals.pulse > 90 || vitals.respiration > 18 || vitals.systolic > 130) {
+                    return "warning";
+                }
+                return "normal";
+            }
+
+            // Mock storage
+            const patientStorage = {
+                getAll: () => {
+                    const stored = localStorage.getItem('patients');
+                    return stored ? JSON.parse(stored) : [];
+                },
+                getInpatients: () => {
+                    const allPatients = patientStorage.getAll();
+                    return allPatients.filter(p => p.status === 'inpatient'); // Mock inpatient status
+                }
+            };
+            const reportStorage = {
+                getAll: () => {
+                    const stored = localStorage.getItem('reports');
+                    return stored ? JSON.parse(stored) : [];
+                }
+            };
+
+            // State
+            let stats = {
+                totalPatients: 0,
+                inpatients: 0,
+                reportsToday: 0,
+                criticalPatients: 0,
+                recentActivity: []
+            };
+
+            // DOM elements
+            const statsOverview = document.getElementById('statsOverview');
+            const quickActions = document.getElementById('quickActions');
+            const recentActivity = document.getElementById('recentActivity');
+            const todaysSchedule = document.getElementById('todaysSchedule');
+
+            // Quick actions data
+            const quickActionsData = [
+                {
+                    title: "Register New Patient",
+                    description: "Add a new patient to the system",
+                    icon: '<svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>',
+                    path: "/registration",
+                    color: "text-primary",
+                    bgColor: "bg-primary-light"
+                },
+                {
+                    title: "Attend to Patients",
+                    description: "Update patient records and vitals",
+                    icon: '<svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 114 0 2 2 0 01-4 0z" /></svg>',
+                    path: "/attend",
+                    color: "text-secondary-accent",
+                    bgColor: "bg-secondary"
+                },
+                {
+                    title: "Inpatient Care",
+                    description: "Manage admitted patients",
+                    icon: '<svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>',
+                    path: "/inpatient",
+                    color: "text-accent",
+                    bgColor: "bg-accent-light"
+                },
+                {
+                    title: "Submit Report",
+                    description: "Daily activity reporting",
+                    icon: '<svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>',
+                    path: "/reports",
+                    color: "text-warning",
+                    bgColor: "bg-warning-light"
+                }
+            ];
+
+            // Load dashboard stats
+            function loadDashboardStats() {
+                const allPatients = patientStorage.getAll();
+                const inpatients = patientStorage.getInpatients();
+                const allReports = reportStorage.getAll();
+
+                // Mock initial data if none exists
+                if (allPatients.length === 0) {
+                    const mockPatients = [
+                        { id: '1', name: 'John Doe', age: 45, gender: 'male', contact: '123-456-7890', emergencyContact: '098-765-4321', diagnosis: 'Hypertension', vitals: [{ temperature: 36.8, pulse: 78, respiration: 16, systolic: 130, diastolic: 85, timestamp: new Date().toISOString() }], complaints: [], nurseNotes: [], status: 'inpatient' },
+                        { id: '2', name: 'Jane Smith', age: 32, gender: 'female', contact: '234-567-8901', emergencyContact: '', diagnosis: 'Diabetes', vitals: [{ temperature: 37.2, pulse: 85, respiration: 18, systolic: 135, diastolic: 90, timestamp: new Date().toISOString() }], complaints: [], nurseNotes: [], status: 'outpatient' },
+                        { id: '3', name: 'Mike Johnson', age: 60, gender: 'male', contact: '345-678-9012', emergencyContact: '210-987-6543', diagnosis: 'Heart Disease', vitals: [{ temperature: 38.5, pulse: 110, respiration: 22, systolic: 150, diastolic: 95, timestamp: new Date().toISOString() }], complaints: [], nurseNotes: [], status: 'inpatient' }
+                    ];
+                    mockPatients.forEach(p => patientStorage.getAll().push(p));
+                    localStorage.setItem('patients', JSON.stringify(mockPatients));
+                }
+                if (allReports.length === 0) {
+                    const mockReports = [
+                        { shiftDate: new Date().toISOString().split('T')[0], content: 'Routine check completed' },
+                        { shiftDate: new Date().toISOString().split('T')[0], content: 'Vital signs updated' }
+                    ];
+                    localStorage.setItem('reports', JSON.stringify(mockReports));
+                }
+
+                const today = new Date().toISOString().split('T')[0];
+                const reportsToday = allReports.filter(report => report.shiftDate === today).length;
+                const criticalPatients = allPatients.filter(patient => {
+                    if (patient.vitals.length === 0) return false;
+                    const latestVitals = patient.vitals[patient.vitals.length - 1];
+                    return getVitalStatus(latestVitals) === "critical";
+                }).length;
+                const recentActivity = [];
+                const recentPatients = allPatients.slice(-3).reverse();
+                recentPatients.forEach(patient => {
+                    recentActivity.push(`${patient.name} registered`);
+                });
+
+                stats = {
+                    totalPatients: allPatients.length,
+                    inpatients: inpatients.length,
+                    reportsToday,
+                    criticalPatients,
+                    recentActivity: recentActivity.slice(0, 5)
+                };
+
+                // Populate stats overview
+                statsOverview.innerHTML = `
+                    <div class="card-hover">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-muted-foreground">Total Patients</p>
+                                    <p class="text-3xl font-bold text-primary">${stats.totalPatients}</p>
+                                </div>
+                                <div class="p-3 bg-primary-light rounded-lg">
+                                    <svg class="h-6 w-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 114 0 2 2 0 01-4 0z" /></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-hover">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-muted-foreground">Inpatients</p>
+                                    <p class="text-3xl font-bold text-accent">${stats.inpatients}</p>
+                                </div>
+                                <div class="p-3 bg-accent-light rounded-lg">
+                                    <svg class="h-6 w-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-hover">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-muted-foreground">Reports Today</p>
+                                    <p class="text-3xl font-bold text-secondary-accent">${stats.reportsToday}</p>
+                                </div>
+                                <div class="p-3 bg-secondary rounded-lg">
+                                    <svg class="h-6 w-6 text-secondary-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-hover">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-muted-foreground">Critical Patients</p>
+                                    <p class="text-3xl font-bold text-critical">${stats.criticalPatients}</p>
+                                </div>
+                                <div class="p-3 bg-critical-light rounded-lg">
+                                    <svg class="h-6 w-6 text-critical" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4.889a1.999 1.999 0 00-3.464 0L5.2 15.001c-.77 1.333.192 3 1.732 3z" /></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Populate quick actions
+                quickActions.innerHTML = quickActionsData.map(action => `
+                    <a href="${action.path}">
+                        <div class="card-hover h-full transition-all duration-200 hover:scale-105">
+                            <div class="p-6 text-center">
+                                <div class="w-12 h-12 ${action.bgColor} rounded-lg mx-auto mb-4 flex items-center justify-center">
+                                    ${action.icon}
+                                </div>
+                                <h3 class="font-semibold mb-2">${action.title}</h3>
+                                <p class="text-sm text-muted-foreground">${action.description}</p>
+                            </div>
+                        </div>
+                    </a>
+                `).join('');
+
+                // Populate recent activity
+                recentActivity.innerHTML = stats.recentActivity.length > 0 ? stats.recentActivity.map((activity, index) => `
+                    <div class="flex items-center gap-3 p-2 bg-muted/50 rounded">
+                        <div class="w-2 h-2 bg-primary rounded-full"></div>
+                        <span class="text-sm">${activity}</span>
+                    </div>
+                `).join('') : '<p class="text-muted-foreground text-center py-4">No recent activity</p>';
+
+                // Populate today's schedule
+                todaysSchedule.innerHTML = `
+                    <div class="p-4 bg-warning-light rounded-lg">
+                        <h4 class="font-medium text-warning mb-2">Pending Tasks</h4>
+                        <p class="text-sm text-muted-foreground">${stats.criticalPatients > 0 ? `${stats.criticalPatients} critical patients need attention` : "No critical patients"}</p>
+                    </div>
+                    <div class="p-4 bg-secondary rounded-lg">
+                        <h4 class="font-medium text-secondary-accent mb-2">Inpatient Rounds</h4>
+                        <p class="text-sm text-muted-foreground">${stats.inpatients} patients require monitoring</p>
+                    </div>
+                    <div class="p-4 bg-accent-light rounded-lg">
+                        <h4 class="font-medium text-accent mb-2">Daily Reports</h4>
+                        <p class="text-sm text-muted-foreground">${stats.reportsToday > 0 ? `${stats.reportsToday} reports submitted today` : "No reports submitted yet"}</p>
+                    </div>
+                `;
+            }
+
+            // Initialize
+            loadDashboardStats();
+        });
+    </script>
+</body>
+</html>

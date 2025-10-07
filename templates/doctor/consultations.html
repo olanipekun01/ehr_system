@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Consultation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-100 p-6">
+    <div class="space-y-6 max-w-6xl mx-auto" id="consultationPage">
+        <!-- Header -->
+        <div class="flex items-center space-x-4">
+            <button onclick="window.history.back()" class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </button>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Doctor Consultation</h1>
+                <p class="text-gray-600">Review cases and provide diagnosis</p>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden rounded-md bg-red-50 p-4">
+            <div class="text-sm text-red-700" id="errorText"></div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Pending Cases List -->
+            <div class="bg-white rounded-lg shadow-sm border p-6" id="casesList">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Pending Cases (<span id="caseCount">0</span>)</h3>
+                <div class="space-y-3" id="casesContainer">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Case Details and Consultation Form -->
+            <div class="lg:col-span-2 space-y-6" id="caseDetailsSection">
+                <!-- Placeholder for no selection -->
+                <div id="noSelection" class="bg-white rounded-lg shadow-sm border p-12 text-center">
+                    <svg class="h-12 w-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Select a Case</h3>
+                    <p class="text-gray-600">Choose a pending case from the list to begin consultation</p>
+                </div>
+
+                <!-- Case Information -->
+                <div id="caseInfo" class="hidden bg-white rounded-lg shadow-sm border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4" id="patientNameHeader"></h3>
+                    <div class="mb-4">
+                        <h4 class="font-medium text-gray-900 mb-2">Vital Signs</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm" id="vitalSigns">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div id="nurseNotesSection" class="hidden mb-4">
+                        <h4 class="font-medium text-gray-900 mb-2">Nurse Notes</h4>
+                        <p class="text-sm text-gray-700 bg-gray-50 p-3 rounded-md" id="nurseNotes"></p>
+                    </div>
+                </div>
+
+                <!-- Consultation Form -->
+                <form id="consultationForm" class="hidden bg-white rounded-lg shadow-sm border p-6 space-y-6">
+                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                        Consultation Form
+                    </h3>
+
+                    <!-- Patient Complaints -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Patient Complaints</label>
+                        <textarea id="complaints" rows="3" required placeholder="Record patient's chief complaints and symptoms..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+
+                    <!-- Diagnosis -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Diagnosis</label>
+                        <textarea id="diagnosis" rows="3" required placeholder="Provide your medical diagnosis..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+
+                    <!-- Treatment Plan -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Treatment Plan</label>
+                        <textarea id="treatmentPlan" rows="3" required placeholder="Outline the treatment plan..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+
+                    <!-- Medications -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Medications & Prescriptions</label>
+                        <textarea id="medications" rows="3" placeholder="List medications, dosages, and instructions..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+
+                    <!-- Patient Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Patient Type</label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" id="outpatient" name="patientType" value="outpatient" class="mr-2">
+                                Outpatient (Send to Pharmacy)
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" id="inpatient" name="patientType" value="inpatient" class="mr-2">
+                                Inpatient (Send to Nurse)
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Follow-up Instructions -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Follow-up Instructions</label>
+                        <textarea id="followUpInstructions" rows="2" placeholder="Follow-up care instructions..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+
+                    <!-- Referral Section -->
+                    <div class="border-t pt-4">
+                        <label class="flex items-center space-x-2 mb-3">
+                            <input type="checkbox" id="referralNeeded" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="text-sm font-medium text-gray-700">Referral Required</span>
+                        </label>
+                        <div id="referralFields" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Refer To</label>
+                                <input type="text" id="referralTo" placeholder="Specialist/Department" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Referral Reason</label>
+                                <input type="text" id="referralReason" placeholder="Reason for referral" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end pt-4">
+                        <button type="submit" id="submitButton" class="flex items-center space-x-2 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span id="submitText">Send to Pharmacy</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // State management
+            let pendingCases = [];
+            let selectedCase = null;
+            let isLoading = false;
+            let error = '';
+            let consultation = {
+                complaints: '',
+                diagnosis: '',
+                treatment_plan: '',
+                medications: '',
+                follow_up_instructions: '',
+                patient_type: 'outpatient',
+                referral_needed: false,
+                referral_to: '',
+                referral_reason: ''
+            };
+
+            // DOM elements
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const caseCount = document.getElementById('caseCount');
+            const casesContainer = document.getElementById('casesContainer');
+            const caseDetailsSection = document.getElementById('caseDetailsSection');
+            const noSelection = document.getElementById('noSelection');
+            const caseInfo = document.getElementById('caseInfo');
+            const patientNameHeader = document.getElementById('patientNameHeader');
+            const vitalSigns = document.getElementById('vitalSigns');
+            const nurseNotesSection = document.getElementById('nurseNotesSection');
+            const nurseNotes = document.getElementById('nurseNotes');
+            const consultationForm = document.getElementById('consultationForm');
+            const complaints = document.getElementById('complaints');
+            const diagnosis = document.getElementById('diagnosis');
+            const treatmentPlan = document.getElementById('treatmentPlan');
+            const medications = document.getElementById('medications');
+            const outpatient = document.getElementById('outpatient');
+            const inpatient = document.getElementById('inpatient');
+            const followUpInstructions = document.getElementById('followUpInstructions');
+            const referralNeeded = document.getElementById('referralNeeded');
+            const referralFields = document.getElementById('referralFields');
+            const referralTo = document.getElementById('referralTo');
+            const referralReason = document.getElementById('referralReason');
+            const submitButton = document.getElementById('submitButton');
+            const submitText = document.getElementById('submitText');
+
+            // Mock fetch pending cases
+            function fetchPendingCases() {
+                // Simulate API call with mock data
+                const mockCases = [
+                    {
+                        id: '1',
+                        patient_name: 'John Doe',
+                        patient_id: 'ID123',
+                        vital_signs: { blood_pressure: '120/80', pulse: '72', weight: '70', height: '170' },
+                        medical_history: { hypertension: true },
+                        nurse_notes: 'Patient reported dizziness.',
+                        created_at: '2025-09-25T10:00:00Z'
+                    },
+                    {
+                        id: '2',
+                        patient_name: 'Jane Smith',
+                        patient_id: 'ID456',
+                        vital_signs: { blood_pressure: '130/85', pulse: '68', weight: '65', height: '165' },
+                        medical_history: { diabetes: true },
+                        nurse_notes: 'Patient stable but needs monitoring.',
+                        created_at: '2025-09-25T09:30:00Z'
+                    }
+                ];
+                pendingCases = mockCases;
+                populateCases();
+            }
+
+            // Populate cases list
+            function populateCases() {
+                caseCount.textContent = pendingCases.length;
+                casesContainer.innerHTML = '';
+                pendingCases.forEach(case_ => {
+                    const div = document.createElement('div');
+                    div.className = `p-3 rounded-lg border cursor-pointer transition-colors ${selectedCase?.id === case_.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`;
+                    div.innerHTML = `
+                        <div class="flex items-center space-x-2">
+                            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="font-medium text-sm">${case_.patient_name}</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">${new Date(case_.created_at).toLocaleString()}</p>
+                    `;
+                    div.addEventListener('click', () => setSelectedCase(case_));
+                    casesContainer.appendChild(div);
+                });
+                if (pendingCases.length === 0) {
+                    casesContainer.innerHTML = '<p class="text-gray-500 text-sm">No pending cases</p>';
+                }
+                updateSections();
+            }
+
+            // Update sections visibility and content
+            function updateSections() {
+                if (selectedCase) {
+                    noSelection.classList.add('hidden');
+                    caseInfo.classList.remove('hidden');
+                    consultationForm.classList.remove('hidden');
+                    patientNameHeader.textContent = `Case Information - ${selectedCase.patient_name}`;
+                    vitalSigns.innerHTML = `
+                        <div><span class="text-gray-500">BP:</span><span class="ml-1 font-medium">${selectedCase.vital_signs?.blood_pressure || 'N/A'}</span></div>
+                        <div><span class="text-gray-500">Pulse:</span><span class="ml-1 font-medium">${selectedCase.vital_signs?.pulse || 'N/A'}</span></div>
+                        <div><span class="text-gray-500">Weight:</span><span class="ml-1 font-medium">${selectedCase.vital_signs?.weight || 'N/A'}</span></div>
+                        <div><span class="text-gray-500">Height:</span><span class="ml-1 font-medium">${selectedCase.vital_signs?.height || 'N/A'}</span></div>
+                    `;
+                    if (selectedCase.nurse_notes) {
+                        nurseNotesSection.classList.remove('hidden');
+                        nurseNotes.textContent = selectedCase.nurse_notes;
+                    } else {
+                        nurseNotesSection.classList.add('hidden');
+                    }
+                    updateInputs();
+                } else {
+                    noSelection.classList.remove('hidden');
+                    caseInfo.classList.add('hidden');
+                    consultationForm.classList.add('hidden');
+                }
+            }
+
+            // Update input values
+            function updateInputs() {
+                complaints.value = consultation.complaints;
+                diagnosis.value = consultation.diagnosis;
+                treatmentPlan.value = consultation.treatment_plan;
+                medications.value = consultation.medications;
+                followUpInstructions.value = consultation.follow_up_instructions;
+                outpatient.checked = consultation.patient_type === 'outpatient';
+                inpatient.checked = consultation.patient_type === 'inpatient';
+                referralNeeded.checked = consultation.referral_needed;
+                referralTo.value = consultation.referral_to;
+                referralReason.value = consultation.referral_reason;
+                referralFields.classList.toggle('hidden', !consultation.referral_needed);
+                submitText.textContent = consultation.patient_type === 'outpatient' ? 'Send to Pharmacy' : 'Send to Nurse';
+            }
+
+            // Handle input changes
+            complaints.addEventListener('input', (e) => { consultation.complaints = e.target.value; });
+            diagnosis.addEventListener('input', (e) => { consultation.diagnosis = e.target.value; });
+            treatmentPlan.addEventListener('input', (e) => { consultation.treatment_plan = e.target.value; });
+            medications.addEventListener('input', (e) => { consultation.medications = e.target.value; });
+            followUpInstructions.addEventListener('input', (e) => { consultation.follow_up_instructions = e.target.value; });
+            outpatient.addEventListener('change', (e) => {
+                consultation.patient_type = e.target.value;
+                updateInputs();
+            });
+            inpatient.addEventListener('change', (e) => {
+                consultation.patient_type = e.target.value;
+                updateInputs();
+            });
+            referralNeeded.addEventListener('change', (e) => {
+                consultation.referral_needed = e.target.checked;
+                referralFields.classList.toggle('hidden', !consultation.referral_needed);
+                updateInputs();
+            });
+            referralTo.addEventListener('input', (e) => { consultation.referral_to = e.target.value; });
+            referralReason.addEventListener('input', (e) => { consultation.referral_reason = e.target.value; });
+
+            // Handle form submission
+            consultationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!selectedCase) return;
+
+                setIsLoading(true);
+                error = '';
+                errorMessage.classList.add('hidden');
+                submitText.textContent = 'Submitting...';
+                submitButton.disabled = true;
+
+                // Simulate API post
+                setTimeout(() => {
+                    const consultationData = {
+                        case_id: selectedCase.id,
+                        ...consultation,
+                        status: consultation.patient_type === 'outpatient' ? 'completed' : 'inpatient_care'
+                    };
+                    console.log('Submitting:', consultationData); // Mock API call
+                    localStorage.setItem('consultationData', JSON.stringify(consultationData)); // Simulate storage
+                    pendingCases = pendingCases.filter(c => c.id !== selectedCase.id);
+                    setSelectedCase(null);
+                    consultation = {
+                        complaints: '',
+                        diagnosis: '',
+                        treatment_plan: '',
+                        medications: '',
+                        follow_up_instructions: '',
+                        patient_type: 'outpatient',
+                        referral_needed: false,
+                        referral_to: '',
+                        referral_reason: ''
+                    };
+                    alert('Consultation submitted successfully!');
+                    populateCases();
+                }, 1000); // Simulate loading delay
+
+                // Reset state
+                setIsLoading(false);
+                submitText.textContent = consultation.patient_type === 'outpatient' ? 'Send to Pharmacy' : 'Send to Nurse';
+                submitButton.disabled = false;
+            });
+
+            // Initialize
+            fetchPendingCases();
+            updateSections();
+            updateInputs();
+
+            function setIsLoading(value) {
+                isLoading = value;
+                submitButton.disabled = isLoading;
+            }
+
+            function setError(message) {
+                error = message;
+                if (error) {
+                    errorText.textContent = error;
+                    errorMessage.classList.remove('hidden');
+                } else {
+                    errorMessage.classList.add('hidden');
+                }
+            }
+
+            function setSelectedCase(case_) {
+                selectedCase = case_;
+                updateSections();
+                updateInputs();
+            }
+        });
+    </script>
+</body>
+</html>

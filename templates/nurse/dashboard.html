@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nursing Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hover-scale-105:hover {
+            transform: scale(1.05);
+            transition: transform 0.2s ease-in-out;
+        }
+        .opacity-75 {
+            opacity: 0.75;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 p-6">
+    <div class="space-y-6 max-w-6xl mx-auto" id="dashboard">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Nursing Dashboard</h1>
+                <p class="text-gray-600">Manage patient care and vital signs</p>
+            </div>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-50 text-green-700 border border-green-200">
+                Nurse Dashboard
+            </span>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between space-y-0 pb-2">
+                    <h3 class="text-sm font-medium text-gray-600">Assigned Patients</h3>
+                    <svg class="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 114 0 2 2 0 01-4 0z" />
+                    </svg>
+                </div>
+                <div class="text-2xl font-bold">12</div>
+                <p class="text-xs text-gray-600">Currently assigned</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between space-y-0 pb-2">
+                    <h3 class="text-sm font-medium text-gray-600">Pending Intakes</h3>
+                    <svg class="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="text-2xl font-bold">5</div>
+                <p class="text-xs text-gray-600">Awaiting vital signs</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between space-y-0 pb-2">
+                    <h3 class="text-sm font-medium text-gray-600">Inpatient Care</h3>
+                    <svg class="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                </div>
+                <div class="text-2xl font-bold">8</div>
+                <p class="text-xs text-gray-600">Following treatment plans</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between space-y-0 pb-2">
+                    <h3 class="text-sm font-medium text-gray-600">Referrals</h3>
+                    <svg class="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <div class="text-2xl font-bold">3</div>
+                <p class="text-xs text-gray-600">Pending referrals</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div>
+            <h2 class="text-xl font-semibold mb-4 text-gray-900">Quick Actions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="quickActions">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+                <p class="text-sm text-gray-600">Latest patient interactions and updates</p>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                    <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Vital signs recorded for John Doe</p>
+                        <p class="text-xs text-gray-500">2 hours ago</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                    <svg class="h-5 w-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Inpatient care updated for Jane Smith</p>
+                        <p class="text-xs text-gray-500">4 hours ago</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Referral created for Mike Johnson</p>
+                        <p class="text-xs text-gray-500">6 hours ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mock protected route check
+            const userRole = 'NURSE'; // Simulate user role
+            if (userRole !== 'NURSE') {
+                alert('Access denied. Please log in as a nurse.');
+                window.location.href = '/login'; // Redirect to login
+                return;
+            }
+
+            // Quick actions data
+            const quickActions = [
+                {
+                    title: "Patient Intake",
+                    description: "Record vital signs and medical history",
+                    icon: '<svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>',
+                    color: "bg-green-500",
+                    href: "/dashboard/nurse/intake",
+                    comingSoon: false,
+                },
+                {
+                    title: "Inpatient Care",
+                    description: "Follow up on treatment plans",
+                    icon: '<svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>',
+                    color: "bg-red-500",
+                    href: "/dashboard/nurse/inpatient",
+                    comingSoon: false,
+                },
+                {
+                    title: "Referrals",
+                    description: "Create patient referrals",
+                    icon: '<svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>',
+                    color: "bg-blue-500",
+                    href: "/dashboard/nurse/referrals",
+                    comingSoon: true,
+                },
+                {
+                    title: "Patient Rounds",
+                    description: "Schedule and track patient rounds",
+                    icon: '<svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>',
+                    color: "bg-purple-500",
+                    href: "/dashboard/nurse/rounds",
+                    comingSoon: true,
+                },
+            ];
+
+            // Populate quick actions
+            const quickActionsContainer = document.getElementById('quickActions');
+            quickActions.forEach(action => {
+                const card = document.createElement('div');
+                card.className = `bg-white p-6 rounded-lg shadow cursor-pointer transition-all ${action.comingSoon ? 'opacity-75' : 'hover-scale-105'}`;
+                card.innerHTML = `
+                    <div class="pb-3">
+                        <div class="w-10 h-10 rounded-lg ${action.color} flex items-center justify-center mb-2">
+                            ${action.icon}
+                        </div>
+                        <h3 class="text-base font-semibold flex items-center justify-between">
+                            ${action.title}
+                            ${action.comingSoon ? '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">Soon</span>' : '<svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>'}
+                        </h3>
+                        <p class="text-sm text-gray-600">${action.description}</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    if (!action.comingSoon) {
+                        window.location.href = action.href;
+                    } else {
+                        alert('This feature is coming soon!');
+                    }
+                });
+                quickActionsContainer.appendChild(card);
+            });
+        });
+    </script>
+</body>
+</html>

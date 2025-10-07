@@ -15,13 +15,13 @@ def Login(request):
         if user is not None:
             auth.login(request, user)
             if user.role == "HIM":
-                return redirect("/him/")
+                return redirect("/him/dashboard/")
             elif user.role == "NURSE":
-                return redirect("/nurse/")
+                return redirect("/nurse/dashboard/")
             elif user.role == "DOCTOR":
-                return redirect("/doctor/")
+                return redirect("/doctor/dashboard/")
             elif user.role == "PHARMACY":
-                return redirect("/pharmacy/")
+                return redirect("/pharmacy/dashboard/")
             return redirect('/login')
         else:
             messages.info(request, 'Credetials Invalid')

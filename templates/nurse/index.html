@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurse Health Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#64748b',
+                        accent: '#10b981',
+                        background: '#f8fafc',
+                        surface: '#ffffff',
+                        text: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-text">
+    <div class="flex h-screen">
+         Sidebar 
+        <nav class="w-64 bg-surface shadow-lg border-r border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h1 class="text-xl font-bold text-primary">Nurse Dashboard</h1>
+                <p class="text-sm text-secondary mt-1">EHR System</p>
+            </div>
+            
+            <div class="p-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="index.html" class="flex items-center p-3 rounded-lg bg-primary text-white">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="registration.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            Patient Registration
+                        </a>
+                    </li>
+                    <li>
+                        <a href="attend.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            Attend to Patients
+                        </a>
+                    </li>
+                    <li>
+                        <a href="inpatient.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            Inpatient Care
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Reports
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+         Main Content 
+        <main class="flex-1 overflow-auto">
+            <div class="p-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-text mb-2">Welcome to Nurse Dashboard</h2>
+                    <p class="text-secondary">Manage patient care efficiently with our comprehensive EHR system</p>
+                </div>
+
+                 Dashboard Cards 
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-surface p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-secondary">Total Patients</p>
+                                <p class="text-2xl font-bold text-text" id="totalPatients">0</p>
+                            </div>
+                            <div class="p-3 bg-primary/10 rounded-lg">
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-secondary">Inpatients</p>
+                                <p class="text-2xl font-bold text-text" id="totalInpatients">0</p>
+                            </div>
+                            <div class="p-3 bg-accent/10 rounded-lg">
+                                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-secondary">Today's Visits</p>
+                                <p class="text-2xl font-bold text-text" id="todayVisits">0</p>
+                            </div>
+                            <div class="p-3 bg-yellow-100 rounded-lg">
+                                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-secondary">Reports Filed</p>
+                                <p class="text-2xl font-bold text-text" id="totalReports">0</p>
+                            </div>
+                            <div class="p-3 bg-purple-100 rounded-lg">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 Quick Actions 
+                <div class="bg-surface p-6 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-text mb-4">Quick Actions</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <a href="registration.html" class="flex items-center p-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            Register Patient
+                        </a>
+                        <a href="attend.html" class="flex items-center p-4 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            Attend Patients
+                        </a>
+                        <a href="inpatient.html" class="flex items-center p-4 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            Inpatient Care
+                        </a>
+                        <a href="reports.html" class="flex items-center p-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            File Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js">
+        // Dashboard functionality
+class NurseDashboard {
+  constructor() {
+    this.init()
+  }
+
+  init() {
+    this.updateDashboardStats()
+    this.setActiveNavigation()
+  }
+
+  updateDashboardStats() {
+    const patients = this.getPatients()
+    const reports = this.getReports()
+    const inpatients = patients.filter((p) => p.admissionDate && !p.dischargeDate)
+    const todayVisits = this.getTodayVisits(patients)
+
+    document.getElementById("totalPatients").textContent = patients.length
+    document.getElementById("totalInpatients").textContent = inpatients.length
+    document.getElementById("todayVisits").textContent = todayVisits
+    document.getElementById("totalReports").textContent = reports.length
+  }
+
+  getPatients() {
+    return JSON.parse(localStorage.getItem("patients") || "[]")
+  }
+
+  getReports() {
+    return JSON.parse(localStorage.getItem("reports") || "[]")
+  }
+
+  getTodayVisits(patients) {
+    const today = new Date().toDateString()
+    return patients.filter((patient) => {
+      if (patient.visits && patient.visits.length > 0) {
+        return patient.visits.some((visit) => new Date(visit.date).toDateString() === today)
+      }
+      return false
+    }).length
+  }
+
+  setActiveNavigation() {
+    const currentPage = window.location.pathname.split("/").pop() || "index.html"
+    const navLinks = document.querySelectorAll("nav a")
+
+    navLinks.forEach((link) => {
+      link.classList.remove("bg-primary", "text-white")
+      link.classList.add("text-secondary", "hover:bg-gray-100")
+
+      if (link.getAttribute("href") === currentPage) {
+        link.classList.remove("text-secondary", "hover:bg-gray-100")
+        link.classList.add("bg-primary", "text-white")
+      }
+    })
+  }
+}
+
+// Initialize dashboard when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  new NurseDashboard()
+})
+
+// Utility functions for localStorage management
+window.NurseUtils = {
+  generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2)
+  },
+
+  formatDate(date) {
+    return new Date(date).toLocaleDateString()
+  },
+
+  formatDateTime(date) {
+    return new Date(date).toLocaleString()
+  },
+
+  savePatient(patient) {
+    const patients = JSON.parse(localStorage.getItem("patients") || "[]")
+    const existingIndex = patients.findIndex((p) => p.id === patient.id)
+
+    if (existingIndex >= 0) {
+      patients[existingIndex] = patient
+    } else {
+      patients.push(patient)
+    }
+
+    localStorage.setItem("patients", JSON.stringify(patients))
+  },
+
+  getPatient(id) {
+    const patients = JSON.parse(localStorage.getItem("patients") || "[]")
+    return patients.find((p) => p.id === id)
+  },
+
+  saveReport(report) {
+    const reports = JSON.parse(localStorage.getItem("reports") || "[]")
+    reports.push(report)
+    localStorage.setItem("reports", JSON.stringify(reports))
+  },
+}
+
+    </script>
+</body>
+</html>

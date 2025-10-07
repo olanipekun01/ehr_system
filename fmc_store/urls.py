@@ -22,6 +22,6 @@ urlpatterns = [
     path('', include('common.urls')),
     path('store', include('store.urls')),
     path('him', include('him.urls')),
-    # path('doctor', include('doctor.urls')),
-    # path('nurse', include('nurse.urls')),
+    path('doctor', include('doc.urls')),
+    path('nurse', include('nurse.urls')),
 ]

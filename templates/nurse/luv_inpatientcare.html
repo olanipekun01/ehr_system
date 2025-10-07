@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inpatient Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .healthcare-heading { font-size: 1.25rem; font-weight: 600; }
+        .healthcare-input { @apply border-gray-300 focus:ring-blue-500 focus:border-blue-500; }
+        .healthcare-form { border-color: #e5e7eb; }
+        .bg-primary { background-color: #3b82f6; }
+        .hover:bg-primary-dark { background-color: #2563eb; }
+        .bg-primary-light { background-color: #dbeafe; }
+        .bg-secondary { background-color: #9333ea; }
+        .bg-secondary-accent { color: #9333ea; }
+        .bg-accent { background-color: #8b5cf6; }
+        .bg-accent-light { background-color: #ede9fe; }
+        .bg-warning { background-color: #f59e0b; }
+        .bg-warning-light { background-color: #fef3c7; }
+        .bg-success { background-color: #22c55e; }
+        .text-success-foreground { color: #22c55e; }
+        .text-muted-foreground { color: #6b7280; }
+        .bg-muted\/50 { background-color: #e5e7eb80; }
+        .text-critical { color: #ef4444; }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 p-6">
+    <div class="max-w-6xl mx-auto space-y-6" id="app">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Inpatient Care</h1>
+                <p class="text-gray-600">Monitor and manage admitted patients</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Inpatients List -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow">
+                    <div class="p-6 border-b">
+                        <h2 class="flex items-center gap-2 healthcare-heading">
+                            <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                            Inpatients (<span id="inpatientCount">0</span>)
+                        </h2>
+                    </div>
+                    <div class="p-0 max-h-96 overflow-y-auto" id="inpatientsContainer">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patient Details -->
+            <div class="lg:col-span-3" id="patientDetailsSection">
+                <!-- Placeholder for no selection -->
+                <div id="noSelection" class="bg-white rounded-lg shadow h-96 flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <svg class="h-12 w-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                        <h3 class="text-lg font-medium mb-2">Select an Inpatient</h3>
+                        <p>Choose an inpatient from the list to view details and manage care.</p>
+                    </div>
+                </div>
+
+                <!-- Patient Header -->
+                <div id="patientHeader" class="hidden bg-white rounded-lg shadow">
+                    <div class="p-6 border-b">
+                        <div class="flex items-center justify-between">
+                            <h2 class="flex items-center gap-2 healthcare-heading">
+                                <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <span id="patientName"></span> - Inpatient Care
+                            </h2>
+                            <button id="dischargeButton" class="px-3 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white">
+                                <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                Discharge Patient
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                            <div>
+                                <label class="font-medium">Admission Date</label>
+                                <p id="admissionDate">N/A</p>
+                            </div>
+                            <div>
+                                <label class="font-medium">Days Admitted</label>
+                                <p id="daysAdmitted">N/A</p>
+                            </div>
+                            <div>
+                                <label class="font-medium">Current Status</label>
+                                <span id="currentStatus"></span>
+                            </div>
+                            <div>
+                                <label class="font-medium">Emergency Contact</label>
+                                <p id="emergencyContact">N/A</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Management Tabs -->
+                <div id="tabsContainer" class="hidden space-y-6">
+                    <div class="grid w-full grid-cols-5 border-b">
+                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="overview">Overview</button>
+                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="care">Care & Notes</button>
+                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="medications">Medications</button>
+                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="fluids">Fluid Chart</button>
+                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="vitals">Vitals</button>
+                    </div>
+
+                    <!-- Overview Tab -->
+                    <div id="tab-overview" class="hidden space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white rounded-lg shadow">
+                                <div class="p-6 border-b">
+                                    <h3 class="healthcare-heading">Medical Information</h3>
+                                </div>
+                                <div class="p-6 space-y-3">
+                                    <div>
+                                        <label class="font-medium">Current Diagnosis</label>
+                                        <p id="diagnosis" class="text-sm mt-1"></p>
+                                    </div>
+                                    <div id="medicalHistory" class="space-y-1 mt-1"></div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-lg shadow">
+                                <div class="p-6 border-b">
+                                    <h3 class="healthcare-heading">Latest Vitals</h3>
+                                </div>
+                                <div class="p-6">
+                                    <div id="latestVitals" class="grid grid-cols-2 gap-3 text-sm"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Care & Notes Tab -->
+                    <div id="tab-care" class="hidden space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white rounded-lg shadow healthcare-form">
+                                <div class="p-6 border-b">
+                                    <h3 class="flex items-center gap-2 healthcare-heading">
+                                        <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        Care Provided
+                                    </h3>
+                                </div>
+                                <div class="p-6">
+                                    <textarea id="careProvided" placeholder="Describe care provided..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-lg shadow healthcare-form">
+                                <div class="p-6 border-b">
+                                    <h3 class="flex items-center gap-2 healthcare-heading">
+                                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                        Patient Response
+                                    </h3>
+                                </div>
+                                <div class="p-6">
+                                    <textarea id="patientResponse" placeholder="Record patient response..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-lg shadow healthcare-form">
+                                <div class="p-6 border-b">
+                                    <h3 class="flex items-center gap-2 healthcare-heading">
+                                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                                        </svg>
+                                        Observation Notes
+                                    </h3>
+                                </div>
+                                <div class="p-6">
+                                    <textarea id="observationNotes" placeholder="Add observation notes..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow">
+                            <div class="p-6 border-b">
+                                <h3 class="healthcare-heading">Recent Care History</h3>
+                            </div>
+                            <div class="p-6 space-y-4" id="careHistory"></div>
+                        </div>
+                    </div>
+
+                    <!-- Medications Tab -->
+                    <div id="tab-medications" class="hidden space-y-6">
+                        <div class="bg-white rounded-lg shadow healthcare-form">
+                            <div class="p-6 border-b">
+                                <h3 class="flex items-center gap-2 healthcare-heading">
+                                    <svg class="h-5 w-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9h2M19 9h2M5 15h2M19 15h2M11 11h8M11 15h5m-5-4h.01M17 11h.01M17 15h.01m-7-4h8v8H7v-8z" />
+                                    </svg>
+                                    Administer Medication
+                                </h3>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <label for="drug" class="block text-sm font-medium text-gray-700">Drug Name</label>
+                                        <input id="drug" placeholder="Enter drug name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="time" class="block text-sm font-medium text-gray-700">Time</label>
+                                        <input id="time" type="time" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="day" class="block text-sm font-medium text-gray-700">Day</label>
+                                        <input id="day" type="number" min="1" max="31" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="month" class="block text-sm font-medium text-gray-700">Month</label>
+                                        <input id="month" type="number" min="1" max="12" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow">
+                            <div class="p-6 border-b">
+                                <h3 class="healthcare-heading">Medication History</h3>
+                            </div>
+                            <div class="p-6 space-y-2" id="medicationHistory"></div>
+                        </div>
+                    </div>
+
+                    <!-- Fluids Tab -->
+                    <div id="tab-fluids" class="hidden space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white rounded-lg shadow healthcare-form">
+                                <div class="p-6 border-b">
+                                    <h3 class="flex items-center gap-2 healthcare-heading">
+                                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                                        </svg>
+                                        Fluid Intake
+                                    </h3>
+                                </div>
+                                <div class="p-6 space-y-4">
+                                    <div>
+                                        <label>Oral Fluid</label>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <input placeholder="Nature" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="oralNature">
+                                            <input placeholder="Amount (ml)" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="oralAmount">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>IV Drip</label>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <input placeholder="Nature" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="ivNature">
+                                            <input placeholder="Amount (ml)" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="ivAmount">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-lg shadow healthcare-form">
+                                <div class="p-6 border-b">
+                                    <h3 class="flex items-center gap-2 healthcare-heading">
+                                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                                        </svg>
+                                        Fluid Output
+                                    </h3>
+                                </div>
+                                <div class="p-6 space-y-4">
+                                    <div>
+                                        <label for="urine" class="block text-sm font-medium text-gray-700">Urine (ml)</label>
+                                        <input id="urine" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="suction" class="block text-sm font-medium text-gray-700">Suction (ml)</label>
+                                        <input id="suction" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label>Other Output</label>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <input placeholder="Description" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="otherDescription">
+                                            <input placeholder="Amount (ml)" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="otherAmount">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow">
+                            <div class="p-6 border-b">
+                                <h3 class="healthcare-heading">Fluid Balance Chart</h3>
+                            </div>
+                            <div class="p-6 space-y-3" id="fluidChartHistory"></div>
+                        </div>
+                    </div>
+
+                    <!-- Vitals Tab -->
+                    <div id="tab-vitals" class="hidden space-y-6">
+                        <div class="bg-white rounded-lg shadow healthcare-form">
+                            <div class="p-6 border-b">
+                                <h3 class="flex items-center gap-2 healthcare-heading">
+                                    <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                                    </svg>
+                                    Update Vitals
+                                </h3>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <label for="new-temp" class="block text-sm font-medium text-gray-700">Temperature (°C)</label>
+                                        <input id="new-temp" type="number" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="new-pulse" class="block text-sm font-medium text-gray-700">Pulse (bpm)</label>
+                                        <input id="new-pulse" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="new-resp" class="block text-sm font-medium text-gray-700">Respiration</label>
+                                        <input id="new-resp" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="new-weight-ip" class="block text-sm font-medium text-gray-700">Weight (kg)</label>
+                                        <input id="new-weight-ip" type="number" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="new-sys" class="block text-sm font-medium text-gray-700">Systolic BP</label>
+                                        <input id="new-sys" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="new-dia" class="block text-sm font-medium text-gray-700">Diastolic BP</label>
+                                        <input id="new-dia" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="new-height-ip" class="block text-sm font-medium text-gray-700">Height (cm)</label>
+                                        <input id="new-height-ip" type="number" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow">
+                            <div class="p-6 border-b">
+                                <h3 class="healthcare-heading">Vitals History</h3>
+                            </div>
+                            <div class="p-6 space-y-3" id="vitalsHistory"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update Button -->
+                <div id="updateButtonContainer" class="hidden flex justify-end">
+                    <button id="updateButton" class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                        Update Patient Record
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mock types and utilities
+            const Patient = {
+                id: String,
+                name: String,
+                age: Number,
+                gender: String,
+                contact: String,
+                emergencyContact: String,
+                diagnosis: String,
+                vitals: Array,
+                careProvided: Array,
+                patientResponse: Array,
+                observationNotes: Array,
+                medications: Array,
+                fluidChart: Array,
+                admissionDate: String,
+                medicalHistory: Array
+            };
+            const Vitals = {
+                temperature: Number,
+                pulse: Number,
+                respiration: Number,
+                systolic: Number,
+                diastolic: Number,
+                weight: Number,
+                height: Number,
+                timestamp: String
+            };
+            const DrugChart = {
+                drug: String,
+                time: String,
+                day: Number,
+                month: Number,
+                year: Number,
+                administered: Boolean
+            };
+            const FluidChart = {
+                intake: { oralFluid: Array, ivDrip: Array },
+                output: { urine: Number, suction: Number, other: Array },
+                timestamp: String
+            };
+
+            function getVitalStatus(vitals) {
+                const tempThreshold = 38;
+                const pulseThreshold = 100;
+                const respThreshold = 20;
+                const bpThreshold = 140;
+                if (vitals.temperature > tempThreshold || vitals.pulse > pulseThreshold || vitals.respiration > respThreshold || vitals.systolic > bpThreshold) {
+                    return "critical";
+                } else if (vitals.temperature > 37.5 || vitals.pulse > 90 || vitals.respiration > 18 || vitals.systolic > 130) {
+                    return "warning";
+                }
+                return "normal";
+            }
+
+            function formatDateTime(timestamp) {
+                return new Date(timestamp).toLocaleString();
+            }
+
+            function generateId() {
+                return 'xxxx-xxxx-xxx'.replace(/x/g, () => (Math.random() * 16 | 0).toString(16));
+            }
+
+            // Mock storage
+            const patientStorage = {
+                getInpatients: () => {
+                    const stored = localStorage.getItem('patients');
+                    return stored ? JSON.parse(stored).filter(p => p.status === 'inpatient') : [];
+                },
+                save: (patient) => {
+                    const allPatients = patientStorage.getInpatients();
+                    const index = allPatients.findIndex(p => p.id === patient.id);
+                    if (index !== -1) allPatients[index] = patient;
+                    else allPatients.push(patient);
+                    localStorage.setItem('patients', JSON.stringify(allPatients));
+                },
+                dischargePatient: (id) => {
+                    const allPatients = patientStorage.getInpatients();
+                    const updatedPatients = allPatients.filter(p => p.id !== id);
+                    localStorage.setItem('patients', JSON.stringify(updatedPatients));
+                }
+            };
+
+            // State
+            let inpatients = [];
+            let selectedPatient = null;
+            let isUpdating = false;
+            let careProvided = "";
+            let patientResponse = "";
+            let observationNotes = "";
+            let newMedication = {
+                drug: "",
+                time: "",
+                day: new Date().getDate().toString(),
+                month: (new Date().getMonth() + 1).toString(),
+                year: new Date().getFullYear().toString()
+            };
+            let fluidIntake = {
+                oralFluid: { nature: "", amount: "" },
+                ivDrip: { nature: "", amount: "" }
+            };
+            let fluidOutput = {
+                urine: "",
+                suction: "",
+                other: { description: "", amount: "" }
+            };
+            let newVitals = {
+                temperature: "",
+                pulse: "",
+                respiration: "",
+                systolic: "",
+                diastolic: "",
+                weight: "",
+                height: ""
+            };
+
+            // DOM elements
+            const inpatientCount = document.getElementById('inpatientCount');
+            const inpatientsContainer = document.getElementById('inpatientsContainer');
+            const patientDetailsSection = document.getElementById('patientDetailsSection');
+            const noSelection = document.getElementById('noSelection');
+            const patientHeader = document.getElementById('patientHeader');
+            const patientName = document.getElementById('patientName');
+            const dischargeButton = document.getElementById('dischargeButton');
+            const admissionDate = document.getElementById('admissionDate');
+            const daysAdmitted = document.getElementById('daysAdmitted');
+            const currentStatus = document.getElementById('currentStatus');
+            const emergencyContact = document.getElementById('emergencyContact');
+            const tabsContainer = document.getElementById('tabsContainer');
+            const tabButtons = tabsContainer.querySelectorAll('button[data-tab]');
+            const tabOverview = document.getElementById('tab-overview');
+            const diagnosis = document.getElementById('diagnosis');
+            const medicalHistory = document.getElementById('medicalHistory');
+            const latestVitals = document.getElementById('latestVitals');
+            const tabCare = document.getElementById('tab-care');
+            const careProvidedInput = document.getElementById('careProvided');
+            const patientResponseInput = document.getElementById('patientResponse');
+            const observationNotesInput = document.getElementById('observationNotes');
+            const careHistory = document.getElementById('careHistory');
+            const tabMedications = document.getElementById('tab-medications');
+            const drugInput = document.getElementById('drug');
+            const timeInput = document.getElementById('time');
+            const dayInput = document.getElementById('day');
+            const monthInput = document.getElementById('month');
+            const medicationHistory = document.getElementById('medicationHistory');
+            const tabFluids = document.getElementById('tab-fluids');
+            const oralNature = document.getElementById('oralNature');
+            const oralAmount = document.getElementById('oralAmount');
+            const ivNature = document.getElementById('ivNature');
+            const ivAmount = document.getElementById('ivAmount');
+            const urine = document.getElementById('urine');
+            const suction = document.getElementById('suction');
+            const otherDescription = document.getElementById('otherDescription');
+            const otherAmount = document.getElementById('otherAmount');
+            const fluidChartHistory = document.getElementById('fluidChartHistory');
+            const tabVitals = document.getElementById('tab-vitals');
+            const newTemp = document.getElementById('new-temp');
+            const newPulse = document.getElementById('new-pulse');
+            const newResp = document.getElementById('new-resp');
+            const newWeight = document.getElementById('new-weight-ip');
+            const newSys = document.getElementById('new-sys');
+            const newDia = document.getElementById('new-dia');
+            const newHeight = document.getElementById('new-height-ip');
+            const vitalsHistory = document.getElementById('vitalsHistory');
+            const updateButtonContainer = document.getElementById('updateButtonContainer');
+            const updateButton = document.getElementById('updateButton');
+
+            // Load inpatients
+            function loadInpatients() {
+                const inpatientsList = patientStorage.getInpatients();
+                if (inpatientsList.length === 0) {
+                    const mockPatients = [
+                        { id: generateId(), name: 'John Doe', age: 45, gender: 'male', contact: '123-456-7890', emergencyContact: '098-765-4321', diagnosis: 'Hypertension', vitals: [{ temperature: 36.8, pulse: 78, respiration: 16, systolic: 130, diastolic: 85, weight: 75, height: 175, timestamp: new Date().toISOString() }], careProvided: [], patientResponse: [], observationNotes: [], medications: [], fluidChart: [], admissionDate: new Date().toISOString(), medicalHistory: [{ disease: 'Hypertension' }], status: 'inpatient' },
+                        { id: generateId(), name: 'Jane Smith', age: 32, gender: 'female', contact: '234-567-8901', emergencyContact: '', diagnosis: 'Diabetes', vitals: [{ temperature: 37.2, pulse: 85, respiration: 18, systolic: 135, diastolic: 90, weight: 65, height: 165, timestamp: new Date().toISOString() }], careProvided: [], patientResponse: [], observationNotes: [], medications: [], fluidChart: [], admissionDate: new Date('2025-09-28').toISOString(), medicalHistory: [{ disease: 'Diabetes' }], status: 'inpatient' }
+                    ];
+                    mockPatients.forEach(p => patientStorage.save(p));
+                    inpatients = mockPatients;
+                } else {
+                    inpatients = inpatientsList;
+                }
+                populateInpatients();
+            }
+
+            // Populate inpatients list
+            function populateInpatients() {
+                inpatientCount.textContent = inpatients.length;
+                inpatientsContainer.innerHTML = '';
+                inpatients.forEach(patient => {
+                    const latestVitals = patient.vitals[patient.vitals.length - 1];
+                    const admissionDate = patient.admissionDate ? new Date(patient.admissionDate) : null;
+                    const daysAdmitted = admissionDate ? Math.floor((new Date().getTime() - admissionDate.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+                    const div = document.createElement('div');
+                    div.className = `p-4 border-b cursor-pointer hover:bg-gray-200/50 transition-colors ${selectedPatient?.id === patient.id ? 'bg-blue-100' : ''}`;
+                    div.innerHTML = `
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-medium">${patient.name}</h3>
+                                ${latestVitals ? getStatusBadge(latestVitals).outerHTML : ''}
+                            </div>
+                            <p class="text-sm text-gray-500">Age: ${patient.age} • ${patient.gender}</p>
+                            <p class="text-xs text-gray-500">Day ${daysAdmitted + 1} of admission</p>
+                            <p class="text-xs text-gray-500 truncate">${patient.diagnosis}</p>
+                        </div>
+                    `;
+                    div.addEventListener('click', () => selectPatient(patient));
+                    inpatientsContainer.appendChild(div);
+                });
+                if (inpatients.length === 0) {
+                    inpatientsContainer.innerHTML = `
+                        <div class="p-8 text-center text-gray-500">
+                            <svg class="h-12 w-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                            <p>No inpatients currently admitted.</p>
+                        </div>
+                    `;
+                }
+                updateSections();
+            }
+
+            // Update sections visibility and content
+            function updateSections() {
+                if (selectedPatient) {
+                    noSelection.classList.add('hidden');
+                    patientHeader.classList.remove('hidden');
+                    tabsContainer.classList.remove('hidden');
+                    updateButtonContainer.classList.remove('hidden');
+                    patientName.textContent = selectedPatient.name;
+                    admissionDate.textContent = selectedPatient.admissionDate ? new Date(selectedPatient.admissionDate).toLocaleDateString() : 'N/A';
+                    daysAdmitted.textContent = selectedPatient.admissionDate ? Math.floor((new Date().getTime() - new Date(selectedPatient.admissionDate).getTime()) / (1000 * 60 * 60 * 24)) + 1 : 'N/A';
+                    emergencyContact.textContent = selectedPatient.emergencyContact || 'N/A';
+                    if (selectedPatient.vitals.length > 0) {
+                        const latestVitals = selectedPatient.vitals[selectedPatient.vitals.length - 1];
+                        currentStatus.innerHTML = getStatusBadge(latestVitals).outerHTML;
+                    } else {
+                        currentStatus.textContent = '';
+                    }
+                    updateOverview();
+                    updateCare();
+                    updateMedications();
+                    updateFluids();
+                    updateVitals();
+                    updateInputs();
+                } else {
+                    noSelection.classList.remove('hidden');
+                    patientHeader.classList.add('hidden');
+                    tabsContainer.classList.add('hidden');
+                    updateButtonContainer.classList.add('hidden');
+                }
+            }
+
+            // Update overview tab
+            function updateOverview() {
+                diagnosis.textContent = selectedPatient.diagnosis;
+                medicalHistory.innerHTML = selectedPatient.medicalHistory.length > 0 ? selectedPatient.medicalHistory.map((h, i) => `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border mr-2 mb-1">${h.disease}</span>`).join('') : '';
+                if (selectedPatient.vitals.length > 0) {
+                    const vitals = selectedPatient.vitals[selectedPatient.vitals.length - 1];
+                    latestVitals.innerHTML = `
+                        <div class="bg-gray-200 p-2 rounded"><span class="font-medium">Temperature:</span> ${vitals.temperature}°C</div>
+                        <div class="bg-gray-200 p-2 rounded"><span class="font-medium">Pulse:</span> ${vitals.pulse} bpm</div>
+                        <div class="bg-gray-200 p-2 rounded"><span class="font-medium">Blood Pressure:</span> ${vitals.systolic}/${vitals.diastolic}</div>
+                        <div class="bg-gray-200 p-2 rounded"><span class="font-medium">Respiration:</span> ${vitals.respiration}</div>
+                        <div class="col-span-2 text-xs text-gray-500 mt-2">Last updated: ${formatDateTime(vitals.timestamp)}</div>
+                    `;
+                } else {
+                    latestVitals.innerHTML = '<p class="text-gray-500">No vitals recorded yet.</p>';
+                }
+            }
+
+            // Update care tab
+            function updateCare() {
+                careHistory.innerHTML = selectedPatient.careProvided.length > 0 ? selectedPatient.careProvided.slice(-3).map((c, i) => `<div class="bg-blue-100 p-3 rounded text-sm">${c}</div>`).join('') : '<p class="text-gray-500">No care records yet.</p>';
+            }
+
+            // Update medications tab
+            function updateMedications() {
+                medicationHistory.innerHTML = selectedPatient.medications.length > 0 ? selectedPatient.medications.slice(-10).map((m, i) => `
+                    <div class="flex items-center justify-between bg-yellow-100 p-3 rounded">
+                        <div>
+                            <span class="font-medium">${m.drug}</span>
+                            <p class="text-sm text-gray-500">${m.day}/${m.month}/${m.year} at ${m.time}</p>
+                        </div>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-500 text-white">Administered</span>
+                    </div>
+                `).join('') : '<p class="text-gray-500">No medications administered yet.</p>';
+            }
+
+            // Update fluids tab
+            function updateFluids() {
+                fluidChartHistory.innerHTML = selectedPatient.fluidChart.length > 0 ? selectedPatient.fluidChart.slice(-5).map((f, i) => {
+                    const intake = [];
+                    if (f.intake.oralFluid.length) intake.push(...f.intake.oralFluid.map(o => `Oral: ${o.nature} - ${o.amount}ml`));
+                    if (f.intake.ivDrip.length) intake.push(...f.intake.ivDrip.map(iv => `IV: ${iv.nature} - ${iv.amount}ml`));
+                    const output = [];
+                    if (f.output.urine > 0) output.push(`Urine: ${f.output.urine}ml`);
+                    if (f.output.suction > 0) output.push(`Suction: ${f.output.suction}ml`);
+                    if (f.output.other.length) output.push(...f.output.other.map(o => `${o.description}: ${o.amount}ml`));
+                    return `
+                        <div class="bg-purple-100 p-3 rounded">
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <label class="font-medium">Intake</label>
+                                    ${intake.map(i => `<p>${i}</p>`).join('')}
+                                </div>
+                                <div>
+                                    <label class="font-medium">Output</label>
+                                    ${output.map(o => `<p>${o}</p>`).join('')}
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">${formatDateTime(f.timestamp)}</p>
+                        </div>
+                    `;
+                }).join('') : '<p class="text-gray-500">No fluid chart records yet.</p>';
+            }
+
+            // Update vitals tab
+            function updateVitals() {
+                vitalsHistory.innerHTML = selectedPatient.vitals.length > 0 ? selectedPatient.vitals.slice(-5).reverse().map((v, i) => `
+                    <div class="bg-purple-100 p-3 rounded">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                            <div>Temp: ${v.temperature}°C</div>
+                            <div>Pulse: ${v.pulse} bpm</div>
+                            <div>BP: ${v.systolic}/${v.diastolic}</div>
+                            <div>Resp: ${v.respiration}</div>
+                        </div>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-xs text-gray-500">${formatDateTime(v.timestamp)}</span>
+                            ${getStatusBadge(v).outerHTML}
+                        </div>
+                    </div>
+                `).join('') : '<p class="text-gray-500">No vitals recorded yet.</p>';
+            }
+
+            // Update input values
+            function updateInputs() {
+                careProvidedInput.value = careProvided;
+                patientResponseInput.value = patientResponse;
+                observationNotesInput.value = observationNotes;
+                drugInput.value = newMedication.drug;
+                timeInput.value = newMedication.time;
+                dayInput.value = newMedication.day;
+                monthInput.value = newMedication.month;
+                oralNature.value = fluidIntake.oralFluid.nature;
+                oralAmount.value = fluidIntake.oralFluid.amount;
+                ivNature.value = fluidIntake.ivDrip.nature;
+                ivAmount.value = fluidIntake.ivDrip.amount;
+                urine.value = fluidOutput.urine;
+                suction.value = fluidOutput.suction;
+                otherDescription.value = fluidOutput.other.description;
+                otherAmount.value = fluidOutput.other.amount;
+                newTemp.value = newVitals.temperature;
+                newPulse.value = newVitals.pulse;
+                newResp.value = newVitals.respiration;
+                newWeight.value = newVitals.weight;
+                newSys.value = newVitals.systolic;
+                newDia.value = newVitals.diastolic;
+                newHeight.value = newVitals.height;
+            }
+
+            // Handle input changes
+            careProvidedInput.addEventListener('input', (e) => { careProvided = e.target.value; });
+            patientResponseInput.addEventListener('input', (e) => { patientResponse = e.target.value; });
+            observationNotesInput.addEventListener('input', (e) => { observationNotes = e.target.value; });
+            drugInput.addEventListener('input', (e) => { newMedication.drug = e.target.value; });
+            timeInput.addEventListener('input', (e) => { newMedication.time = e.target.value; });
+            dayInput.addEventListener('input', (e) => { newMedication.day = e.target.value; });
+            monthInput.addEventListener('input', (e) => { newMedication.month = e.target.value; });
+            oralNature.addEventListener('input', (e) => { fluidIntake.oralFluid.nature = e.target.value; });
+            oralAmount.addEventListener('input', (e) => { fluidIntake.oralFluid.amount = e.target.value; });
+            ivNature.addEventListener('input', (e) => { fluidIntake.ivDrip.nature = e.target.value; });
+            ivAmount.addEventListener('input', (e) => { fluidIntake.ivDrip.amount = e.target.value; });
+            urine.addEventListener('input', (e) => { fluidOutput.urine = e.target.value; });
+            suction.addEventListener('input', (e) => { fluidOutput.suction = e.target.value; });
+            otherDescription.addEventListener('input', (e) => { fluidOutput.other.description = e.target.value; });
+            otherAmount.addEventListener('input', (e) => { fluidOutput.other.amount = e.target.value; });
+            newTemp.addEventListener('input', (e) => { newVitals.temperature = e.target.value; });
+            newPulse.addEventListener('input', (e) => { newVitals.pulse = e.target.value; });
+            newResp.addEventListener('input', (e) => { newVitals.respiration = e.target.value; });
+            newWeight.addEventListener('input', (e) => { newVitals.weight = e.target.value; });
+            newSys.addEventListener('input', (e) => { newVitals.systolic = e.target.value; });
+            newDia.addEventListener('input', (e) => { newVitals.diastolic = e.target.value; });
+            newHeight.addEventListener('input', (e) => { newVitals.height = e.target.value; });
+
+            // Select patient
+            function selectPatient(patient) {
+                selectedPatient = patient;
+                resetForms();
+                updateSections();
+            }
+
+            // Reset forms
+            function resetForms() {
+                careProvided = "";
+                patientResponse = "";
+                observationNotes = "";
+                newMedication = {
+                    drug: "",
+                    time: "",
+                    day: new Date().getDate().toString(),
+                    month: (new Date().getMonth() + 1).toString(),
+                    year: new Date().getFullYear().toString()
+                };
+                fluidIntake = {
+                    oralFluid: { nature: "", amount: "" },
+                    ivDrip: { nature: "", amount: "" }
+                };
+                fluidOutput = {
+                    urine: "",
+                    suction: "",
+                    other: { description: "", amount: "" }
+                };
+                newVitals = {
+                    temperature: "",
+                    pulse: "",
+                    respiration: "",
+                    systolic: "",
+                    diastolic: "",
+                    weight: "",
+                    height: ""
+                };
+                updateInputs();
+            }
+
+            // Update patient record
+            function updatePatientRecord() {
+                if (!selectedPatient) return;
+
+                isUpdating = true;
+                updateButton.textContent = 'Updating...';
+                updateButton.disabled = true;
+
+                try {
+                    const updatedPatient = { ...selectedPatient };
+
+                    if (careProvided.trim()) {
+                        updatedPatient.careProvided.push(`${new Date().toISOString()}: ${careProvided.trim()}`);
+                    }
+
+                    if (patientResponse.trim()) {
+                        updatedPatient.patientResponse.push(`${new Date().toISOString()}: ${patientResponse.trim()}`);
+                    }
+
+                    if (observationNotes.trim()) {
+                        updatedPatient.observationNotes.push(`${new Date().toISOString()}: ${observationNotes.trim()}`);
+                    }
+
+                    if (newMedication.drug && newMedication.time) {
+                        const medication = {
+                            drug: newMedication.drug,
+                            time: newMedication.time,
+                            day: parseInt(newMedication.day),
+                            month: parseInt(newMedication.month),
+                            year: parseInt(newMedication.year),
+                            administered: true
+                        };
+                        updatedPatient.medications.push(medication);
+                    }
+
+                    if (fluidIntake.oralFluid.nature || fluidIntake.ivDrip.nature || fluidOutput.urine || fluidOutput.suction || fluidOutput.other.description) {
+                        const fluid = {
+                            intake: {
+                                oralFluid: fluidIntake.oralFluid.nature ? [{ nature: fluidIntake.oralFluid.nature, amount: parseFloat(fluidIntake.oralFluid.amount) || 0 }] : [],
+                                ivDrip: fluidIntake.ivDrip.nature ? [{ nature: fluidIntake.ivDrip.nature, amount: parseFloat(fluidIntake.ivDrip.amount) || 0 }] : []
+                            },
+                            output: {
+                                urine: parseFloat(fluidOutput.urine) || 0,
+                                suction: parseFloat(fluidOutput.suction) || 0,
+                                other: fluidOutput.other.description ? [{ description: fluidOutput.other.description, amount: parseFloat(fluidOutput.other.amount) || 0 }] : []
+                            },
+                            timestamp: new Date().toISOString()
+                        };
+                        updatedPatient.fluidChart.push(fluid);
+                    }
+
+                    if (newVitals.temperature && newVitals.pulse && newVitals.respiration && newVitals.systolic && newVitals.diastolic) {
+                        const vitals = {
+                            temperature: parseFloat(newVitals.temperature),
+                            pulse: parseInt(newVitals.pulse),
+                            respiration: parseInt(newVitals.respiration),
+                            systolic: parseInt(newVitals.systolic),
+                            diastolic: parseInt(newVitals.diastolic),
+                            weight: newVitals.weight ? parseFloat(newVitals.weight) : updatedPatient.vitals[0]?.weight || 0,
+                            height: newVitals.height ? parseFloat(newVitals.height) : updatedPatient.vitals[0]?.height || 0,
+                            timestamp: new Date().toISOString()
+                        };
+                        updatedPatient.vitals.push(vitals);
+                    }
+
+                    patientStorage.save(updatedPatient);
+                    selectedPatient = updatedPatient;
+                    loadInpatients();
+
+                    alert(`Record Updated\n${updatedPatient.name}'s inpatient record has been updated.`);
+
+                    resetForms();
+                } catch (error) {
+                    alert('Update Failed\nFailed to update patient record.');
+                } finally {
+                    isUpdating = false;
+                    updateButton.textContent = 'Update Patient Record';
+                    updateButton.disabled = false;
+                }
+            }
+
+            // Discharge patient
+            function dischargePatient() {
+                if (!selectedPatient) return;
+
+                try {
+                    patientStorage.dischargePatient(selectedPatient.id);
+                    alert(`Patient Discharged\n${selectedPatient.name} has been discharged successfully.`);
+                    selectedPatient = null;
+                    loadInpatients();
+                } catch (error) {
+                    alert('Discharge Failed\nFailed to discharge patient.');
+                }
+            }
+
+            // Get status badge
+            function getStatusBadge(vitals) {
+                const status = getVitalStatus(vitals);
+                const badge = document.createElement('span');
+                badge.className = 'inline-flex items-center px-2 py-1 rounded-full text-xs font-medium';
+                switch (status) {
+                    case 'critical':
+                        badge.className += ' bg-red-500 text-white';
+                        badge.textContent = 'Critical';
+                        break;
+                    case 'warning':
+                        badge.className += ' bg-yellow-500 text-yellow-foreground';
+                        badge.textContent = 'Warning';
+                        break;
+                    default:
+                        badge.className += ' bg-green-500 text-green-foreground';
+                        badge.textContent = 'Stable';
+                        break;
+                }
+                return badge;
+            }
+
+            // Handle tab switching
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.dataset.state = '');
+                    button.dataset.state = 'active';
+                    document.querySelectorAll('[id^="tab-"]').forEach(tab => tab.classList.add('hidden'));
+                    document.getElementById(`tab-${button.dataset.tab}`).classList.remove('hidden');
+                });
+            });
+
+            // Initialize
+            loadInpatients();
+
+            // Event listeners
+            dischargeButton.addEventListener('click', dischargePatient);
+            updateButton.addEventListener('click', updatePatientRecord);
+            tabButtons[0].click(); // Default to overview tab
+        });
+    </script>
+</body>
+</html>
