@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inpatient Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .healthcare-heading { font-size: 1.25rem; font-weight: 600; }
+        .healthcare-input { @apply border-gray-300 focus:ring-blue-500 focus:border-blue-500; }
+        .healthcare-form { border-color: #e5e7eb; }
+        .bg-primary { background-color: #3b82f6; }
+        .hover:bg-primary-dark { background-color: #2563eb; }
+        .bg-primary-light { background-color: #dbeafe; }
+        .bg-secondary { background-color: #9333ea; }
+        .bg-secondary-accent { color: #9333ea; }
+        .bg-accent { background-color: #8b5cf6; }
+        .bg-accent-light { background-color: #ede9fe; }
+        .bg-warning { background-color: #f59e0b; }
+        .bg-warning-light { background-color: #fef3c7; }
+        .bg-success { background-color: #22c55e; }
+        .text-success-foreground { color: #22c55e; }
+        .text-muted-foreground { color: #6b7280; }
+        .bg-muted\/50 { background-color: #e5e7eb80; }
+        .text-critical { color: #ef4444; }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 p-6">
+    <div class="flex h-screen">
+        <nav class="w-64 bg-surface shadow-lg border-r border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h1 class="text-xl font-bold text-primary">Nurse Dashboard</h1>
+                <p class="text-sm text-secondary mt-1">EHR System</p>
+            </div>
+            
+            <div class="p-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="index.html" class="flex items-center p-3 rounded-lg bg-primary text-white">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="registration.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            Patient Registration
+                        </a>
+                    </li>
+                    <li>
+                        <a href="attend.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            Attend to Patients
+                        </a>
+                    </li>
+                    <li>
+                        <a href="inpatient.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            Inpatient Care
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Reports
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="w-[70%] mx-auto space-y-6" id="app">
+            <!-- Header -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Inpatient Care</h1>
+                    <p class="text-gray-600">Monitor and manage admitted patients</p>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="gap-6">
+                <!-- Inpatients List -->
+                <div class="">
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <h2 class="flex items-center gap-2 healthcare-heading">
+                                <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                                </svg>
+                                Inpatients (<span id="inpatientCount">0</span>)
+                            </h2>
+                        </div>
+                        <div class="p-0 max-h-96 overflow-y-auto" id="inpatientsContainer">
+                            <!-- Populated by JavaScript -->
+                            <div class='p-4 border-b cursor-pointer hover:bg-gray-200/50 transition-colors'>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <h3 class="font-medium">${patient.name}</h3>
+                                        ${latestVitals ? getStatusBadge(latestVitals).outerHTML : ''}
+                                    </div>
+                                    <p class="text-sm text-gray-500">Age: ${patient.age} • ${patient.gender}</p>
+                                    <p class="text-xs text-gray-500">Day ${daysAdmitted + 1} of admission</p>
+                                    <p class="text-xs text-gray-500 truncate">${patient.diagnosis}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Details -->
+                
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+</html>

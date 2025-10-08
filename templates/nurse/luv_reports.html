@@ -25,132 +25,187 @@
     </style>
 </head>
 <body class="min-h-screen bg-gray-100 p-6">
-    <div class="max-w-6xl mx-auto space-y-6" id="app">
-        <!-- Header -->
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Nurse Reports</h1>
-                <p class="text-gray-600">Submit daily activity reports and view previous submissions</p>
+    <div class="flex h-screen">
+        <nav class="w-64 bg-surface shadow-lg border-r border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h1 class="text-xl font-bold text-primary">Nurse Dashboard</h1>
+                <p class="text-sm text-secondary mt-1">EHR System</p>
             </div>
-        </div>
+            
+            <div class="p-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="index.html" class="flex items-center p-3 rounded-lg bg-primary text-white">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="registration.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            Patient Registration
+                        </a>
+                    </li>
+                    <li>
+                        <a href="attend.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            Attend to Patients
+                        </a>
+                    </li>
+                    <li>
+                        <a href="inpatient.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            Inpatient Care
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Reports
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-        <!-- Submit New Report -->
-        <div class="bg-white rounded-lg shadow healthcare-form">
-            <div class="p-6 border-b">
-                <h2 class="flex items-center gap-2 healthcare-heading">
-                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Submit Daily Activity Report
-                </h2>
+        <div class="w-[70%] mx-auto space-y-6" id="app">
+            <!-- Header -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Nurse Reports</h1>
+                    <p class="text-gray-600">Submit daily activity reports and view previous submissions</p>
+                </div>
             </div>
-            <div class="p-6">
-                <form id="reportForm" class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <!-- Submit New Report -->
+            <div class="bg-white rounded-lg shadow healthcare-form">
+                <div class="p-6 border-b">
+                    <h2 class="flex items-center gap-2 healthcare-heading">
+                        <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Submit Daily Activity Report
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <form id="reportForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="shiftDate" class="block text-sm font-medium text-gray-700">Shift Date *</label>
+                                <input id="shiftDate" type="date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label for="nurseName" class="block text-sm font-medium text-gray-700">Nurse Name *</label>
+                                <input id="nurseName" placeholder="Enter your full name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+
                         <div>
-                            <label for="shiftDate" class="block text-sm font-medium text-gray-700">Shift Date *</label>
-                            <input id="shiftDate" type="date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label for="summary" class="block text-sm font-medium text-gray-700">Summary of Activities *</label>
+                            <textarea id="summary" rows="6" placeholder="Describe your shift activities, patient care provided, procedures performed, etc." required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="incidents" class="block text-sm font-medium text-gray-700">Notes on Incidents/Observations</label>
+                            <textarea id="incidents" rows="4" placeholder="Record any incidents, unusual observations, safety concerns, or noteworthy events (optional)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button id="submitButton" type="submit" class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                                Submit Report
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Reports Overview -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b">
+                    <h2 class="flex items-center gap-2 healthcare-heading">
+                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Reports Overview
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-blue-100 p-4 rounded-lg text-center">
+                            <h3 id="totalReports" class="text-2xl font-bold text-blue-600">0</h3>
+                            <p class="text-sm text-gray-500">Total Reports</p>
+                        </div>
+                        <div class="bg-green-100 p-4 rounded-lg text-center">
+                            <h3 id="reportingDays" class="text-2xl font-bold text-green-600">0</h3>
+                            <p class="text-sm text-gray-500">Reporting Days</p>
+                        </div>
+                        <div class="bg-yellow-100 p-4 rounded-lg text-center">
+                            <h3 id="reportsWithIncidents" class="text-2xl font-bold text-yellow-600">0</h3>
+                            <p class="text-sm text-gray-500">Reports with Incidents</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports List -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b">
+                    <h2 class="flex items-center gap-2 healthcare-heading">
+                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Previous Reports
+                    </h2>
+                </div>
+                <div class="p-6" id="reportsContainer">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Guidelines -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b">
+                    <h2 class="healthcare-heading">Reporting Guidelines</h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                        <div>
+                            <h4 class="font-medium text-blue-600 mb-2">What to Include in Activity Summary:</h4>
+                            <ul class="space-y-1 text-gray-500">
+                                <li>• Number of patients attended to</li>
+                                <li>• Medications administered</li>
+                                <li>• Procedures performed</li>
+                                <li>• Vital signs monitoring</li>
+                                <li>• Patient education provided</li>
+                                <li>• Shift handover information</li>
+                            </ul>
                         </div>
                         <div>
-                            <label for="nurseName" class="block text-sm font-medium text-gray-700">Nurse Name *</label>
-                            <input id="nurseName" placeholder="Enter your full name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <h4 class="font-medium text-yellow-600 mb-2">Incident Reporting:</h4>
+                            <ul class="space-y-1 text-gray-500">
+                                <li>• Medical emergencies</li>
+                                <li>• Equipment malfunctions</li>
+                                <li>• Patient safety concerns</li>
+                                <li>• Medication errors or near misses</li>
+                                <li>• Unusual patient behaviors</li>
+                                <li>• Infection control issues</li>
+                            </ul>
                         </div>
-                    </div>
-
-                    <div>
-                        <label for="summary" class="block text-sm font-medium text-gray-700">Summary of Activities *</label>
-                        <textarea id="summary" rows="6" placeholder="Describe your shift activities, patient care provided, procedures performed, etc." required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                    </div>
-
-                    <div>
-                        <label for="incidents" class="block text-sm font-medium text-gray-700">Notes on Incidents/Observations</label>
-                        <textarea id="incidents" rows="4" placeholder="Record any incidents, unusual observations, safety concerns, or noteworthy events (optional)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button id="submitButton" type="submit" class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
-                            Submit Report
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Reports Overview -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <h2 class="flex items-center gap-2 healthcare-heading">
-                    <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Reports Overview
-                </h2>
-            </div>
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-blue-100 p-4 rounded-lg text-center">
-                        <h3 id="totalReports" class="text-2xl font-bold text-blue-600">0</h3>
-                        <p class="text-sm text-gray-500">Total Reports</p>
-                    </div>
-                    <div class="bg-green-100 p-4 rounded-lg text-center">
-                        <h3 id="reportingDays" class="text-2xl font-bold text-green-600">0</h3>
-                        <p class="text-sm text-gray-500">Reporting Days</p>
-                    </div>
-                    <div class="bg-yellow-100 p-4 rounded-lg text-center">
-                        <h3 id="reportsWithIncidents" class="text-2xl font-bold text-yellow-600">0</h3>
-                        <p class="text-sm text-gray-500">Reports with Incidents</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Reports List -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <h2 class="flex items-center gap-2 healthcare-heading">
-                    <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    Previous Reports
-                </h2>
-            </div>
-            <div class="p-6" id="reportsContainer">
-                <!-- Populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Guidelines -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <h2 class="healthcare-heading">Reporting Guidelines</h2>
-            </div>
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                    <div>
-                        <h4 class="font-medium text-blue-600 mb-2">What to Include in Activity Summary:</h4>
-                        <ul class="space-y-1 text-gray-500">
-                            <li>• Number of patients attended to</li>
-                            <li>• Medications administered</li>
-                            <li>• Procedures performed</li>
-                            <li>• Vital signs monitoring</li>
-                            <li>• Patient education provided</li>
-                            <li>• Shift handover information</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-medium text-yellow-600 mb-2">Incident Reporting:</h4>
-                        <ul class="space-y-1 text-gray-500">
-                            <li>• Medical emergencies</li>
-                            <li>• Equipment malfunctions</li>
-                            <li>• Patient safety concerns</li>
-                            <li>• Medication errors or near misses</li>
-                            <li>• Unusual patient behaviors</li>
-                            <li>• Infection control issues</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>

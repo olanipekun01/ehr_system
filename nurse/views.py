@@ -151,10 +151,38 @@ def NurseRegEach(request, id):
             
     return render(request, 'nurse/luv_patientregistration.html', context)
 
-def NurseAttendPatientsEach(request):
+def NurseAttendPatientsList(request):
+    patients = Patient.objects.all()
+
+    if request.method == 'POST':
+        search = request.POST.get('searchTerm', '').lower()
+
+        if search:
+            patients = patients.filter(
+                Q(first_name__icontains=search) |
+                Q(last_name__icontains=search) |
+                Q(id_no__icontains=search)
+            ).distinct()
+        
+    
+    context = {
+        'patients': patients,
+    }
+    
+    return render(request, 'nurse/attendpatientlist.html', context)
+
+def NurseAttendPatientsEach(request, id):
             
     return render(request, 'nurse/attendpatients.html')
 
-def NurseInPatient(request):
+def NurseInPatientList(request):
             
-    return render(request, 'nurse/inpatient.html')
+    return render(request, 'nurse/inpatientcarelist.html')
+
+def NurseInPatient(request, id):
+            
+    return render(request, 'nurse/luv_inpatientcare.html')
+
+def Reports(request):
+            
+    return render(request, 'nurse/luv_reports.html')

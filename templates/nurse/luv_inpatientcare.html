@@ -26,347 +26,385 @@
     </style>
 </head>
 <body class="min-h-screen bg-gray-100 p-6">
-    <div class="max-w-6xl mx-auto space-y-6" id="app">
-        <!-- Header -->
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Inpatient Care</h1>
-                <p class="text-gray-600">Monitor and manage admitted patients</p>
+    <div class="flex h-screen">
+        <nav class="w-64 bg-surface shadow-lg border-r border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h1 class="text-xl font-bold text-primary">Nurse Dashboard</h1>
+                <p class="text-sm text-secondary mt-1">EHR System</p>
             </div>
-        </div>
+            
+            <div class="p-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="index.html" class="flex items-center p-3 rounded-lg bg-primary text-white">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="registration.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            Patient Registration
+                        </a>
+                    </li>
+                    <li>
+                        <a href="attend.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            Attend to Patients
+                        </a>
+                    </li>
+                    <li>
+                        <a href="inpatient.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            Inpatient Care
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html" class="flex items-center p-3 rounded-lg text-secondary hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Reports
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-        <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- Inpatients List -->
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-lg shadow">
-                    <div class="p-6 border-b">
-                        <h2 class="flex items-center gap-2 healthcare-heading">
-                            <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-[70%] mx-auto space-y-6" id="app">
+            <!-- Header -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Inpatient Care</h1>
+                    <p class="text-gray-600">Monitor and manage admitted patients</p>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="gap-6">
+                
+                <!-- Patient Details -->
+                <div class="lg:col-span-3" id="patientDetailsSection">
+                    {% comment %} <!-- Placeholder for no selection -->
+                    <div id="noSelection" class="bg-white rounded-lg shadow h-96 flex items-center justify-center">
+                        <div class="text-center text-gray-500">
+                            <svg class="h-12 w-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                             </svg>
-                            Inpatients (<span id="inpatientCount">0</span>)
-                        </h2>
-                    </div>
-                    <div class="p-0 max-h-96 overflow-y-auto" id="inpatientsContainer">
-                        <!-- Populated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Patient Details -->
-            <div class="lg:col-span-3" id="patientDetailsSection">
-                <!-- Placeholder for no selection -->
-                <div id="noSelection" class="bg-white rounded-lg shadow h-96 flex items-center justify-center">
-                    <div class="text-center text-gray-500">
-                        <svg class="h-12 w-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                        </svg>
-                        <h3 class="text-lg font-medium mb-2">Select an Inpatient</h3>
-                        <p>Choose an inpatient from the list to view details and manage care.</p>
-                    </div>
-                </div>
-
-                <!-- Patient Header -->
-                <div id="patientHeader" class="hidden bg-white rounded-lg shadow">
-                    <div class="p-6 border-b">
-                        <div class="flex items-center justify-between">
-                            <h2 class="flex items-center gap-2 healthcare-heading">
-                                <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                                <span id="patientName"></span> - Inpatient Care
-                            </h2>
-                            <button id="dischargeButton" class="px-3 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white">
-                                <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                </svg>
-                                Discharge Patient
-                            </button>
+                            <h3 class="text-lg font-medium mb-2">Select an Inpatient</h3>
+                            <p>Choose an inpatient from the list to view details and manage care.</p>
                         </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                            <div>
-                                <label class="font-medium">Admission Date</label>
-                                <p id="admissionDate">N/A</p>
-                            </div>
-                            <div>
-                                <label class="font-medium">Days Admitted</label>
-                                <p id="daysAdmitted">N/A</p>
-                            </div>
-                            <div>
-                                <label class="font-medium">Current Status</label>
-                                <span id="currentStatus"></span>
-                            </div>
-                            <div>
-                                <label class="font-medium">Emergency Contact</label>
-                                <p id="emergencyContact">N/A</p>
+                    </div> {% endcomment %}
+
+                    <!-- Patient Header -->
+                    <div id="patientHeader" class=" bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <div class="flex items-center justify-between">
+                                <h2 class="flex items-center gap-2 healthcare-heading">
+                                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    <span id="patientName"></span> - Inpatient Care
+                                </h2>
+                                <button id="dischargeButton" class="px-3 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white">
+                                    <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                    </svg>
+                                    Discharge Patient
+                                </button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Patient Management Tabs -->
-                <div id="tabsContainer" class="hidden space-y-6">
-                    <div class="grid w-full grid-cols-5 border-b">
-                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="overview">Overview</button>
-                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="care">Care & Notes</button>
-                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="medications">Medications</button>
-                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="fluids">Fluid Chart</button>
-                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="vitals">Vitals</button>
-                    </div>
-
-                    <!-- Overview Tab -->
-                    <div id="tab-overview" class="hidden space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-lg shadow">
-                                <div class="p-6 border-b">
-                                    <h3 class="healthcare-heading">Medical Information</h3>
+                        <div class="p-6">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                <div>
+                                    <label class="font-medium">Admission Date</label>
+                                    <p id="admissionDate">N/A</p>
                                 </div>
-                                <div class="p-6 space-y-3">
-                                    <div>
-                                        <label class="font-medium">Current Diagnosis</label>
-                                        <p id="diagnosis" class="text-sm mt-1"></p>
+                                <div>
+                                    <label class="font-medium">Days Admitted</label>
+                                    <p id="daysAdmitted">N/A</p>
+                                </div>
+                                <div>
+                                    <label class="font-medium">Current Status</label>
+                                    <span id="currentStatus"></span>
+                                </div>
+                                <div>
+                                    <label class="font-medium">Emergency Contact</label>
+                                    <p id="emergencyContact">N/A</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Patient Management Tabs -->
+                    <div id="tabsContainer" class=" space-y-6">
+                        <div class="grid w-full grid-cols-5 border-b">
+                            <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="overview">Overview</button>
+                            <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="care">Care & Notes</button>
+                            <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="medications">Medications</button>
+                            <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="fluids">Fluid Chart</button>
+                            <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600" data-tab="vitals">Vitals</button>
+                        </div>
+
+                        <!-- Overview Tab -->
+                        <div id="tab-overview" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-white rounded-lg shadow">
+                                    <div class="p-6 border-b">
+                                        <h3 class="healthcare-heading">Medical Information</h3>
                                     </div>
-                                    <div id="medicalHistory" class="space-y-1 mt-1"></div>
+                                    <div class="p-6 space-y-3">
+                                        <div>
+                                            <label class="font-medium">Current Diagnosis</label>
+                                            <p id="diagnosis" class="text-sm mt-1"></p>
+                                        </div>
+                                        <div id="medicalHistory" class="space-y-1 mt-1"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-lg shadow">
+                                    <div class="p-6 border-b">
+                                        <h3 class="healthcare-heading">Latest Vitals</h3>
+                                    </div>
+                                    <div class="p-6">
+                                        <div id="latestVitals" class="grid grid-cols-2 gap-3 text-sm"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Care & Notes Tab -->
+                        <div id="tab-care" class="hidden space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="bg-white rounded-lg shadow healthcare-form">
+                                    <div class="p-6 border-b">
+                                        <h3 class="flex items-center gap-2 healthcare-heading">
+                                            <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            Care Provided
+                                        </h3>
+                                    </div>
+                                    <div class="p-6">
+                                        <textarea id="careProvided" placeholder="Describe care provided..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-lg shadow healthcare-form">
+                                    <div class="p-6 border-b">
+                                        <h3 class="flex items-center gap-2 healthcare-heading">
+                                            <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                            Patient Response
+                                        </h3>
+                                    </div>
+                                    <div class="p-6">
+                                        <textarea id="patientResponse" placeholder="Record patient response..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-lg shadow healthcare-form">
+                                    <div class="p-6 border-b">
+                                        <h3 class="flex items-center gap-2 healthcare-heading">
+                                            <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                                            </svg>
+                                            Observation Notes
+                                        </h3>
+                                    </div>
+                                    <div class="p-6">
+                                        <textarea id="observationNotes" placeholder="Add observation notes..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="bg-white rounded-lg shadow">
                                 <div class="p-6 border-b">
-                                    <h3 class="healthcare-heading">Latest Vitals</h3>
+                                    <h3 class="healthcare-heading">Recent Care History</h3>
                                 </div>
-                                <div class="p-6">
-                                    <div id="latestVitals" class="grid grid-cols-2 gap-3 text-sm"></div>
-                                </div>
+                                <div class="p-6 space-y-4" id="careHistory"></div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Care & Notes Tab -->
-                    <div id="tab-care" class="hidden space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Medications Tab -->
+                        <div id="tab-medications" class="hidden space-y-6">
                             <div class="bg-white rounded-lg shadow healthcare-form">
                                 <div class="p-6 border-b">
                                     <h3 class="flex items-center gap-2 healthcare-heading">
-                                        <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        <svg class="h-5 w-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9h2M19 9h2M5 15h2M19 15h2M11 11h8M11 15h5m-5-4h.01M17 11h.01M17 15h.01m-7-4h8v8H7v-8z" />
                                         </svg>
-                                        Care Provided
+                                        Administer Medication
                                     </h3>
                                 </div>
-                                <div class="p-6">
-                                    <textarea id="careProvided" placeholder="Describe care provided..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                <div class="p-6 space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div>
+                                            <label for="drug" class="block text-sm font-medium text-gray-700">Drug Name</label>
+                                            <input id="drug" placeholder="Enter drug name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="time" class="block text-sm font-medium text-gray-700">Time</label>
+                                            <input id="time" type="time" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="day" class="block text-sm font-medium text-gray-700">Day</label>
+                                            <input id="day" type="number" min="1" max="31" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="month" class="block text-sm font-medium text-gray-700">Month</label>
+                                            <input id="month" type="number" min="1" max="12" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="bg-white rounded-lg shadow healthcare-form">
+                            <div class="bg-white rounded-lg shadow">
                                 <div class="p-6 border-b">
-                                    <h3 class="flex items-center gap-2 healthcare-heading">
-                                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                        Patient Response
-                                    </h3>
+                                    <h3 class="healthcare-heading">Medication History</h3>
                                 </div>
-                                <div class="p-6">
-                                    <textarea id="patientResponse" placeholder="Record patient response..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                <div class="p-6 space-y-2" id="medicationHistory"></div>
+                            </div>
+                        </div>
+
+                        <!-- Fluids Tab -->
+                        <div id="tab-fluids" class="hidden space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-white rounded-lg shadow healthcare-form">
+                                    <div class="p-6 border-b">
+                                        <h3 class="flex items-center gap-2 healthcare-heading">
+                                            <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                                            </svg>
+                                            Fluid Intake
+                                        </h3>
+                                    </div>
+                                    <div class="p-6 space-y-4">
+                                        <div>
+                                            <label>Oral Fluid</label>
+                                            <div class="grid grid-cols-2 gap-2">
+                                                <input placeholder="Nature" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="oralNature">
+                                                <input placeholder="Amount (ml)" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="oralAmount">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label>IV Drip</label>
+                                            <div class="grid grid-cols-2 gap-2">
+                                                <input placeholder="Nature" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="ivNature">
+                                                <input placeholder="Amount (ml)" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="ivAmount">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-lg shadow healthcare-form">
+                                    <div class="p-6 border-b">
+                                        <h3 class="flex items-center gap-2 healthcare-heading">
+                                            <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                                            </svg>
+                                            Fluid Output
+                                        </h3>
+                                    </div>
+                                    <div class="p-6 space-y-4">
+                                        <div>
+                                            <label for="urine" class="block text-sm font-medium text-gray-700">Urine (ml)</label>
+                                            <input id="urine" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="suction" class="block text-sm font-medium text-gray-700">Suction (ml)</label>
+                                            <input id="suction" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label>Other Output</label>
+                                            <div class="grid grid-cols-2 gap-2">
+                                                <input placeholder="Description" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="otherDescription">
+                                                <input placeholder="Amount (ml)" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="otherAmount">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
+                            <div class="bg-white rounded-lg shadow">
+                                <div class="p-6 border-b">
+                                    <h3 class="healthcare-heading">Fluid Balance Chart</h3>
+                                </div>
+                                <div class="p-6 space-y-3" id="fluidChartHistory"></div>
+                            </div>
+                        </div>
+
+                        <!-- Vitals Tab -->
+                        <div id="tab-vitals" class="hidden space-y-6">
                             <div class="bg-white rounded-lg shadow healthcare-form">
                                 <div class="p-6 border-b">
                                     <h3 class="flex items-center gap-2 healthcare-heading">
                                         <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                                         </svg>
-                                        Observation Notes
-                                    </h3>
-                                </div>
-                                <div class="p-6">
-                                    <textarea id="observationNotes" placeholder="Add observation notes..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-lg shadow">
-                            <div class="p-6 border-b">
-                                <h3 class="healthcare-heading">Recent Care History</h3>
-                            </div>
-                            <div class="p-6 space-y-4" id="careHistory"></div>
-                        </div>
-                    </div>
-
-                    <!-- Medications Tab -->
-                    <div id="tab-medications" class="hidden space-y-6">
-                        <div class="bg-white rounded-lg shadow healthcare-form">
-                            <div class="p-6 border-b">
-                                <h3 class="flex items-center gap-2 healthcare-heading">
-                                    <svg class="h-5 w-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9h2M19 9h2M5 15h2M19 15h2M11 11h8M11 15h5m-5-4h.01M17 11h.01M17 15h.01m-7-4h8v8H7v-8z" />
-                                    </svg>
-                                    Administer Medication
-                                </h3>
-                            </div>
-                            <div class="p-6 space-y-4">
-                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                    <div>
-                                        <label for="drug" class="block text-sm font-medium text-gray-700">Drug Name</label>
-                                        <input id="drug" placeholder="Enter drug name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="time" class="block text-sm font-medium text-gray-700">Time</label>
-                                        <input id="time" type="time" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="day" class="block text-sm font-medium text-gray-700">Day</label>
-                                        <input id="day" type="number" min="1" max="31" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="month" class="block text-sm font-medium text-gray-700">Month</label>
-                                        <input id="month" type="number" min="1" max="12" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-lg shadow">
-                            <div class="p-6 border-b">
-                                <h3 class="healthcare-heading">Medication History</h3>
-                            </div>
-                            <div class="p-6 space-y-2" id="medicationHistory"></div>
-                        </div>
-                    </div>
-
-                    <!-- Fluids Tab -->
-                    <div id="tab-fluids" class="hidden space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-lg shadow healthcare-form">
-                                <div class="p-6 border-b">
-                                    <h3 class="flex items-center gap-2 healthcare-heading">
-                                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
-                                        </svg>
-                                        Fluid Intake
+                                        Update Vitals
                                     </h3>
                                 </div>
                                 <div class="p-6 space-y-4">
-                                    <div>
-                                        <label>Oral Fluid</label>
-                                        <div class="grid grid-cols-2 gap-2">
-                                            <input placeholder="Nature" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="oralNature">
-                                            <input placeholder="Amount (ml)" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="oralAmount">
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        <div>
+                                            <label for="new-temp" class="block text-sm font-medium text-gray-700">Temperature (°C)</label>
+                                            <input id="new-temp" type="number" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="new-pulse" class="block text-sm font-medium text-gray-700">Pulse (bpm)</label>
+                                            <input id="new-pulse" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="new-resp" class="block text-sm font-medium text-gray-700">Respiration</label>
+                                            <input id="new-resp" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="new-weight-ip" class="block text-sm font-medium text-gray-700">Weight (kg)</label>
+                                            <input id="new-weight-ip" type="number" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         </div>
                                     </div>
-                                    <div>
-                                        <label>IV Drip</label>
-                                        <div class="grid grid-cols-2 gap-2">
-                                            <input placeholder="Nature" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="ivNature">
-                                            <input placeholder="Amount (ml)" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="ivAmount">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label for="new-sys" class="block text-sm font-medium text-gray-700">Systolic BP</label>
+                                            <input id="new-sys" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="new-dia" class="block text-sm font-medium text-gray-700">Diastolic BP</label>
+                                            <input id="new-dia" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="new-height-ip" class="block text-sm font-medium text-gray-700">Height (cm)</label>
+                                            <input id="new-height-ip" type="number" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bg-white rounded-lg shadow healthcare-form">
+                            <div class="bg-white rounded-lg shadow">
                                 <div class="p-6 border-b">
-                                    <h3 class="flex items-center gap-2 healthcare-heading">
-                                        <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
-                                        </svg>
-                                        Fluid Output
-                                    </h3>
+                                    <h3 class="healthcare-heading">Vitals History</h3>
                                 </div>
-                                <div class="p-6 space-y-4">
-                                    <div>
-                                        <label for="urine" class="block text-sm font-medium text-gray-700">Urine (ml)</label>
-                                        <input id="urine" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="suction" class="block text-sm font-medium text-gray-700">Suction (ml)</label>
-                                        <input id="suction" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label>Other Output</label>
-                                        <div class="grid grid-cols-2 gap-2">
-                                            <input placeholder="Description" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="otherDescription">
-                                            <input placeholder="Amount (ml)" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="otherAmount">
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="p-6 space-y-3" id="vitalsHistory"></div>
                             </div>
-                        </div>
-
-                        <div class="bg-white rounded-lg shadow">
-                            <div class="p-6 border-b">
-                                <h3 class="healthcare-heading">Fluid Balance Chart</h3>
-                            </div>
-                            <div class="p-6 space-y-3" id="fluidChartHistory"></div>
                         </div>
                     </div>
 
-                    <!-- Vitals Tab -->
-                    <div id="tab-vitals" class="hidden space-y-6">
-                        <div class="bg-white rounded-lg shadow healthcare-form">
-                            <div class="p-6 border-b">
-                                <h3 class="flex items-center gap-2 healthcare-heading">
-                                    <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                                    </svg>
-                                    Update Vitals
-                                </h3>
-                            </div>
-                            <div class="p-6 space-y-4">
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                    <div>
-                                        <label for="new-temp" class="block text-sm font-medium text-gray-700">Temperature (°C)</label>
-                                        <input id="new-temp" type="number" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="new-pulse" class="block text-sm font-medium text-gray-700">Pulse (bpm)</label>
-                                        <input id="new-pulse" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="new-resp" class="block text-sm font-medium text-gray-700">Respiration</label>
-                                        <input id="new-resp" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="new-weight-ip" class="block text-sm font-medium text-gray-700">Weight (kg)</label>
-                                        <input id="new-weight-ip" type="number" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div>
-                                        <label for="new-sys" class="block text-sm font-medium text-gray-700">Systolic BP</label>
-                                        <input id="new-sys" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="new-dia" class="block text-sm font-medium text-gray-700">Diastolic BP</label>
-                                        <input id="new-dia" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    <div>
-                                        <label for="new-height-ip" class="block text-sm font-medium text-gray-700">Height (cm)</label>
-                                        <input id="new-height-ip" type="number" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-lg shadow">
-                            <div class="p-6 border-b">
-                                <h3 class="healthcare-heading">Vitals History</h3>
-                            </div>
-                            <div class="p-6 space-y-3" id="vitalsHistory"></div>
-                        </div>
+                    <!-- Update Button -->
+                    <div id="updateButtonContainer" class="flex justify-end">
+                        <button id="updateButton" class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                            Update Patient Record
+                        </button>
                     </div>
-                </div>
-
-                <!-- Update Button -->
-                <div id="updateButtonContainer" class="hidden flex justify-end">
-                    <button id="updateButton" class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
-                        Update Patient Record
-                    </button>
                 </div>
             </div>
         </div>
